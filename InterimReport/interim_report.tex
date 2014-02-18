@@ -1,0 +1,125 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{fancyhdr}
+\setlength{\headheight}{30pt}
+\pagestyle{fancy}
+
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}{}}
+
+\fancyhf{}
+\lhead{\fancyplain{}{\thepage}}
+\chead{}
+\rhead{\fancyplain{}{\textit{\leftmark}}}
+%\rfoot{\thepage}
+%\lfoot{Thesis name??}
+
+\begin{document}
+
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+%-----------------------------------------------------------
+% TITLE SECTION
+%-----------------------------------------------------------
+%
+%
+%
+
+
+
+%-----------------------------------------------------------
+% ABSTRACT SECTION
+%-----------------------------------------------------------
+%\begin{abstract}\centering
+%
+%\end{abstract}
+%-----------------------------------------------------------
+
+
+%-----------------------------------------------------------
+% TABLE OF CONTENTS SECTION
+%-----------------------------------------------------------
+%\tableofcontents
+
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+
+%-----------------------------------------------------------
+% INTRODUCTION SECTION
+%-----------------------------------------------------------
+%\include{introduction}
+
+\chapter{Introduction}
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+\section{Motivation}
+\begin{itemize}
+\item The rise in MOOCs such as Coursera, Udacity shows that there is a real interest in learning programming.
+\item Programming is considered "difficult'' to learn and it can only be learnt effectively through lots and lots of practice. Hence, the need to provide a platform for students to practice their programming skills and understanding of programming concepts.
+\item Having a lecturer come up with all the exercises by himself can be both time consuming and ineffective: some exercises may not be challenging enough for certain top students, or on the contrary too difficult for struggling students, which can be discouraging.
+\item Lecturers can only rely on a few homework assignments to get an idea of how students are doing. Having a way for lecturers to gather large amounts of data about students' performances would be beneficial. Allows for supplementary material, exercises, etc...
+\end{itemize}
+
+\section{Objectives}
+\begin{itemize}
+\item Provide a platform to allow students to practice their programming skills and understanding of programming concepts.
+\item Make questions/exercises suitable to the ability of the student to stimulate learning.
+\item Allow for some degree of automatic generation of exercises.
+\item A tool to allow lecturers to view the students results, providing them with useful statistics of students and class performance.
+\end{itemize}
+
+%-----------------------------------------------------------
+% BACKGROUND SECTION
+%-----------------------------------------------------------
+
+\chapter{Background}
+In this chapter, blabla. Finally, we conclude with a tour of existing solutions.
+
+\section{Item Response Theory (IRT)}
+
+\begin{itemize}
+\item Calculates the probability of a particular student answering a specific question correctly.
+\item Different IRT models: One-Parameter Logistic (1-PL), Two-Parameter Logistic (2-PL), Three-Parameter Logistic (3-PL). Refers to the number of parameters used in the model. Parameters are: 
+
+\begin{itemize}
+\item[-] question difficulty parameter (\textit{b})
+\item[-] question discrimination parameter (\textit{a})
+\item[-] chance/guessing paramter (\textit{c})
+\end{itemize}
+
+\item Item Characteristic Curve, i.e. probability distribution
+
+\end{itemize}
+
+\section{Computerized Adaptive Testing (CAT)}
+\begin{itemize}
+\item Students can be presented with questions/exercises that are either too easy or too difficult.
+\item CAT is a solution to this problem as it automatically chooses the exercises of the appropriate difficulty level for the students.
+\item Based on IRT for item selection
+\end{itemize}
+
+\section{Related Work}
+A lot of tools and research in this area, particularly in making environments suitable to teach programming to students. However, automatic exercise generation in these tools is usually non-existent or very limited.
+\subsection{ELP}
+Environment for Learning to Program (ELP) is an interactive web based environment for teaching programming to first year Information Technology students at Queensland University of Technology (QUT). 
+
+
+%-----------------------------------------------------------
+% PROJECT PLAN SECTION
+%-----------------------------------------------------------
+
+%\chapter{Project Plan}
+
+%-----------------------------------------------------------
+% EVALUATION SECTION
+%-----------------------------------------------------------
+
+%\chapter{Evaluation}
+
+
+\end{document}
