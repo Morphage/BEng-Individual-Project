@@ -86,22 +86,19 @@ Dr.~Tristan \textsc{Allwood}
 
 \chapter{Introduction}
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
 \section{Motivation}
-
-This is even more apparent when students are introduced to other programming languages with different paradigms such as Haskell and Prolog, or more low level such as C.
-
 
 \begin{itemize}
 \item The rise in MOOCs such as Coursera, Udacity shows that there is a real interest in learning programming.
-\item Programming is considered "difficult'' to learn and it can only be learnt effectively through lots and lots of practice. Hence, the need to provide a platform for students to practice their programming skills and understanding of programming concepts.
+\item Programming is considered "difficult'' to learn and it can only be learnt effectively through lots and lots of practice.
+\item This is even more apparent when students are introduced to other programming languages with different paradigms such as Haskell and Prolog, or more low level programming languages such as C.
+\item Hence, the need to provide a platform for students to practice their programming skills and understanding of programming concepts.
 \item Having a lecturer come up with all the exercises by himself can be both time consuming and ineffective: some exercises may not be challenging enough for certain top students, or on the contrary too difficult for struggling students, which can be discouraging.
 \item Lecturers can only rely on a few homework assignments to get an idea of how students are doing. Having a way for lecturers to gather large amounts of data about students' performances would be beneficial. Allows for supplementary material, exercises, etc...
 \end{itemize}
 
 \section{Objectives}
-Having identified the problems associated with , we were lead to formulating objectives in order to make the project successful and useful to the parties involved. \newline
+Having identified the problems associated with teaching and learning programming, we were lead to formulating objectives in order to make the project successful and useful to the parties involved. \newline
 
 The main objective of the project was to produce a web-based teaching infrastructure to complement the introductory first year programming classes. Four key features were identified:
 
@@ -112,10 +109,7 @@ The main objective of the project was to produce a web-based teaching infrastruc
 \item \textbf{Automated generation -} There should be a mechanism to allow for some degree of automated or semi-automated generation of exercises. This will provide a large supply of ``fresh" questions, so that students don't end up answering the same questions and memorizing the answers to them.
 \end{itemize}
 
-While investigating existing solutions (Section 2.3 - Related Work) we found out that some of these features were less common than others. The availability of programming exercises and progress tracking can be considered to be basic features, therefore all of the tools implemented these features.
-
- 
-"web questions" and progress tracking were available in most, whereas adaptive difficulty and especially automated generation weren't as present. 
+While investigating existing solutions (Section 2.4 - Related Work) we found out that some of these features were less common than others. The availability of programming exercises and progress tracking are very essential in such systems, therefore all of the tools implemented these features. On the other hand, relatively few tools integrated some form of adapting the questions to the students' ability. Finally, almost none of the tools featured automated generation of questions, opting instead to allow exercises to be added manually to the system.
 
 %-----------------------------------------------------------
 % BACKGROUND SECTION
@@ -132,17 +126,25 @@ In this chapter, we start off by giving an overview of the theoretical fundament
 \section{Computerized Adaptive Testing (CAT)}
 As seen in the previous section, CBTs are typically "fixed-item" tests where all the students answer the same set of questions,  usually provided by the person responsible for the assessment. This isn't ideal since students can be presented with questions that are too easy or too difficult for them to answer. Consequently, the results of the test won't give a very accurate representation of a student's ability, and for this reason, these types of tests aren't extremely useful. This problem lead to research and the development of computerized adaptive testing (CAT). \newline
 
-Computerized adaptive testing (CAT), also called \textit{tailored testing}, is a form of computer-based test that adapts to the examinee's ability. 
+Computerized adaptive testing (CAT), also called \textit{tailored testing}, is a form of computer-based test that adapts to the examinee's ability. \newline
+
+The basic algorithm is as follows:
+\begin{itemize}
+\item[1.] The pool of available items is searched for the optimal item, based on the current estimate of the examinee's ability.
+\item[2.] The chosen item is presented to the examinee, who then answers it correctly or incorrectly
+\item[3.] The ability estimate is updated, based upon all prior answers
+\item[4.] Steps 1–3 are repeated until a termination criterion is met
+\end{itemize}
 
 \begin{itemize}
 \item Motivation
 \item Explain how it works
 \item Algorithm picture/flowchart
 \item Advantages and disadvantages of CAT
-\item (Last sentence) usually based on IRT -> nice lead in to next section ....... In general, CATs use IRT (Section 2.2) as a response model.
+%\item (Last sentence) usually based on IRT -> nice lead in to next section ....... In general, CATs use IRT (Section 2.2) as a response model.
 \end{itemize}
 
-http://edglossary.org/computer-adaptive-test/
+7%ttp://edglossary.org/computer-adaptive-test/
 \begin{itemize}
 \item Students can be presented with questions/exercises that are either too easy or too difficult.
 \item CAT is a solution to this problem as it automatically chooses the exercises of the appropriate difficulty level for the students.
@@ -151,8 +153,13 @@ http://edglossary.org/computer-adaptive-test/
 \end{itemize}
 
 \section{Item Response Theory (IRT)}
-IRT is based on the idea that the probability of a correct/keyed response to an item is a mathematical function of person and item parameters. The person parameter is construed as (usually) a single latent trait or dimension. Examples include general intelligence or the strength of an attitude. Parameters on which items are characterized include their difficulty (known as "location" for their location on the difficulty range), discrimination (slope or correlation) representing how steeply the rate of success of individuals varies with their ability, and a pseudoguessing parameter, characterising the (lower) asymptote at which even the least able persons will score due to guessing (for instance, 25\% for pure chance on a 4-item multiple choice item).
+% Add maximum likelihood background explanation
+% Conditional probability quick overview?
+% Add Bayesian probability background explanation
+% Bayesian networks
+% Latent variables ?
 
+IRT is based on the idea that the probability of a correct/keyed response to an item is a mathematical function of person and item parameters. 
 
 \begin{itemize}
 \item Calculates the probability of a particular student answering a specific question correctly.
@@ -169,8 +176,8 @@ IRT is based on the idea that the probability of a correct/keyed response to an 
 \end{itemize}
 
 \section{Related Work}
-The area of , and as a result numerous tools, environments and infrastructures have emerged. There are common features to all, however some distinguish themselves by having not so common features.
-A lot of tools and research in this area, particularly in making environments suitable to teach programming to students. However, automatic exercise generation in these tools is usually non-existent or very limited. Moreover, the tools are more focused on assessing students, i.e. students take tests which count towards their final grade on these systems.
+Web-based education and adaptive web-based assessment systems are a ``hot" research area, and as a result, numerous tools, environments and infrastructures have emerged. There are common features to all, however some distinguish themselves by having not so common features.
+Automated exercise generation in these tools is usually non-existent or very limited. Moreover, the tools are more focused on assessing students rather than self-assessment, i.e. students take tests which count towards their final grade on these systems.
 
 \subsection{Environment for Learning to Program}
 Environment for Learning to Program (ELP) is an interactive web based environment for teaching programming to first year Information Technology students at Queensland University of Technology (QUT).
@@ -184,7 +191,8 @@ The Automatic Exercise Generator with Tagged Documents based on the Intelligence
 \subsection{Adaptive Self-Assessment Master}
 Adaptive Self-Assessment Master (ASAM) is an extension to CourseMarker, which improves upon it by administering questions which are suited to the student's ability.
 
-\subsection{SIETTE}
+\subsection{System of Intelligent Evaluation Using Tests for Tele-education}
+The System of Intelligent Evaluation Using Tests for Tele-education (SIETTE) is a web based environment for generating and constructing adaptive tests.
 
 
 %-----------------------------------------------------------
@@ -205,8 +213,10 @@ I have therefore programmed a basic Java applet to help with getting started.
 \section{Plan}
 This is a rough timetable that I will follow to realize the project:
 \begin{itemize}
-\item (21/02/14 - 02/03/14): Finalize GUI and architecture of the application (on paper)
+\item (21/02/14 - 26/02/14): Finish writing introduction and background sections of the report
+\item (26/02/14 - 02/03/14): Finalize GUI and architecture of the application (on paper)
 \item (03/03/14 - 28/03/14): Revise for exams and take exams
+\item (29/03/14 - 29/04/14): Code, code and code
 \item 
 \end{itemize}
 
@@ -223,10 +233,25 @@ This is a rough timetable that I will follow to realize the project:
 %-----------------------------------------------------------
 
 \chapter{Evaluation}
+The evaluation stage will address mostly these two aspects:
 \begin{itemize}
-\item The system has correctly modelled the ability of the student
-\item The system is useful in helping students to learn programming and helping lecturers with feedback of their teaching, in the form of statistics.
+\item The system has correctly modelled the ability of students
+\item The system is useful in helping students to learn programming and helping lecturers with getting feedback on their teaching, in the form of statistics.
 \end{itemize}
+
+\section{Qualitative}
+\begin{itemize}
+\item Surveys to get feedback from students on interface, usability, etc...
+\item 
+\end{itemize}
+
+\section{Quantitative}
+\begin{itemize}
+\item Statistical analysis to evaluate item calibration and modelling of student's abilities
+\item 
+\end{itemize}
+
+
 
 %-----------------------------------------------------------
 % Bibliography
