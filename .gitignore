@@ -22,3 +22,6 @@
 *.out
 *.synctex.gz
 *.ps
+/jSCAPE/jSCAPE/nbproject/private/
+/jSCAPE/build/
+/jSCAPE/dist/

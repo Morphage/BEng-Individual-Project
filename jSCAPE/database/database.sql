@@ -1,0 +1,3 @@
+DROP TABLE xyz
+
+CREATE TABLE xyz
