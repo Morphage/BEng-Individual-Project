@@ -129,7 +129,6 @@ public class JScape extends Application {
         aboutButton.setPrefSize(120, MAIN_TOOLBAR_HEIGHT);
         aboutButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                pageToolBar.getItems().add(new Button("ABOUT"));
                 startPane.setCenter(aboutPane);
             }
         });
@@ -150,7 +149,7 @@ public class JScape extends Application {
         pageToolBar.setMaxWidth(Double.MAX_VALUE);        
         
         breadcrumbBar = new BreadcrumbBar();
-        //pageToolBar.getItems().add(new Button("Toolbar Test"));
+        pageToolBar.getItems().add(new Button("Toolbar Test"));
         pageToolBar.getItems().add(breadcrumbBar);
                 
         startPane = new BorderPane();
@@ -159,10 +158,12 @@ public class JScape extends Application {
         
         GridPane.setConstraints(startPane, 0, 1);
         
-        helpPane = new HelpPane();
-        aboutPane = new AboutPane();
         profilePane = new ProfilePane();
         practicePane = new PracticePane();
+        helpPane = new HelpPane();
+        aboutPane = new AboutPane();
+        
+        
         
         this.rootPane.setTop(toolBar);
         this.rootPane.setCenter(startPane);

@@ -88,6 +88,12 @@
     -fx-background-color: #333333;
     -fx-background-radius: 2;
 }
+.default-color0.chart-pie {
+    -fx-pie-color: blue;
+}
+.default-color1.chart-pie {
+    -fx-pie-color: red;
+}
 #SearchBox .text-field {
     -fx-background-color: white;
     -fx-background-insets: 1;

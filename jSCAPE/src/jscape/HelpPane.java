@@ -23,5 +23,10 @@ class HelpPane extends BorderPane {
         button.setVisible(true);
         //this.getChildren().add(button);
         this.setCenter(button); 
+        
+        /* FOr HelpPane use a WebEditor where I can display manual as a HTML file
+        or website, with hyperlinks to access parts of the manual. CSS for images, styling,
+        then link the manual in as appendix for the report!
+        */
     }
 }
