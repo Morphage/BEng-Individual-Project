@@ -14,11 +14,9 @@ import javafx.scene.DepthTest;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -27,7 +25,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jscape.controls.BreadcrumbBar;
-
 
 /**
  *
@@ -86,9 +83,8 @@ public class JScape extends Application {
         HBox.setHgrow(spacer, Priority.ALWAYS);
         //toolBar.getItems().add(spacer);
         
-        Button profileButton = new Button();
-        profileButton.setText("PROFILE");
-        profileButton.setId("profileButton");
+        Button profileButton = new Button("PROFILE");
+        //profileButton.setId("profileButton");
         profileButton.setMinSize(120, MAIN_TOOLBAR_HEIGHT);
         profileButton.setPrefSize(120, MAIN_TOOLBAR_HEIGHT);
         profileButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -138,9 +134,12 @@ public class JScape extends Application {
         HBox.setHgrow(spacer2, Priority.ALWAYS);
         toolBar.getItems().add(spacer2);
                 
-        toolBar.setPrefHeight(MAIN_TOOLBAR_HEIGHT);
+        /*toolBar.setPrefHeight(MAIN_TOOLBAR_HEIGHT);
         toolBar.setMinHeight(MAIN_TOOLBAR_HEIGHT);
-        toolBar.setMaxHeight(MAIN_TOOLBAR_HEIGHT);
+        toolBar.setMaxHeight(MAIN_TOOLBAR_HEIGHT);*/
+        toolBar.setPrefHeight(MAIN_TOOLBAR_HEIGHT+20);
+        toolBar.setMinHeight(MAIN_TOOLBAR_HEIGHT+20);
+        toolBar.setMaxHeight(MAIN_TOOLBAR_HEIGHT+20);
         GridPane.setConstraints(toolBar, 0, 0);
         
         pageToolBar = new ToolBar();

@@ -24,3 +24,5 @@
 *.ps
 /jSCAPE/jSCAPE/nbproject/private/
 /jSCAPE/build/
+/Server/nbproject/private/
+/Server/build/
