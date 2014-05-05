@@ -6,6 +6,7 @@
 
 package jscape;
 
+import java.util.HashMap;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +25,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import jscape.communication.Message;
+import jscape.communication.MessageCode;
+import jscape.communication.ServerConnection;
 import jscape.controls.BreadcrumbBar;
 
 /**
@@ -31,6 +35,12 @@ import jscape.controls.BreadcrumbBar;
  * @author achantreau
  */
 public class JScape extends Application {
+    
+    // GUI elements constants, e.g. size, orientation, etc...
+    private static final int MAIN_TOOLBAR_HEIGHT = 66;
+    
+    private static final String HOST = "10.187.195.124";
+    private static final int    PORT = 9000;
     
     private BorderPane rootPane;
     private ToolBar toolBar;
@@ -48,9 +58,6 @@ public class JScape extends Application {
     
     // DEBUG variables/constants - remove when program is done
     private static final boolean DEBUG = true;
-        
-    // GUI elements constants, e.g. size, orientation, etc...
-    private static final int MAIN_TOOLBAR_HEIGHT = 66;
     
     @Override
     public void start(final Stage stage) {
@@ -134,12 +141,9 @@ public class JScape extends Application {
         HBox.setHgrow(spacer2, Priority.ALWAYS);
         toolBar.getItems().add(spacer2);
                 
-        /*toolBar.setPrefHeight(MAIN_TOOLBAR_HEIGHT);
+        toolBar.setPrefHeight(MAIN_TOOLBAR_HEIGHT);
         toolBar.setMinHeight(MAIN_TOOLBAR_HEIGHT);
-        toolBar.setMaxHeight(MAIN_TOOLBAR_HEIGHT);*/
-        toolBar.setPrefHeight(MAIN_TOOLBAR_HEIGHT+20);
-        toolBar.setMinHeight(MAIN_TOOLBAR_HEIGHT+20);
-        toolBar.setMaxHeight(MAIN_TOOLBAR_HEIGHT+20);
+        toolBar.setMaxHeight(MAIN_TOOLBAR_HEIGHT);
         GridPane.setConstraints(toolBar, 0, 0);
         
         pageToolBar = new ToolBar();
@@ -162,13 +166,25 @@ public class JScape extends Application {
         helpPane = new HelpPane();
         aboutPane = new AboutPane();
         
+        ServerConnection serverConnection = new ServerConnection(HOST, PORT, this);
+        serverConnection.connect();
+        serverConnection.start();
         
+        HashMap<String,String> payload = new HashMap<String,String>();
+        payload.put("loginName", "jd4510");
+        
+        Message message = new Message(MessageCode.PROFILE_INFO, payload);
+        serverConnection.writeMessage(message);
         
         this.rootPane.setTop(toolBar);
         this.rootPane.setCenter(startPane);
                                 
         stage.setScene(scene);
         stage.show();
+    }
+    
+    public void updateJSCAPE(HashMap<String,String> payload) {
+        profilePane.updateProfile(payload);
     }
 
     /**
@@ -180,5 +196,4 @@ public class JScape extends Application {
     public static void main(String[] args) {
         Application.launch(args);
     }
-    
 }

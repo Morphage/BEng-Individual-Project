@@ -6,6 +6,7 @@
 
 package jscape;
 
+import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
@@ -33,16 +34,22 @@ import javafx.scene.paint.Color;
  */
 class ProfilePane extends BorderPane {
         
-    private Label firstName = new Label("Alexis");
-    private Label secondName = new Label("CHANTREAU");
-    private Label loginName = new Label("ac6609");
-    private Label lastLogin = new Label("Last login: 03/05/14");
-    private Label lastQuestionAnswered = new Label("Last question answered: 03/05/14");
+    private Label firstName;
+    private Label lastName;
+    private Label loginName;
+    private Label lastLogin;
+    private Label lastQuestionAnswered;
     
     ComboBox subjectBox;
     
     public ProfilePane() {
         super();
+        
+        firstName = new Label();
+        lastName = new Label();
+        loginName = new Label();
+        lastLogin = new Label();
+        lastQuestionAnswered = new Label();
         
         VBox profileInfo = new VBox(50);
         //profileInfo.setSpacing(0);
@@ -52,7 +59,7 @@ class ProfilePane extends BorderPane {
         profileInfo.setAlignment(Pos.TOP_CENTER);
         
         firstName.getStyleClass().add("page-header");
-        secondName.getStyleClass().add("page-header");
+        lastName.getStyleClass().add("page-header");
         loginName.getStyleClass().add("page-header");
         lastLogin.getStyleClass().add("page-header");
         lastQuestionAnswered.getStyleClass().add("page-header");
@@ -61,7 +68,7 @@ class ProfilePane extends BorderPane {
         
         //profileInfo.getStyleClass().add("category-page");
         profileInfo.setStyle("fx-background-color: black");
-        profileInfo.getChildren().addAll(firstName, secondName, loginName, lastLogin, lastQuestionAnswered);
+        profileInfo.getChildren().addAll(firstName, lastName, loginName, lastLogin, lastQuestionAnswered);
         
         // Create display area for profile statistics
         VBox profileStatistics = new VBox() {
@@ -183,5 +190,14 @@ class ProfilePane extends BorderPane {
         
         setLeft(profileInfo);
         setCenter(scrollPane);
+    }
+    
+    public void updateProfile(HashMap<String,String> payload) {
+        firstName.setText(payload.get("firstName"));
+        lastName.setText(payload.get("lastName"));
+        //loginName.setText(payload.get("loginName"));
+        loginName.setText("ac6609");
+        lastLogin.setText(payload.get("lastLogin"));
+        lastQuestionAnswered.setText(payload.get("lastQuestionAnswered"));
     }
 }

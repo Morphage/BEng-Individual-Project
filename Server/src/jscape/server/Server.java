@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server;
+package jscape.server;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
@@ -22,12 +21,13 @@ public class Server implements Runnable {
     
     private final int port;
     
-    private Set<ServerThread> connections = new HashSet<ServerThread>();
+    private Set<ServerThread> connections;
     
     private static boolean isRunning = true;
     
     private Server(int port) {
         this.port = port;
+        connections = new HashSet<>();
         
         server = new Thread(this);
     }
@@ -60,14 +60,12 @@ public class Server implements Runnable {
     }
     
     synchronized void addConnection(ServerThread serverThread) {
-        InetAddress ia = serverThread.getInet();
-        serverOutput("Receiving connection from " + ia.getHostName() + " (" + ia.getHostAddress() + ")");
+        serverOutput("Receiving connection from " + serverThread.getConnectionInfo());
         connections.add(serverThread);
     }
     
     synchronized void removeConnection(ServerThread serverThread) {
-        InetAddress ia = serverThread.getInet();
-        serverOutput("Removing connection from " + ia.getHostName() + " (" + ia.getHostAddress() + ")");
+        serverOutput("Removing connection from " + serverThread.getConnectionInfo());
         connections.remove(serverThread);
     }
     

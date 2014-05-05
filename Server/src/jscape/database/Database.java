@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server;
+package jscape.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,9 +15,10 @@ import java.sql.SQLException;
  */
 public class Database {
 
-    private static final String url = "jdbc:postgresql://db.doc.ic.ac.uk/ac6609?ssl=true";
-    private static final String user = "ac6609";
-    private static final String passwd = "uuDvBoaT8D";
+    private static final String URL = "jdbc:postgresql://db.doc.ic.ac.uk/ac6609?ssl=true";
+    private static final String USER = "ac6609";
+    private static final String PASSWORD = "uuDvBoaT8D";
+    
     private static Connection connection;
 
     public static Connection getConnection() {
@@ -28,7 +29,7 @@ public class Database {
         }
         if (connection == null) {
             try {
-                connection = DriverManager.getConnection(url, user, passwd);
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

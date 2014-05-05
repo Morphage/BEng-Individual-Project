@@ -4,12 +4,15 @@
  * and open the template in the editor.
  */
 
-package server;
+package jscape.communication;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.util.HashMap;
+import jscape.JScape;
 
 /**
  *
@@ -25,60 +28,68 @@ public class ServerConnection implements Runnable {
     private final String host;
     private final int    port;
     
-    public ServerConnection(String host, int port) {
+    private JScape jscape;
+    
+    public ServerConnection(String host, int port, JScape jscape) {
         this.host = host;
         this.port = port;
+        this.jscape = jscape;
         
         serverConnection = new Thread(this);
+    }
+    
+    public void start() {
+        serverConnection.start();
+        System.out.println("Start method called");
     }
 
     @Override
     public void run() {
         System.out.println("Run method called");
-        while(true) { /*
+        while(true) {
             try {
-                Object obj = oin.readObject();
+                Message reply = (Message) oin.readObject();
+                
+                switch (reply.getMessageCode()) {
+                    case PROFILE_INFO:
+                        profileInfo(reply);
+                        break;
+                }
+                
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
-            } */
+            }
         }
     }
     
-    public void start() {
-        connect(host, port);
-        serverConnection.start();
+    private void profileInfo(Message reply) {
+        HashMap<String,String> payload = reply.getPayload();
+        
+        jscape.updateJSCAPE(payload);
     }
     
-    public void connect(String host, int port) {
+    public void connect() {
         try {
             Socket socket = new Socket(host, port);
             oos = new ObjectOutputStream(socket.getOutputStream());
             oin = new ObjectInputStream(socket.getInputStream());
+        } catch (ConnectException ce) {
+            System.out.println("The server at " + host + ":" + port + " is down");
+            System.exit(-1);
         } catch (IOException ie) {
             ie.printStackTrace();
         }
     }
     
-    public static void main(String[] args) {
-        String host = "localhost";
-        int port = 9000;
-        
-        ServerConnection sc = new ServerConnection(host, port);
-        sc.start();
-        sc.writeMessage();
-    }
-    
-    public void writeMessage() {
+    public void writeMessage(Message message) {
         System.out.println("Write method called");
-        Message message = new Message(17, "ac6609", "Alexis", "Chantreau");
+        
         try {
             oos.writeObject(message);
-            message = new Message(23, "lg9078", "Luke", "Grant");
-            oos.writeObject(message);
         } catch (IOException ie) {
             ie.printStackTrace();
         }
-    }    
+    } 
 }
