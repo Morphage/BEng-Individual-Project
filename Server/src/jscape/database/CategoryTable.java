@@ -10,42 +10,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
  * @author achantreau
  */
-public class PerformanceTable {
+public class CategoryTable {
 
-    private static final String TABLE_NAME = "performance";
+    private static final String TABLE_NAME = "category";
 
-    private static final String LOGIN_NAME = "login_name";
     private static final String EXERCISE_CATEGORY = "exercise_category";
-    private static final String QUESTIONS_ANSWERED = "questions_answered";
-    private static final String CORRECT_ANSWERS = "correct_answers";
-    private static final String WRONG_ANSWERS = "wrong_answers";
 
-    public static ArrayList<String> getPerformanceStats(String loginName) {
+    public static ArrayList<String> getExerciseCategories() {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
         ResultSet resultSet;
 
-        ArrayList<String> profileInfo = new ArrayList<String>();
+        ArrayList<String> profileInfo = new ArrayList<>();
 
         try {
-            String query = "SELECT " + EXERCISE_CATEGORY + "," + QUESTIONS_ANSWERED + ","
-                    + CORRECT_ANSWERS + "," + WRONG_ANSWERS + " FROM " + TABLE_NAME + " WHERE "
-                    + LOGIN_NAME + " = ?";
+            String query = "SELECT " + EXERCISE_CATEGORY + " FROM " + TABLE_NAME;
             ps = connection.prepareStatement(query);
-            ps.setString(1, loginName);
             resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
                 profileInfo.add(resultSet.getString(EXERCISE_CATEGORY));
-                profileInfo.add("" + resultSet.getInt(QUESTIONS_ANSWERED));
-                profileInfo.add("" + resultSet.getInt(CORRECT_ANSWERS));
-                profileInfo.add("" + resultSet.getInt(WRONG_ANSWERS));
-            }
+            }         
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -60,4 +51,5 @@ public class PerformanceTable {
 
         return profileInfo;
     }
+
 }

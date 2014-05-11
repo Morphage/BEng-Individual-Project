@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package jscape.server;
 
 import java.io.IOException;
@@ -11,7 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.util.HashMap;
+import java.util.ArrayList;
 import jscape.communication.Message;
 import jscape.communication.MessageCode;
 
@@ -19,22 +18,22 @@ import jscape.communication.MessageCode;
  *
  * @author achantreau
  */
-public class ServerConnection implements Runnable {
-    
+public class ServerConnectionTest implements Runnable {
+
     Thread serverConnection;
-    
+
     private ObjectInputStream oin;
     private ObjectOutputStream oos;
-    
+
     private final String host;
-    private final int    port;
-    
+    private final int port;
+
     private static Message reply = null;
-    
-    public ServerConnection(String host, int port) {
+
+    public ServerConnectionTest(String host, int port) {
         this.host = host;
         this.port = port;
-        
+
         serverConnection = new Thread(this);
     }
 
@@ -43,26 +42,26 @@ public class ServerConnection implements Runnable {
         System.out.println("Run method called");
         //writeMessage();
         //while(true) { 
-            try {
-                reply = (Message) oin.readObject();
-                HashMap<String,String> payload = reply.getPayload();
-                System.out.println("First name= " + payload.get("firstName"));
-                System.out.println("Last name= " + payload.get("lastName"));
-                System.out.println("Last login= " + payload.get("lastLogin"));
-                System.out.println("Last question answered= " + payload.get("lastQuestionAnswered"));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
+        try {
+            reply = (Message) oin.readObject();
+            ArrayList<String> payload = reply.getPayload();
+
+            for (int i = 0; i < payload.size(); i++) {
+                System.out.println(payload.get(i));
             }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
         //}
     }
-    
+
     public void start() {
         serverConnection.start();
         System.out.println("Start method called");
     }
-    
+
     public void connect() {
         try {
             Socket socket = new Socket(host, port);
@@ -75,27 +74,27 @@ public class ServerConnection implements Runnable {
             ie.printStackTrace();
         }
     }
-    
-    public static void main(String[] args) {
-        String host = "localhost";
-        int port = 9000;
-        
-        ServerConnection sc = new ServerConnection(host, port);
-        sc.connect();
-        sc.start();
-        sc.writeMessage();
-    }
-    
+
     public void writeMessage() {
         System.out.println("Write method called");
-        HashMap<String,String> payload = new HashMap<>();
-        payload.put("loginName", "jd4510");
-        
-        Message message = new Message(MessageCode.PROFILE_INFO, payload);
+        ArrayList<String> payload = new ArrayList<>();
+        payload.add("ac6609");
+
+        Message message = new Message(MessageCode.EXERCISE_CATEGORIES, payload);
         try {
             oos.writeObject(message);
         } catch (IOException ie) {
             ie.printStackTrace();
         }
-    }    
+    }
+
+    public static void main(String[] args) {
+        String host = "localhost";
+        int port = 9000;
+
+        ServerConnectionTest sc = new ServerConnectionTest(host, port);
+        sc.connect();
+        sc.start();
+        sc.writeMessage();
+    }
 }

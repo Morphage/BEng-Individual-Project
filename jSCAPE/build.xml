@@ -107,7 +107,7 @@
                   outfile="${application.title}">
             <fx:application refId="jscape"/>
             <fx:template file="${basedir}/web/index_template.html"
-                    tofile="${dist.dir}/jscape.html"/>
+                    tofile="${dist.dir}/jSCAPE.html"/>
             <fx:resources>
                 <fx:fileset dir="${basedir}/${dist.dir}"
                             includes="jSCAPE.jar"/>      

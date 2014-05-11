@@ -1,2 +1,5 @@
 - need to make sure the "build.xml" file/script is configured correctly, so that the correct
   .jar file is being referenced by the webpage.
+- BoneCP database connection pooling
+- For practice tab have right-sidebar from Ensemble where I can put description of Exercise Category+links to various material/lectures/etc...
+- How to login to app? use .htaccess or is there a way to connect to DoC login server through Java?

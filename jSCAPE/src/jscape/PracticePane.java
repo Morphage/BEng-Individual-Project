@@ -45,12 +45,6 @@ class PracticePane extends BorderPane {
         javaHeader.setMinHeight(Control.USE_PREF_SIZE);
         javaHeader.getStyleClass().add("category-header");
         main.getChildren().add(javaHeader);
-        
-        /*
-        Label emptyHeader = new Label("");
-        emptyHeader.setMaxWidth(Double.MAX_VALUE);
-        emptyHeader.setMinHeight(Control.USE_PREF_SIZE);
-        main.getChildren().add(emptyHeader);*/
   
         // Add grid of exercise categories, e.g. arrays, syntax, data structures...
         GridPane exerciseCategories = new GridPane();

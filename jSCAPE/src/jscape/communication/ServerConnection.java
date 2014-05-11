@@ -11,7 +11,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.util.HashMap;
+import java.util.ArrayList;
+import javafx.application.Platform;
 import jscape.JScape;
 
 /**
@@ -20,7 +21,7 @@ import jscape.JScape;
  */
 public class ServerConnection implements Runnable {
     
-    Thread serverConnection;
+    private Socket socket;
     
     private ObjectInputStream oin;
     private ObjectOutputStream oos;
@@ -34,20 +35,20 @@ public class ServerConnection implements Runnable {
         this.host = host;
         this.port = port;
         this.jscape = jscape;
-        
-        serverConnection = new Thread(this);
-    }
-    
-    public void start() {
-        serverConnection.start();
-        System.out.println("Start method called");
     }
 
     @Override
     public void run() {
+        connect();
         System.out.println("Run method called");
-        while(true) {
+        //while(true) {
             try {
+                ArrayList<String> payload = new ArrayList<String>();
+                payload.add("jd4510");
+                
+                Message message = new Message(MessageCode.PROFILE_INFO, payload);
+                writeMessage(message);
+                
                 Message reply = (Message) oin.readObject();
                 
                 switch (reply.getMessageCode()) {
@@ -60,19 +61,31 @@ public class ServerConnection implements Runnable {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
+            } finally {
+                try {
+                    oos.close();
+                    oin.close();
+                    socket.close();
+                } catch (IOException ie) {
+                
+                }
             }
-        }
+        //}
     }
     
-    private void profileInfo(Message reply) {
-        HashMap<String,String> payload = reply.getPayload();
-        
-        jscape.updateJSCAPE(payload);
+    private void profileInfo(final Message reply) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<String> payload = reply.getPayload();
+                jscape.updateJSCAPE(payload);
+            }
+        });
     }
     
     public void connect() {
         try {
-            Socket socket = new Socket(host, port);
+            socket = new Socket(host, port);
             oos = new ObjectOutputStream(socket.getOutputStream());
             oin = new ObjectInputStream(socket.getInputStream());
         } catch (ConnectException ce) {

@@ -15,9 +15,7 @@ import java.util.Set;
  *
  * @author achantreau
  */
-public class Server implements Runnable {
-
-    private final Thread server;
+public class Server {
     
     private final int port;
     
@@ -28,12 +26,10 @@ public class Server implements Runnable {
     private Server(int port) {
         this.port = port;
         connections = new HashSet<>();
-        
-        server = new Thread(this);
     }
 
-    @Override
     public void run() {
+        serverOutput("Starting on port " + port + ". Ready to accept incoming connections.");
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             
@@ -42,18 +38,13 @@ public class Server implements Runnable {
 
                 ServerThread serverThread = new ServerThread(this, socket);
                 addConnection(serverThread);
-                serverThread.start();
+                new Thread(serverThread).start();
             }
         } catch (IOException ie) {
             ie.printStackTrace();
         }
     }
-    
-    public void start() {
-        serverOutput("Starting on port " + port + ". Ready to accept incoming connections.");
-        server.start();
-    }
-    
+        
     public void stop() {
         serverOutput("Shutting down");
         isRunning = false;
@@ -81,6 +72,7 @@ public class Server implements Runnable {
 
         int port = Integer.parseInt(args[0]);
 
-        new Server(port).start();
+        Server server = new Server(port);
+        server.run();
     }
 }

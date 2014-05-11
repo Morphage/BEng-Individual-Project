@@ -12,18 +12,18 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import jscape.communication.Message;
 import jscape.communication.MessageCode;
+import jscape.database.CategoryTable;
+import jscape.database.PerformanceTable;
 
 /**
  *
  * @author achantreau
  */
 class ServerThread implements Runnable {
-    
-    private final Thread serverThread;
-    
+        
     private Server server;
     private Socket socket;
     
@@ -35,8 +35,6 @@ class ServerThread implements Runnable {
     public ServerThread(Server server, Socket socket) {
         this.server = server;
         this.socket = socket;
-        
-        serverThread = new Thread(this);
     } 
 
     @Override
@@ -47,16 +45,20 @@ class ServerThread implements Runnable {
         } catch (SocketException se) {
             server.serverOutput("Connection closed from " + getConnectionInfo());
         } catch (IOException ie) {
+            ie.printStackTrace();
             server.serverOutput("Unable to setup input and output streams.");
         } catch (ClassNotFoundException ex) {
             server.serverOutput("Error in communication protocol. Unable to determine data format.");
         } finally {
             server.removeConnection(this);
+            try {
+                oos.close();
+                oin.close();
+                socket.close();
+            } catch (IOException ex) {
+                
+            }
         }
-    }
-    
-    public void start() {
-        serverThread.start();
     }
     
     public void stop() {
@@ -82,21 +84,20 @@ class ServerThread implements Runnable {
     }
     
     private Message createReply(Message request) {
-        switch (request.getMessageCode()) {
+        MessageCode messageCode = request.getMessageCode();
+        ArrayList<String> payload = null;
+        
+        switch (messageCode) {
             case PROFILE_INFO:
-                return getProfileInfo(request);
+                payload = StudentTable.getProfileInfo(request.getPayload().get(0));
+                break;
+            case PERFORMANCE_STATS:
+                payload = PerformanceTable.getPerformanceStats(request.getPayload().get(0));
+                break;
             case EXERCISE_CATEGORIES:
-                return null;
+                payload = CategoryTable.getExerciseCategories();
+                break;
         }
-        
-        return null;
-    }
-    
-    private Message getProfileInfo(Message request) {        
-        String loginName = request.getPayload().get("loginName");
-        
-        MessageCode messageCode = MessageCode.PROFILE_INFO;
-        HashMap<String,String> payload = StudentTable.getProfileInfo(loginName);
         
         return new Message(messageCode, payload);
     }

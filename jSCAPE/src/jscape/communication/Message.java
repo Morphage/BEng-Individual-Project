@@ -7,7 +7,7 @@
 package jscape.communication;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,9 +15,9 @@ import java.util.HashMap;
  */
 public class Message implements Serializable {
     private MessageCode messageCode;
-    private HashMap<String,String> payload;
+    private ArrayList<String> payload;
     
-    public Message(MessageCode messageCode, HashMap<String,String> payload) {
+    public Message(MessageCode messageCode, ArrayList<String> payload) {
         this.messageCode = messageCode;
         this.payload = payload;
     }
@@ -26,8 +26,7 @@ public class Message implements Serializable {
         return messageCode;
     }
     
-    public HashMap<String,String> getPayload() {
+    public ArrayList<String> getPayload() {
         return payload;
-    }
-    
+    }  
 }

@@ -36,6 +36,7 @@ class AboutPane extends BorderPane {
         
         //textArea.getStyleClass().add("right-sidebar");
         textArea.setFont(Font.font("Verdana", 14));
+        getStyleClass().add("category-page");
         this.setCenter(textArea);              
     }
     
