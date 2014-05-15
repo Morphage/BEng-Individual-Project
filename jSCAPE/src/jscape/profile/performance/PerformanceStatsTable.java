@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package jscape.performance;
+package jscape.profile.performance;
 
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
@@ -24,7 +24,7 @@ public class PerformanceStatsTable extends TableView<PerformanceStats> {
     private static final Font font = new Font("Arial", 16);
     
     private static final String COL1_HEADER = "Exercise Category";
-    private static final String COL2_HEADER = "Questions Answered";
+    private static final String COL2_HEADER = "Exercises Answered";
     private static final String COL3_HEADER = "Correct Answers";
     private static final String COL4_HEADER = "Wrong Answers";
     
@@ -48,7 +48,7 @@ public class PerformanceStatsTable extends TableView<PerformanceStats> {
         questionsAnsweredCol.setResizable(false);
         questionsAnsweredCol.setMinWidth(COL2_WIDTH);
         questionsAnsweredCol.setCellValueFactory(
-                new PropertyValueFactory<PerformanceStats, Integer>("questionsAnswered"));
+                new PropertyValueFactory<PerformanceStats, Integer>("exercisesAnswered"));
                 
         TableColumn correctAnswersCol = new TableColumn(COL3_HEADER);
         correctAnswersCol.setResizable(false);
@@ -93,10 +93,9 @@ public class PerformanceStatsTable extends TableView<PerformanceStats> {
     }
     
     public PerformanceStats search(String exerciseCategory) {
-        ObservableList<PerformanceStats> data = getItems();
         PerformanceStats found = null;
         
-        for (PerformanceStats ps : data) {
+        for (PerformanceStats ps : getItems()) {
             if (exerciseCategory.equals(ps.getExerciseCategory())) {
                 found = ps;
                 break;
@@ -104,6 +103,16 @@ public class PerformanceStatsTable extends TableView<PerformanceStats> {
         }
                 
         return found;
+    }
+    
+    public ObservableList<String> getExerciseCategories() {
+        ArrayList<String> exerciseCategories = new ArrayList<String>();
+        
+        for (PerformanceStats ps : getItems()) {
+            exerciseCategories.add(ps.getExerciseCategory());
+        }
+        
+        return FXCollections.observableArrayList(exerciseCategories);
     }
     
 }

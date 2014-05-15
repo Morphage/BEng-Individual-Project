@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package jscape.performance;
+package jscape.profile.performance;
 
 /**
  *
@@ -13,14 +13,14 @@ package jscape.performance;
 public class PerformanceStats {
     
     private String exerciseCategory;
-    private int    questionsAnswered;
+    private int    exercisesAnswered;
     private int    correctAnswers;
     private int    wrongAnswers;
     
     public PerformanceStats(String exerciseCategory, int questionsAnswered, 
                             int correctAnswers, int wrongAnswers) {
         this.exerciseCategory = exerciseCategory;
-        this.questionsAnswered = questionsAnswered;
+        this.exercisesAnswered = questionsAnswered;
         this.correctAnswers = correctAnswers;
         this.wrongAnswers = wrongAnswers;
     }
@@ -29,8 +29,8 @@ public class PerformanceStats {
         return exerciseCategory;
     }
 
-    public int getQuestionsAnswered() {
-        return questionsAnswered;
+    public int getExercisesAnswered() {
+        return exercisesAnswered;
     }
 
     public int getCorrectAnswers() {
@@ -45,8 +45,8 @@ public class PerformanceStats {
         this.exerciseCategory = exerciseCategory;
     }
 
-    public void setQuestionsAnswered(int questionsAnswered) {
-        this.questionsAnswered = questionsAnswered;
+    public void setExercisesAnswered(int exercisesAnswered) {
+        this.exercisesAnswered = exercisesAnswered;
     }
 
     public void setCorrectAnswers(int correctAnswers) {

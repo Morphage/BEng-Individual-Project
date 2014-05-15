@@ -60,7 +60,7 @@ public class Server {
         connections.remove(serverThread);
     }
     
-    public void serverOutput(String output) {
+    public synchronized void serverOutput(String output) {
         System.out.println("[Server] " + output);
     }
 

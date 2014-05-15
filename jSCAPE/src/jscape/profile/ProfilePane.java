@@ -4,13 +4,15 @@
  * and open the template in the editor.
  */
 
-package jscape;
+package jscape.profile;
 
 import java.util.ArrayList;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -30,14 +32,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import jscape.performance.PerformancePieChart;
-import jscape.performance.PerformanceStatsTable;
+import jscape.communication.Message;
+import jscape.communication.MessageCode;
+import jscape.communication.RequestServerTask;
+import jscape.profile.performance.PerformancePieChart;
+import jscape.profile.performance.PerformanceStatsTable;
 
 /**
  *
  * @author achantreau
  */
-class ProfilePane extends BorderPane {
+public class ProfilePane extends BorderPane {
+    
+    private static final String HOST = "localhost";
+    private static final int    PORT = 9000;
         
     private Label firstName;
     private Label lastName;
@@ -45,7 +53,13 @@ class ProfilePane extends BorderPane {
     private Label lastLogin;
     private Label lastQuestionAnswered;
     
-    private ComboBox subjectBox;
+    private ComboBox categoryBox;
+    
+    private PerformanceStatsTable performanceStatsTable;
+    private PerformancePieChart performancePieChart;
+    
+    private RequestServerTask fetchPerformanceStatsTask;
+    private RequestServerTask fetchProfileInfoTask;
     
     public ProfilePane() {
         super();
@@ -56,20 +70,42 @@ class ProfilePane extends BorderPane {
         lastLogin = new Label();
         lastQuestionAnswered = new Label();
         
+        // TODO: PUT THIS IN CSS
+        firstName.setFont(new Font("Arial", 20));
+        firstName.setStyle("-fx-text-fill: black;"
+                + "-fx-font-weight: bold;");
+        
+        // TODO: CHANGE THIS SO THAT LOGIN NAME IS NOT HARDCODED
+        ArrayList<String> payload = new ArrayList<String>();
+        payload.add("ac6609");
+        Message requestMessage = new Message(MessageCode.PROFILE_INFO, payload);
+        fetchProfileInfoTask = new RequestServerTask(HOST, PORT, requestMessage);
+        fetchProfileInfoTask.stateProperty().addListener(new ChangeListener<Worker.State>() {
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
+                if (t1 == Worker.State.SUCCEEDED) {
+                    Message replyMessage = fetchProfileInfoTask.getValue();
+                    firstName.setText(replyMessage.getPayload().get(0));
+                    lastName.setText(replyMessage.getPayload().get(1));
+                    loginName.setText("ac6609");
+                    lastLogin.setText("Last login: " + replyMessage.getPayload().get(2));
+                    lastQuestionAnswered.setText("Last exercise answered: " + replyMessage.getPayload().get(3));                    
+                } else if (t1 == Worker.State.FAILED) {
+                    // Platform run later not needed here I think....check to be sure
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Stack Pane stuff + error message + modal dimmer + terminate app
+                        }
+                    });
+                }
+            }
+        });
+        
         BorderPane profileInfo = new BorderPane();
         profileInfo.setMinWidth(285);
         profileInfo.setMaxWidth(285);
         profileInfo.setPrefWidth(285);
-        
-        /*firstName.getStyleClass().add("page-header");
-        lastName.getStyleClass().add("page-header");
-        loginName.getStyleClass().add("page-header");
-        lastLogin.getStyleClass().add("page-header");
-        lastQuestionAnswered.getStyleClass().add("page-header");*/
-        
-        firstName.setFont(new Font("Arial", 20));
-        firstName.setStyle("-fx-text-fill: black;"
-                + "-fx-font-weight: bold;");
         
         profileInfo.setId("page-tree");
         
@@ -107,31 +143,44 @@ class ProfilePane extends BorderPane {
         performanceSummary.setStyle("-fx-text-fill: #e1fdff;"
                 + "-fx-font-weight: bold;");
         
-        // Create Performance Statistics Table        
-        ArrayList<String> payload = new ArrayList<String>();
-        payload.add("Arrays");
-        payload.add("37");
-        payload.add("20");
-        payload.add("17");
-        payload.add("Syntax");
-        payload.add("45");
-        payload.add("28");
-        payload.add("17");
-        payload.add("Loops");
-        payload.add("50");
-        payload.add("45");
-        payload.add("5");
-        payload.add("Binary Trees");
-        payload.add("10");
-        payload.add("8");
-        payload.add("2");
+        // Create Performance Statistics Table and Performance Pie Chart
+        performanceStatsTable = new PerformanceStatsTable();
+        performancePieChart = new PerformancePieChart(performanceStatsTable);
         
-        PerformanceStatsTable performanceTable = new PerformanceStatsTable();        
-        performanceTable.setItems(payload);
+        // TODO: CHANGE THIS SO THAT LOGIN NAME IS NOT HARDCODED
+        payload = new ArrayList<String>();
+        payload.add("ac6609");
+        requestMessage = new Message(MessageCode.PERFORMANCE_STATS, payload);
+        fetchPerformanceStatsTask = new RequestServerTask(HOST, PORT, requestMessage);
+        fetchPerformanceStatsTask.stateProperty().addListener(new ChangeListener<Worker.State>() {
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
+                if (t1 == Worker.State.SUCCEEDED) {
+                    Message replyMessage = fetchPerformanceStatsTask.getValue();
+                    performanceStatsTable.setItems(replyMessage.getPayload());
+                    
+                    ObservableList<String> exerciseCategories = performanceStatsTable.getExerciseCategories();
+                    exerciseCategories.add("-- Total answers per category --");
+                    
+                    /* Add categories to comboBox, select the first item which triggers
+                       the listener to add the data to the pie chart. */
+                    categoryBox.setItems(exerciseCategories);
+                    categoryBox.getSelectionModel().selectFirst();
+                } else if (t1 == Worker.State.FAILED) {
+                    // Platform run later not needed here I think....check to be sure
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Stack Pane stuff + error message + modal dimmer + terminate app
+                        }
+                    });
+                }
+            }
+        });
         
         // Combine performance label and performance table into a VBox
         VBox performanceVBox = new VBox();
-        performanceVBox.getChildren().addAll(performanceSummary, performanceTable);
+        performanceVBox.getChildren().addAll(performanceSummary, performanceStatsTable);
         
         // Create grid
         GridPane grid = new GridPane();
@@ -148,39 +197,22 @@ class ProfilePane extends BorderPane {
         chooseCategoryLabel.setAlignment(Pos.TOP_CENTER);
         chooseCategoryLabel.setStyle("-fx-text-fill: #e1fdff;"
                 + "-fx-font-weight: bold;");
-        
-        // Create performance pie chart
-        final PerformancePieChart performancePieChart = new PerformancePieChart(performanceTable);
 
         // Create combo box for categories, i.e. arrays, loops, etc...
-        ObservableList<String> categories = 
-                FXCollections.observableArrayList("Arrays", "Syntax", "Loops", "Binary Trees",
-                        "Total", "-- Total answers per category --");
-        subjectBox = new ComboBox(categories);
-        subjectBox.getSelectionModel().selectFirst();
-        subjectBox.setMaxWidth(Double.MAX_VALUE);
-        subjectBox.valueProperty().addListener(new ChangeListener() {
+        categoryBox = new ComboBox();
+        categoryBox.setMaxWidth(Double.MAX_VALUE);
+        categoryBox.valueProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue ov, Object t, Object t1) {
-                String selected = t1.toString();
-                
-                if ("-- Total answers per category --".equals(selected)) {
-                    performancePieChart.setCategoryChart();
-                } else {
-                    performancePieChart.setData(t1.toString());
-                }
+                performancePieChart.setData(t1.toString());
             }
         });
         
-        // Add initial data to performance pie chart
-        performancePieChart.setData(subjectBox.getSelectionModel().getSelectedItem().toString());
-        
         // Add elements to the grid and lay them out
         GridPane.setConstraints(chooseCategoryLabel, 0, 0);
-        GridPane.setConstraints(subjectBox, 1, 0, 2, 1);
+        GridPane.setConstraints(categoryBox, 1, 0, 2, 1);
         GridPane.setConstraints(performancePieChart, 0, 1, 3, 1, HPos.CENTER, VPos.TOP);
-        grid.getChildren().addAll(chooseCategoryLabel, subjectBox, performancePieChart);
-        //grid.setGridLinesVisible(true);
+        grid.getChildren().addAll(chooseCategoryLabel, categoryBox, performancePieChart);
         
         // Combine all statistics components into a HBox
         HBox statisticsHBox = new HBox(80);
@@ -267,12 +299,11 @@ class ProfilePane extends BorderPane {
         setCenter(scrollPane);
     }
     
-    public void updateProfile(ArrayList<String> payload) {
-        firstName.setText(payload.get(0));
-        lastName.setText(payload.get(1));
-        //loginName.setText(payload.get("loginName"));
-        loginName.setText("ac6609");
-        lastLogin.setText("Last login: " + payload.get(2));
-        lastQuestionAnswered.setText("Last question answered: " + payload.get(3));
+    public void runFetchPerformanceStatsTask() {
+        new Thread(fetchPerformanceStatsTask, "FetchPerformanceStatsThread").start();
+    }
+    
+    public void runFetchProfileInfoTask() {
+        new Thread(fetchProfileInfoTask, "FetchProfileInfoThread").start();
     }
 }

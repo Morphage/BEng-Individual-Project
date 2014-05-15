@@ -6,7 +6,10 @@
 
 package jscape;
 
-import java.util.ArrayList;
+import jscape.practice.PracticePane;
+import jscape.profile.ProfilePane;
+import jscape.about.AboutPane;
+import jscape.help.HelpPane;
 import javafx.application.Application;
 import javafx.scene.DepthTest;
 import javafx.scene.Scene;
@@ -37,11 +40,18 @@ public class JScape extends Application {
     private HelpPane     helpPane;
     private AboutPane    aboutPane;
     
+    private static JScape jSCAPE;
+    
     // DEBUG variables/constants - remove when program is done
     private static final boolean DEBUG = true;
     
+    public static JScape getJSCAPE() {
+        return jSCAPE;
+    }
+    
     @Override
     public void start(final Stage stage) {
+        jSCAPE = this;
         StackPane layerPane = new StackPane();
                 
         rootPane = new BorderPane();
@@ -53,7 +63,12 @@ public class JScape extends Application {
         scene.getStylesheets().add(JScape.class.getResource("jscape.css").toExternalForm());       
         
         profilePane = new ProfilePane();
+        profilePane.runFetchPerformanceStatsTask();
+        profilePane.runFetchProfileInfoTask();
+        
         practicePane = new PracticePane();
+        practicePane.runFetchCategoriesTask();
+        
         helpPane = new HelpPane();
         aboutPane = new AboutPane();
         
@@ -75,19 +90,10 @@ public class JScape extends Application {
         tabPane.getTabs().addAll(profileTab, practiceTab, helpTab, aboutTab);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        /*ServerConnection serverConnection = new ServerConnection(HOST, PORT, this);
-        Thread thread = new Thread(serverConnection);
-        thread.setDaemon(true);
-        thread.start();*/
-
         this.rootPane.setCenter(tabPane);
                                 
         stage.setScene(scene);
         stage.show();
-    }
-    
-    public void updateJSCAPE(ArrayList<String> payload) {
-        profilePane.updateProfile(payload);
     }
 
     /**

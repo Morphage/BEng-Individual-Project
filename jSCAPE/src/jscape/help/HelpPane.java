@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package jscape;
+package jscape.help;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
@@ -16,7 +16,7 @@ import javafx.scene.web.WebView;
  *
  * @author achantreau
  */
-class HelpPane extends BorderPane {
+public class HelpPane extends BorderPane {
     
     public static final String DEFAULT_URL = "http://www.doc.ic.ac.uk/~ac6609/manual.html";
     

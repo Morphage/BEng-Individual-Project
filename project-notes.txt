@@ -3,3 +3,4 @@
 - BoneCP database connection pooling
 - For practice tab have right-sidebar from Ensemble where I can put description of Exercise Category+links to various material/lectures/etc...
 - How to login to app? use .htaccess or is there a way to connect to DoC login server through Java?
+- Mention somewhere known issues with JAR Signing and solution which is to delete installed applets and temporary files in the Java control panel

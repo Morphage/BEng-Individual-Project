@@ -29,8 +29,6 @@ class ServerThread implements Runnable {
     
     private ObjectInputStream oin;
     private ObjectOutputStream oos;
-    
-    private static boolean isRunning = true;
 
     public ServerThread(Server server, Socket socket) {
         this.server = server;
@@ -61,26 +59,20 @@ class ServerThread implements Runnable {
         }
     }
     
-    public void stop() {
-        isRunning = false;
-    }
-    
     private void setupStreams() throws IOException {
         oin = new ObjectInputStream(socket.getInputStream());
         oos = new ObjectOutputStream(socket.getOutputStream());
     }
     
     private void handleCommunication() throws IOException, ClassNotFoundException {
-        while(isRunning) {
-            Message request = (Message) oin.readObject();
-            
-            MessageCode messageCode = request.getMessageCode();
-            server.serverOutput("Received request for " + messageCode
-                    + " (Message code: " + messageCode.getValue() + ")");
-            
-            Message reply = createReply(request);
-            oos.writeObject(reply);
-        }
+        Message request = (Message) oin.readObject();
+
+        MessageCode messageCode = request.getMessageCode();
+        server.serverOutput("Received request for " + messageCode
+                + " (Message code: " + messageCode.getValue() + ")");
+
+        Message reply = createReply(request);
+        oos.writeObject(reply);
     }
     
     private Message createReply(Message request) {
@@ -90,6 +82,7 @@ class ServerThread implements Runnable {
         switch (messageCode) {
             case PROFILE_INFO:
                 payload = StudentTable.getProfileInfo(request.getPayload().get(0));
+                StudentTable.updateLastLogin(request.getPayload().get(0));
                 break;
             case PERFORMANCE_STATS:
                 payload = PerformanceTable.getPerformanceStats(request.getPayload().get(0));

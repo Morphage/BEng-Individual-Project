@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  *
@@ -21,22 +20,29 @@ public class CategoryTable {
     private static final String TABLE_NAME = "category";
 
     private static final String EXERCISE_CATEGORY = "exercise_category";
+    private static final String DESCRIPTION = "description";
+    private static final String LECTURE_NOTES = "lecture_notes";
+    private static final String HELPFUL_LINKS = "helpful_links";
 
     public static ArrayList<String> getExerciseCategories() {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
         ResultSet resultSet;
 
-        ArrayList<String> profileInfo = new ArrayList<>();
+        ArrayList<String> categoryInfo = new ArrayList<>();
 
         try {
-            String query = "SELECT " + EXERCISE_CATEGORY + " FROM " + TABLE_NAME;
+            String query = "SELECT " + EXERCISE_CATEGORY + "," + DESCRIPTION +
+                    "," + LECTURE_NOTES + "," + HELPFUL_LINKS + " FROM " + TABLE_NAME;
             ps = connection.prepareStatement(query);
             resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
-                profileInfo.add(resultSet.getString(EXERCISE_CATEGORY));
-            }         
+                categoryInfo.add(resultSet.getString(EXERCISE_CATEGORY));
+                categoryInfo.add(resultSet.getString(DESCRIPTION));
+                categoryInfo.add(resultSet.getString(LECTURE_NOTES));
+                categoryInfo.add(resultSet.getString(HELPFUL_LINKS));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -49,7 +55,6 @@ public class CategoryTable {
             }
         }
 
-        return profileInfo;
+        return categoryInfo;
     }
-
 }

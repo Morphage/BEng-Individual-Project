@@ -11,7 +11,7 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="jSCAPE.jar" size="1894282" download="eager" />
+    <jar href="jSCAPE.jar" size="1911713" download="eager" />
   </resources>
 <security>
   <all-permissions/>

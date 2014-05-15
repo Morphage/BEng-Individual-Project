@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -28,7 +28,7 @@ public class StudentTable {
     private static final String FIRST_NAME = "first_name";
     private static final String LAST_NAME = "last_name";
     private static final String LAST_LOGIN = "last_login";
-    private static final String LAST_QUESTION_ANSWERED = "last_question_answered";
+    private static final String LAST_EXERCISE_ANSWERED = "last_exercise_answered";
 
     public static ArrayList<String> getProfileInfo(String loginName) {
         PreparedStatement ps = null;
@@ -39,7 +39,7 @@ public class StudentTable {
 
         try {
             String query = "SELECT " + FIRST_NAME + "," + LAST_NAME + "," + LAST_LOGIN + ","
-                    + LAST_QUESTION_ANSWERED + " FROM " + TABLE_NAME + " WHERE " + LOGIN_NAME + " = ?";
+                    + LAST_EXERCISE_ANSWERED + " FROM " + TABLE_NAME + " WHERE " + LOGIN_NAME + " = ?";
             ps = connection.prepareStatement(query);
             ps.setString(1, loginName);
             resultSet = ps.executeQuery();
@@ -52,7 +52,7 @@ public class StudentTable {
             Date date = resultSet.getDate(LAST_LOGIN);
             profileInfo.add(df.format(date));
 
-            date = resultSet.getDate(LAST_QUESTION_ANSWERED);
+            date = resultSet.getDate(LAST_EXERCISE_ANSWERED);
             profileInfo.add(df.format(date));         
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,5 +67,29 @@ public class StudentTable {
         }
 
         return profileInfo;
+    }
+    
+    public static void updateLastLogin(String loginName) {
+        PreparedStatement ps = null;
+        Connection connection = Database.getConnection();
+        
+        try {
+            String query = "UPDATE " + TABLE_NAME + " SET " + LAST_LOGIN + " = ? WHERE " 
+                    + LOGIN_NAME + " = ?";
+            ps = connection.prepareStatement(query);
+            ps.setDate(1, new Date(new java.util.Date().getTime()));
+            ps.setString(2, loginName);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@ public class PerformanceTable {
 
     private static final String LOGIN_NAME = "login_name";
     private static final String EXERCISE_CATEGORY = "exercise_category";
-    private static final String QUESTIONS_ANSWERED = "questions_answered";
+    private static final String EXERCISES_ANSWERED = "exercises_answered";
     private static final String CORRECT_ANSWERS = "correct_answers";
     private static final String WRONG_ANSWERS = "wrong_answers";
 
@@ -30,10 +30,10 @@ public class PerformanceTable {
         Connection connection = Database.getConnection();
         ResultSet resultSet;
 
-        ArrayList<String> profileInfo = new ArrayList<String>();
+        ArrayList<String> performanceData = new ArrayList<>();
 
         try {
-            String query = "SELECT " + EXERCISE_CATEGORY + "," + QUESTIONS_ANSWERED + ","
+            String query = "SELECT " + EXERCISE_CATEGORY + "," + EXERCISES_ANSWERED + ","
                     + CORRECT_ANSWERS + "," + WRONG_ANSWERS + " FROM " + TABLE_NAME + " WHERE "
                     + LOGIN_NAME + " = ?";
             ps = connection.prepareStatement(query);
@@ -41,10 +41,10 @@ public class PerformanceTable {
             resultSet = ps.executeQuery();
 
             while (resultSet.next()) {
-                profileInfo.add(resultSet.getString(EXERCISE_CATEGORY));
-                profileInfo.add("" + resultSet.getInt(QUESTIONS_ANSWERED));
-                profileInfo.add("" + resultSet.getInt(CORRECT_ANSWERS));
-                profileInfo.add("" + resultSet.getInt(WRONG_ANSWERS));
+                performanceData.add(resultSet.getString(EXERCISE_CATEGORY));
+                performanceData.add("" + resultSet.getInt(EXERCISES_ANSWERED));
+                performanceData.add("" + resultSet.getInt(CORRECT_ANSWERS));
+                performanceData.add("" + resultSet.getInt(WRONG_ANSWERS));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,6 +58,6 @@ public class PerformanceTable {
             }
         }
 
-        return profileInfo;
+        return performanceData;
     }
 }

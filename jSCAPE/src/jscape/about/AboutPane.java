@@ -4,17 +4,18 @@
  * and open the template in the editor.
  */
 
-package jscape;
+package jscape.about;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import jscape.JScape;
 
 /**
  *
  * @author achantreau
  */
-class AboutPane extends BorderPane {
+public class AboutPane extends BorderPane {
     
     private JScape jscape;
     
