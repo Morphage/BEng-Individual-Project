@@ -11,6 +11,8 @@ import jscape.profile.ProfilePane;
 import jscape.about.AboutPane;
 import jscape.help.HelpPane;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.DepthTest;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -63,6 +65,7 @@ public class JScape extends Application {
         scene.getStylesheets().add(JScape.class.getResource("jscape.css").toExternalForm());       
         
         profilePane = new ProfilePane();
+        //profilePane.runFetchPerformanceStatsService();
         profilePane.runFetchPerformanceStatsTask();
         profilePane.runFetchProfileInfoTask();
         
@@ -89,6 +92,21 @@ public class JScape extends Application {
         
         tabPane.getTabs().addAll(profileTab, practiceTab, helpTab, aboutTab);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabPane.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener<Tab>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
+                        String tabName = t1.getText();
+                                
+                        if ("PROFILE".equals(tabName)) {
+                            System.out.println("Profile selected");
+                            //read boolean to see if an exercise was answered or not
+                            //and then reset boolean
+                            //profilePane.runFetchPerformanceStatsService();
+                        }
+                    }
+                }
+        );
 
         this.rootPane.setCenter(tabPane);
                                 

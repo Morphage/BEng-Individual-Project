@@ -13,7 +13,9 @@ package jscape.communication;
 public enum MessageCode {
     PROFILE_INFO(0),
     PERFORMANCE_STATS(1),
-    EXERCISE_CATEGORIES(2);
+    EXERCISE_CATEGORIES(2),
+    GET_EXERCISE(3),
+    ANSWER_EXERCISE(4);
     
     private final int value;
     private MessageCode(int value) {

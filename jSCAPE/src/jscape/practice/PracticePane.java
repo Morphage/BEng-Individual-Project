@@ -10,6 +10,8 @@ import java.util.HashMap;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -55,7 +57,6 @@ public class PracticePane extends BorderPane {
     private HashMap<String, CategorySidebarInfo> sideBarInfo = new HashMap<String, CategorySidebarInfo>();
 
     private RequestServerTask fetchCategoriesTask;
-    
 
     private GridPane exerciseCategories;
     private VBox mainMenu;
@@ -79,7 +80,6 @@ public class PracticePane extends BorderPane {
         exerciseCategories.setPadding(new Insets(0, 10, 0, 10));
         exerciseCategories.getStyleClass().add("category-page-flow");
         exerciseCategories.setAlignment(Pos.CENTER);
-        //exerciseCategories.setGridLinesVisible(true);
         mainMenu.getChildren().add(exerciseCategories);
 
         Message requestMessage = new Message(MessageCode.EXERCISE_CATEGORIES, null);
@@ -138,6 +138,7 @@ public class PracticePane extends BorderPane {
                 PracticeSplitPane psp = new PracticeSplitPane(source.getText());
 
                 //run service/task here and when successful center the window
+                psp.runFetchExerciseService();
                 setCenter(psp);
             }
         });
@@ -147,8 +148,10 @@ public class PracticePane extends BorderPane {
     private class PracticeSplitPane extends BorderPane {
 
         VBox practiceMain;
+        
+        private Service fetchExerciseService;
 
-        public PracticeSplitPane(String exerciseCategory) {
+        public PracticeSplitPane(final String exerciseCategory) {
             practiceMain = new VBox(30);
 
             // Add JAVA PROGRAMMING EXERCISES title bar
@@ -245,7 +248,7 @@ public class PracticePane extends BorderPane {
             VBox rightMainVBox = new VBox(30);
             rightMainVBox.getChildren().addAll(exerciseVBox, solutionVBox);
             
-            final Button nextButton = new Button("Next");
+            final Button nextButton = new Button("Next Exercise");
             nextButton.setId("dark-blue");
             nextButton.setDisable(true);
             nextButton.setOnAction(new EventHandler() {
@@ -253,6 +256,7 @@ public class PracticePane extends BorderPane {
                 public void handle(Event event) {
                     nextButton.setDisable(true);
                     submitButton.setDisable(true);
+                    runFetchExerciseService();
                 }
             });
             
@@ -320,6 +324,45 @@ public class PracticePane extends BorderPane {
 "        return helpfulLinks;\n" +
 "    }\n" +
 "}");
+            
+            fetchExerciseService = new Service<Message>() {
+                @Override
+                protected Task<Message> createTask() {
+                    ArrayList<String> payload = new ArrayList<String>();
+                    payload.add("ac6609");
+                    payload.add(exerciseCategory);
+                    Message requestMessage = new Message(MessageCode.GET_EXERCISE, payload);
+                    
+                    return new RequestServerTask(HOST, PORT, requestMessage);
+                }
+            };
+            fetchExerciseService.stateProperty().addListener(new ChangeListener<Worker.State>() {
+                @Override
+                public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
+                    if (t1 == Worker.State.SUCCEEDED) {
+                        Message replyMessage = (Message) fetchExerciseService.getValue();
+                        System.out.println(replyMessage.getMessageCode());
+                        ArrayList<String> payload = replyMessage.getPayload();
+                        
+                        System.out.println("***************");
+                        System.out.println("Exercise id= " + payload.get(0));
+                        System.out.println("Left display view= " + payload.get(1));
+                        System.out.println("Left display value= " + payload.get(2));
+                        System.out.println("Right display view= " + payload.get(3));
+                        System.out.println("Right display value= " + payload.get(4));
+                        System.out.println("Choice 1= " + payload.get(5));
+                        System.out.println("Choice 2= " + payload.get(6));
+                        System.out.println("Choice 3= " + payload.get(7));
+                        System.out.println("Choice 4= " + payload.get(8));
+                        System.out.println("Solution= " + payload.get(9));
+                        
+                        
+                    } else if (t1 == Worker.State.FAILED) {
+                        //Failed to get exercise => show stuff
+                    }
+                }
+            });
+            
 
             practiceMain.getChildren().add(splitPane);
             practiceMain.getStyleClass().add("category-page");
@@ -396,6 +439,10 @@ public class PracticePane extends BorderPane {
             }
             
             return sidebar;
+        }
+        
+        public void runFetchExerciseService() {
+            fetchExerciseService.restart();
         }
     }
 }

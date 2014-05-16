@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import jscape.communication.Message;
 import jscape.communication.MessageCode;
 import jscape.database.CategoryTable;
+import jscape.database.ExerciseBankTable;
 import jscape.database.PerformanceTable;
 
 /**
@@ -90,6 +91,10 @@ class ServerThread implements Runnable {
             case EXERCISE_CATEGORIES:
                 payload = CategoryTable.getExerciseCategories();
                 break;
+            case GET_EXERCISE:
+                payload = ExerciseBankTable.getExercise(request.getPayload().get(0), 
+                        request.getPayload().get(1));
+                break;                
         }
         
         return new Message(messageCode, payload);

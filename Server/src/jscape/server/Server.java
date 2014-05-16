@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
+import jscape.database.ExerciseBankTable;
 
 /**
  *
@@ -26,6 +27,13 @@ public class Server {
     private Server(int port) {
         this.port = port;
         connections = new HashSet<>();
+        
+        /*
+        ExerciseBankTable.addExercise(1000);
+        ExerciseBankTable.addExercise(1001);
+        ExerciseBankTable.addExercise(1002);
+        ExerciseBankTable.addExercise(1003);
+        ExerciseBankTable.addExercise(1004);*/
     }
 
     public void run() {
