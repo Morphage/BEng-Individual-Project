@@ -36,6 +36,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
@@ -146,8 +147,14 @@ public class PracticePane extends BorderPane {
     }
 
     private class PracticeSplitPane extends BorderPane {
+        
+        private final Font font20 = new Font("Arial", 20);
+        private final Font font14 = new Font("Arial", 14);
+        private final Font font12 = new Font("Arial", 12);
 
         VBox practiceMain;
+        
+        private Exercise currentExercise;
         
         private Service fetchExerciseService;
 
@@ -160,15 +167,6 @@ public class PracticePane extends BorderPane {
             javaHeader.setMinHeight(Control.USE_PREF_SIZE);
             javaHeader.getStyleClass().add("category-header");
             practiceMain.getChildren().add(javaHeader);
-
-            /*final CodeEditor codeEditor = new CodeEditor("public class SyntaxExercise {\n" +
-"\n" +
-"            public static void main(String[] args) {\n" +
-"                int x = 4;\n" +
-"                int y = 6;\n" +
-"                x * y;\n" +
-"            }\n" +
-"}");*/
             
             // Create Left split pane and add all elements to it            
             Button backButton = new Button("Back to Practice Menu");
@@ -181,22 +179,30 @@ public class PracticePane extends BorderPane {
                 }
             });
             
+            Label exerciseData = new Label("Exercise Data:");
+            exerciseData.setFont(font20);
+            exerciseData.setStyle("-fx-text-fill: #e1fdff;"
+                    + "-fx-font-weight: bold;");
+            
             WebView webview = CodeEditor.getWebview();
+            
+            VBox leftVBox = new VBox(8);
+            leftVBox.getChildren().addAll(exerciseData, webview);
+            VBox.setVgrow(webview, Priority.NEVER);
 
             BorderPane leftSplitPane = new BorderPane();
-            leftSplitPane.setCenter(webview);
+            leftSplitPane.setCenter(leftVBox);
             leftSplitPane.setBottom(backButton);
+            VBox.setVgrow(leftSplitPane, Priority.NEVER);
             
             // Create Right split pane and all elements to it
             Label exerciseLabel = new Label("Exercise:");
-            exerciseLabel.setFont(new Font("Arial", 20));
+            exerciseLabel.setFont(font20);
             exerciseLabel.setStyle("-fx-text-fill: #e1fdff;"
                     + "-fx-font-weight: bold;");
             
-            Text exerciseText = new Text("The compiler is unable to compile this code"
-                    + " and execute it. Which line has a syntax error?");
-            exerciseText.setFont(new Font("Arial", 14));
-            
+            final Text exerciseText = new Text();
+            exerciseText.setFont(font14);
             
             final Button submitButton = new Button("Submit Answer");
             final ToggleGroup group = new ToggleGroup();
@@ -208,37 +214,42 @@ public class PracticePane extends BorderPane {
                 }
             });
 
-            RadioButton rb1 = new RadioButton("Line 2");
-            rb1.setFont(new Font("Arial", 12));
+            final RadioButton rb1 = new RadioButton();
+            rb1.setFont(font12);
             rb1.setToggleGroup(group);
 
-            RadioButton rb2 = new RadioButton("Line 6");
-            rb2.setFont(new Font("Arial", 12));
+            final RadioButton rb2 = new RadioButton();
+            rb2.setFont(font12);
             rb2.setToggleGroup(group);
 
-            RadioButton rb3 = new RadioButton("Line 3");
-            rb3.setFont(new Font("Arial", 12));
+            final RadioButton rb3 = new RadioButton();
+            rb3.setFont(font12);
             rb3.setToggleGroup(group);
             
-            RadioButton rb4 = new RadioButton("Line 4");
-            rb4.setFont(new Font("Arial", 12));
+            final RadioButton rb4 = new RadioButton();
+            rb4.setFont(font12);
             rb4.setToggleGroup(group);
+            
+            final Text correctOrWrong = new Text();
+            correctOrWrong.setFont(font14);
+            correctOrWrong.setVisible(false);
             
             VBox exerciseVBox = new VBox(8);
             exerciseVBox.getChildren().addAll(exerciseLabel, exerciseText, rb1,
-                    rb2, rb3, rb4);            
+                    rb2, rb3, rb4, correctOrWrong);            
             VBox.setMargin(rb1, new Insets(0, 0, 0, 30));
             VBox.setMargin(rb2, new Insets(0, 0, 0, 30));
             VBox.setMargin(rb3, new Insets(0, 0, 0, 30));
             VBox.setMargin(rb4, new Insets(0, 0, 0, 30));
+            VBox.setMargin(correctOrWrong, new Insets(15, 0, 0, 30));
             
             Label solutionLabel = new Label("Solution:");
-            solutionLabel.setFont(new Font("Arial", 20));
+            solutionLabel.setFont(font20);
             solutionLabel.setStyle("-fx-text-fill: #e1fdff;"
                 + "-fx-font-weight: bold;");
             
-            Text solutionText = new Text("Line 6");
-            solutionText.setFont(new Font("Arial", 12));
+            final Text solutionText = new Text();
+            solutionText.setFont(font12);
             
             final VBox solutionVBox = new VBox(8);
             solutionVBox.getChildren().addAll(solutionLabel, solutionText);
@@ -254,9 +265,16 @@ public class PracticePane extends BorderPane {
             nextButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    nextButton.setDisable(true);
-                    submitButton.setDisable(true);
                     runFetchExerciseService();
+                    correctOrWrong.setVisible(false);
+                    rb1.setDisable(false);
+                    rb2.setDisable(false);
+                    rb3.setDisable(false);
+                    rb4.setDisable(false);
+                    nextButton.setDisable(true);
+                    solutionVBox.setVisible(false);
+                    group.getSelectedToggle().setSelected(false);
+                    submitButton.setDisable(true);
                 }
             });
             
@@ -265,9 +283,17 @@ public class PracticePane extends BorderPane {
             submitButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
+                    rb1.setDisable(true);
+                    rb2.setDisable(true);
+                    rb3.setDisable(true);
+                    rb4.setDisable(true);
+                    correctOrWrong.setText("WRONG ANSWER");
+                    correctOrWrong.setVisible(true);
+                    correctOrWrong.setFill(Color.RED);
                     submitButton.setDisable(true);
                     solutionVBox.setVisible(true);
                     nextButton.setDisable(false);
+                    nextButton.getParent().requestFocus();
                 }
             });
             
@@ -282,48 +308,6 @@ public class PracticePane extends BorderPane {
             SplitPane splitPane = new SplitPane();
             splitPane.getItems().addAll(leftSplitPane, rightSplitPane);
             splitPane.setDividerPosition(0, 0.5);
-            
-            CodeEditor.applyEditingTemplate("public class CategorySidebarInfo {\n" +
-"    \n" +
-"    private String description;\n" +
-"    private String[] lectureNotes;\n" +
-"    private String[] helpfulLinks;\n" +
-"    \n" +
-"    private String[] nullArray = {\"No links provided\"};\n" +
-"    \n" +
-"    public CategorySidebarInfo(String description, String lectureNotes,\n" +
-"            String helpfulLinks) {\n" +
-"        if (description == null) {\n" +
-"            this.description = \"No description provided\";\n" +
-"        } else {\n" +
-"            this.description = description;\n" +
-"        }\n" +
-"        \n" +
-"        if (lectureNotes != null) {\n" +
-"            this.lectureNotes = lectureNotes.split(\";\");\n" +
-"        } else {\n" +
-"            this.lectureNotes = nullArray;\n" +
-"        }\n" +
-"        \n" +
-"        if (helpfulLinks != null) {\n" +
-"            this.helpfulLinks = helpfulLinks.split(\";\");\n" +
-"        } else {\n" +
-"            this.helpfulLinks = nullArray;\n" +
-"        }\n" +
-"    }\n" +
-"\n" +
-"    public String getDescription() {\n" +
-"        return description;\n" +
-"    }\n" +
-"\n" +
-"    public String[] getLectureNotes() {\n" +
-"        return lectureNotes;\n" +
-"    }\n" +
-"\n" +
-"    public String[] getHelpfulLinks() {\n" +
-"        return helpfulLinks;\n" +
-"    }\n" +
-"}");
             
             fetchExerciseService = new Service<Message>() {
                 @Override
@@ -356,19 +340,30 @@ public class PracticePane extends BorderPane {
                         System.out.println("Choice 4= " + payload.get(8));
                         System.out.println("Solution= " + payload.get(9));
                         
+                        CodeEditor.applyEditingTemplate(payload.get(2));
+                        exerciseText.setText(payload.get(4));
+                        rb1.setText(payload.get(5));
+                        rb2.setText(payload.get(6));
+                        rb3.setText(payload.get(7));
+                        rb4.setText(payload.get(8));
+                        
+                        RadioButton solutionButton = (RadioButton) group.getToggles().get(Integer.valueOf(payload.get(9)) - 1);
+                        String solution = solutionButton.getText();
+                        
+                        solutionText.setText(solution);
+                        
                         
                     } else if (t1 == Worker.State.FAILED) {
                         //Failed to get exercise => show stuff
                     }
                 }
             });
-            
 
             practiceMain.getChildren().add(splitPane);
             practiceMain.getStyleClass().add("category-page");
             
             // This is needed, don't remove
-            VBox.setVgrow(splitPane, Priority.ALWAYS);
+            //VBox.setVgrow(splitPane, Priority.ALWAYS);
             
             setCenter(practiceMain);
             setRight(createSidebar(exerciseCategory));

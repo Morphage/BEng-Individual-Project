@@ -60,4 +60,36 @@ public class PerformanceTable {
 
         return performanceData;
     }
+    
+    public static void updatePerformanceStats(String loginName, String exerciseCategory,
+            boolean isCorrectAnswer) {
+        PreparedStatement ps = null;
+        Connection connection = Database.getConnection();
+        
+        try {
+            String updateColumn = isCorrectAnswer ? CORRECT_ANSWERS : WRONG_ANSWERS;
+            
+            String query = "UPDATE " + TABLE_NAME + " SET (" + EXERCISES_ANSWERED
+                    + "," + updateColumn + ") = (" + EXERCISES_ANSWERED + "+?,"
+                    + updateColumn + "+?) WHERE " + LOGIN_NAME + " = ?"
+                    + " AND " + EXERCISE_CATEGORY + " = ?";
+            
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, 1);
+            ps.setInt(2, 1);
+            ps.setString(3, loginName);
+            ps.setString(4, exerciseCategory);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

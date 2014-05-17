@@ -38,16 +38,10 @@ public class ExerciseParser {
 
             doc.getDocumentElement().normalize();
 
-            System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
-
             NodeList nList = doc.getElementsByTagName("display");
 
-            System.out.println("----------------------------");
-
             int temp = 0;
-
             Node nNode = nList.item(temp);
-            System.out.println("\nCurrent Element: " + nNode.getNodeName());
 
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) nNode;

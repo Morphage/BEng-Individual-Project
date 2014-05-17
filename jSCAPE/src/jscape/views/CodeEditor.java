@@ -4,9 +4,6 @@ package jscape.views;
  * All credit for this code goes to jewelsea. Source:
  * https://gist.github.com/jewelsea/1463485
  */
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 
 /**
