@@ -26,3 +26,8 @@
 /jSCAPE/build/
 /Server/nbproject/private/
 /Server/build/
+/jSCAPE Server/nbproject/private/
+/jSCAPE Client/nbproject/private/
+/jSCAPE Server/build/
+/jSCAPE Client/build/
+/jSCAPE Client/dist/bundles/*

@@ -7,7 +7,7 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="jSCAPE" default="default" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+<project name="jSCAPE Client" default="default" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
     <description>Builds, tests, and runs the project jSCAPE.</description>
     
     <import file="nbproject/build-impl.xml"/>
@@ -110,7 +110,7 @@
                     tofile="${dist.dir}/jSCAPE.html"/>
             <fx:resources>
                 <fx:fileset dir="${basedir}/${dist.dir}"
-                            includes="jSCAPE.jar"/>      
+                            includes="jSCAPE_Client.jar"/>      
             </fx:resources> 
             <fx:info title="${application.title}"
                      vendor="${application.vendor}"/>
