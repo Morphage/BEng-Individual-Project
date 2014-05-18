@@ -12,6 +12,8 @@ package jscape.practice;
  */
 public class Exercise {
     
+    private int exerciseId;
+    
     private String leftDisplayView;
     private String leftDisplayValue;
     
@@ -23,8 +25,9 @@ public class Exercise {
     private String choice4;
     private String solution;
     
-    public Exercise(String ldv, String ldv2, String rdv, String rdv2, String c1,
+    public Exercise(int exerciseId, String ldv, String ldv2, String rdv, String rdv2, String c1,
             String c2, String c3, String c4, String s) {
+        this.exerciseId = exerciseId;
         this.leftDisplayView = ldv;
         this.leftDisplayValue = ldv2;
         this.rightDisplayView = rdv;
@@ -34,6 +37,10 @@ public class Exercise {
         this.choice3 = c3;
         this.choice4 = c4;
         this.solution = s;
+    }
+
+    public int getExerciseId() {
+        return exerciseId;
     }
 
     public String getLeftDisplayView() {

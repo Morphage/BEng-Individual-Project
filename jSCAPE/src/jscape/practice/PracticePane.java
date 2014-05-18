@@ -31,20 +31,21 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.web.WebView;
 import jscape.JScape;
 import jscape.communication.Message;
 import jscape.communication.MessageCode;
 import jscape.communication.RequestServerTask;
-import jscape.views.CodeEditor;
+import jscape.practice.views.CodeEditor;
 
 /**
  *
@@ -54,7 +55,7 @@ public class PracticePane extends BorderPane {
 
     private static final String HOST = "localhost";
     private static final int PORT = 9000;
-    
+
     private HashMap<String, CategorySidebarInfo> sideBarInfo = new HashMap<String, CategorySidebarInfo>();
 
     private RequestServerTask fetchCategoriesTask;
@@ -64,7 +65,7 @@ public class PracticePane extends BorderPane {
 
     public PracticePane() {
         super();
-        
+
         mainMenu = new VBox(80);
 
         // Add JAVA PROGRAMMING EXERCISES title bar
@@ -93,12 +94,12 @@ public class PracticePane extends BorderPane {
                     ArrayList<String> payload = replyMessage.getPayload();
 
                     for (int i = 0; i < payload.size(); i += 4) {
-                        sideBarInfo.put(payload.get(i), 
-                                new CategorySidebarInfo(payload.get(i+1),
-                                        payload.get(i+2), payload.get(i+3)));
-                        
+                        sideBarInfo.put(payload.get(i),
+                                new CategorySidebarInfo(payload.get(i + 1),
+                                        payload.get(i + 2), payload.get(i + 3)));
+
                         Node tile = createTile(payload.get(i));
-                        GridPane.setConstraints(tile, (i/4) % 5, (i/4) / 5);
+                        GridPane.setConstraints(tile, (i / 4) % 5, (i / 4) / 5);
                         exerciseCategories.getChildren().add(tile);
                     }
                 } else if (t1 == Worker.State.FAILED) {
@@ -147,16 +148,19 @@ public class PracticePane extends BorderPane {
     }
 
     private class PracticeSplitPane extends BorderPane {
-        
+
         private final Font font20 = new Font("Arial", 20);
         private final Font font14 = new Font("Arial", 14);
         private final Font font12 = new Font("Arial", 12);
 
         VBox practiceMain;
-        
+
         private Exercise currentExercise;
-        
+
         private Service fetchExerciseService;
+
+        private final Button nextButton = new Button("Next Exercise");
+        private final Button submitButton = new Button("Submit Answer");
 
         public PracticeSplitPane(final String exerciseCategory) {
             practiceMain = new VBox(30);
@@ -167,7 +171,7 @@ public class PracticePane extends BorderPane {
             javaHeader.setMinHeight(Control.USE_PREF_SIZE);
             javaHeader.getStyleClass().add("category-header");
             practiceMain.getChildren().add(javaHeader);
-            
+
             // Create Left split pane and add all elements to it            
             Button backButton = new Button("Back to Practice Menu");
             backButton.setId("dark-blue");
@@ -178,33 +182,33 @@ public class PracticePane extends BorderPane {
                     setRight(null);
                 }
             });
-            
+
             Label exerciseData = new Label("Exercise Data:");
             exerciseData.setFont(font20);
             exerciseData.setStyle("-fx-text-fill: #e1fdff;"
                     + "-fx-font-weight: bold;");
-            
-            WebView webview = CodeEditor.getWebview();
-            
+
+            final CodeEditor codeEditor = new CodeEditor("");
+
             VBox leftVBox = new VBox(8);
-            leftVBox.getChildren().addAll(exerciseData, webview);
-            VBox.setVgrow(webview, Priority.NEVER);
+            leftVBox.getChildren().addAll(exerciseData, codeEditor);
+            VBox.setVgrow(codeEditor, Priority.NEVER);
 
             BorderPane leftSplitPane = new BorderPane();
             leftSplitPane.setCenter(leftVBox);
             leftSplitPane.setBottom(backButton);
             VBox.setVgrow(leftSplitPane, Priority.NEVER);
-            
+
             // Create Right split pane and all elements to it
             Label exerciseLabel = new Label("Exercise:");
             exerciseLabel.setFont(font20);
             exerciseLabel.setStyle("-fx-text-fill: #e1fdff;"
                     + "-fx-font-weight: bold;");
-            
+
             final Text exerciseText = new Text();
             exerciseText.setFont(font14);
-            
-            final Button submitButton = new Button("Submit Answer");
+            exerciseText.setWrappingWidth(600);
+
             final ToggleGroup group = new ToggleGroup();
             group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
                 @Override
@@ -225,41 +229,40 @@ public class PracticePane extends BorderPane {
             final RadioButton rb3 = new RadioButton();
             rb3.setFont(font12);
             rb3.setToggleGroup(group);
-            
+
             final RadioButton rb4 = new RadioButton();
             rb4.setFont(font12);
             rb4.setToggleGroup(group);
-            
+
             final Text correctOrWrong = new Text();
             correctOrWrong.setFont(font14);
             correctOrWrong.setVisible(false);
-            
+
             VBox exerciseVBox = new VBox(8);
             exerciseVBox.getChildren().addAll(exerciseLabel, exerciseText, rb1,
-                    rb2, rb3, rb4, correctOrWrong);            
+                    rb2, rb3, rb4, correctOrWrong);
             VBox.setMargin(rb1, new Insets(0, 0, 0, 30));
             VBox.setMargin(rb2, new Insets(0, 0, 0, 30));
             VBox.setMargin(rb3, new Insets(0, 0, 0, 30));
             VBox.setMargin(rb4, new Insets(0, 0, 0, 30));
             VBox.setMargin(correctOrWrong, new Insets(15, 0, 0, 30));
-            
+
             Label solutionLabel = new Label("Solution:");
             solutionLabel.setFont(font20);
             solutionLabel.setStyle("-fx-text-fill: #e1fdff;"
-                + "-fx-font-weight: bold;");
-            
+                    + "-fx-font-weight: bold;");
+
             final Text solutionText = new Text();
             solutionText.setFont(font12);
-            
+
             final VBox solutionVBox = new VBox(8);
             solutionVBox.getChildren().addAll(solutionLabel, solutionText);
             solutionVBox.setVisible(false);
             VBox.setMargin(solutionText, new Insets(0, 0, 0, 30));
-            
+
             VBox rightMainVBox = new VBox(30);
             rightMainVBox.getChildren().addAll(exerciseVBox, solutionVBox);
-            
-            final Button nextButton = new Button("Next Exercise");
+
             nextButton.setId("dark-blue");
             nextButton.setDisable(true);
             nextButton.setOnAction(new EventHandler() {
@@ -277,30 +280,44 @@ public class PracticePane extends BorderPane {
                     submitButton.setDisable(true);
                 }
             });
-            
+
             submitButton.setId("dark-blue");
             submitButton.setDisable(true);
             submitButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
+                    int solution = Integer.valueOf(currentExercise.getSolution());
+                    int selected = group.getToggles().indexOf(group.getSelectedToggle());
+                    boolean isCorrectAnswer = (group.getToggles().get(solution) == group.getSelectedToggle());
+
+                    runAnswerExerciseTask("ac6609", currentExercise.getExerciseId(), selected,
+                            exerciseCategory, isCorrectAnswer);
                     rb1.setDisable(true);
                     rb2.setDisable(true);
                     rb3.setDisable(true);
                     rb4.setDisable(true);
-                    correctOrWrong.setText("WRONG ANSWER");
+
+                    if (isCorrectAnswer) {
+                        correctOrWrong.setText("CORRECT ANSWER");
+                        correctOrWrong.setFill(Color.GREEN);
+                    } else {
+                        correctOrWrong.setText("WRONG ANSWER");
+                        correctOrWrong.setFill(Color.RED);
+                    }
+
                     correctOrWrong.setVisible(true);
-                    correctOrWrong.setFill(Color.RED);
+
                     submitButton.setDisable(true);
                     solutionVBox.setVisible(true);
                     nextButton.setDisable(false);
                     nextButton.getParent().requestFocus();
                 }
             });
-            
+
             HBox buttonHBox = new HBox(5);
             buttonHBox.setAlignment(Pos.CENTER_RIGHT);
             buttonHBox.getChildren().addAll(submitButton, nextButton);
-            
+
             BorderPane rightSplitPane = new BorderPane();
             rightSplitPane.setCenter(rightMainVBox);
             rightSplitPane.setBottom(buttonHBox);
@@ -308,7 +325,7 @@ public class PracticePane extends BorderPane {
             SplitPane splitPane = new SplitPane();
             splitPane.getItems().addAll(leftSplitPane, rightSplitPane);
             splitPane.setDividerPosition(0, 0.5);
-            
+
             fetchExerciseService = new Service<Message>() {
                 @Override
                 protected Task<Message> createTask() {
@@ -316,7 +333,7 @@ public class PracticePane extends BorderPane {
                     payload.add("ac6609");
                     payload.add(exerciseCategory);
                     Message requestMessage = new Message(MessageCode.GET_EXERCISE, payload);
-                    
+
                     return new RequestServerTask(HOST, PORT, requestMessage);
                 }
             };
@@ -325,34 +342,36 @@ public class PracticePane extends BorderPane {
                 public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
                     if (t1 == Worker.State.SUCCEEDED) {
                         Message replyMessage = (Message) fetchExerciseService.getValue();
-                        System.out.println(replyMessage.getMessageCode());
                         ArrayList<String> payload = replyMessage.getPayload();
-                        
-                        System.out.println("***************");
-                        System.out.println("Exercise id= " + payload.get(0));
-                        System.out.println("Left display view= " + payload.get(1));
-                        System.out.println("Left display value= " + payload.get(2));
-                        System.out.println("Right display view= " + payload.get(3));
-                        System.out.println("Right display value= " + payload.get(4));
-                        System.out.println("Choice 1= " + payload.get(5));
-                        System.out.println("Choice 2= " + payload.get(6));
-                        System.out.println("Choice 3= " + payload.get(7));
-                        System.out.println("Choice 4= " + payload.get(8));
-                        System.out.println("Solution= " + payload.get(9));
-                        
-                        CodeEditor.applyEditingTemplate(payload.get(2));
-                        exerciseText.setText(payload.get(4));
-                        rb1.setText(payload.get(5));
-                        rb2.setText(payload.get(6));
-                        rb3.setText(payload.get(7));
-                        rb4.setText(payload.get(8));
-                        
-                        RadioButton solutionButton = (RadioButton) group.getToggles().get(Integer.valueOf(payload.get(9)) - 1);
-                        String solution = solutionButton.getText();
-                        
-                        solutionText.setText(solution);
-                        
-                        
+
+                        if (payload == null) {
+                            System.out.println("NO MORE EXERCISES");
+                            JScape.getJSCAPE().showModalMessage(new NoMoreExercicesPopup(exerciseCategory));
+                        } else {
+                            printDebugExerciseInfo(payload);
+
+                            currentExercise = new Exercise(Integer.valueOf(payload.get(0)), payload.get(1),
+                                    payload.get(2), payload.get(3), payload.get(4), payload.get(5),
+                                    payload.get(6), payload.get(7), payload.get(8), payload.get(9));
+
+                            prepareExercise(currentExercise);
+
+                            codeEditor.setCode(payload.get(2));
+                            /*exerciseText.setText("This is a big ass question that takes"
+                             + " plenty of space. I want to see whether the text"
+                             + " hopefully wraps around but I doubt it because that"
+                             + " would be too convenient now wouldn't it?");*/
+                            exerciseText.setText(payload.get(4));
+                            rb1.setText(payload.get(5));
+                            rb2.setText(payload.get(6));
+                            rb3.setText(payload.get(7));
+                            rb4.setText(payload.get(8));
+
+                            RadioButton solutionButton = (RadioButton) group.getToggles().get(Integer.valueOf(payload.get(9)));
+                            String solution = solutionButton.getText();
+
+                            solutionText.setText(solution);
+                        }
                     } else if (t1 == Worker.State.FAILED) {
                         //Failed to get exercise => show stuff
                     }
@@ -361,12 +380,15 @@ public class PracticePane extends BorderPane {
 
             practiceMain.getChildren().add(splitPane);
             practiceMain.getStyleClass().add("category-page");
-            
+
             // This is needed, don't remove
             //VBox.setVgrow(splitPane, Priority.ALWAYS);
-            
             setCenter(practiceMain);
             setRight(createSidebar(exerciseCategory));
+        }
+
+        private void prepareExercise(Exercise exercise) {
+
         }
 
         private GridPane createSidebar(String exerciseCategory) {
@@ -395,9 +417,9 @@ public class PracticePane extends BorderPane {
             docsTitle.getStyleClass().add("right-sidebar-title");
             GridPane.setConstraints(docsTitle, 0, sideRow++);
             sidebar.getChildren().add(docsTitle);
-            
+
             String[] lectureNotes = sideBarInfo.get(exerciseCategory).getLectureNotes();
-            
+
             for (final String link : lectureNotes) {
                 Hyperlink hyperLink = new Hyperlink(link);
                 hyperLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -418,9 +440,9 @@ public class PracticePane extends BorderPane {
             relatedTitle.getStyleClass().add("right-sidebar-title");
             GridPane.setConstraints(relatedTitle, 0, sideRow++);
             sidebar.getChildren().add(relatedTitle);
-            
+
             String[] helpfulLinks = sideBarInfo.get(exerciseCategory).getHelpfulLinks();
-            
+
             for (final String link : helpfulLinks) {
                 Hyperlink hyperLink = new Hyperlink(link);
                 hyperLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -432,12 +454,94 @@ public class PracticePane extends BorderPane {
                 GridPane.setConstraints(hyperLink, 0, sideRow++);
                 sidebar.getChildren().add(hyperLink);
             }
-            
+
             return sidebar;
         }
-        
+
         public void runFetchExerciseService() {
             fetchExerciseService.restart();
+        }
+
+        public void runAnswerExerciseTask(String loginName, int exerciseId, int answerId,
+                String exerciseCategory, boolean isCorrectAnswer) {
+            ArrayList<String> payload = new ArrayList<String>();
+            payload.add(loginName);
+            payload.add("" + exerciseId);
+            payload.add("" + answerId);
+            payload.add(exerciseCategory);
+            payload.add("" + isCorrectAnswer);
+
+            Message requestMessage = new Message(MessageCode.ANSWER_EXERCISE, payload);
+            RequestServerTask answerExerciseTask = new RequestServerTask(HOST, PORT, requestMessage);
+
+            new Thread(answerExerciseTask, "AnswerExerciseThread").start();
+        }
+
+        private void printDebugExerciseInfo(ArrayList<String> payload) {
+            System.out.println("*****DEBUG EXERCISE INFO**********");
+            System.out.println("Exercise id= " + payload.get(0));
+            System.out.println("Left display view= " + payload.get(1));
+            System.out.println("Left display value= " + payload.get(2));
+            System.out.println("Right display view= " + payload.get(3));
+            System.out.println("Right display value= " + payload.get(4));
+            System.out.println("Choice 0= " + payload.get(5));
+            System.out.println("Choice 1= " + payload.get(6));
+            System.out.println("Choice 2= " + payload.get(7));
+            System.out.println("Choice 3= " + payload.get(8));
+            System.out.println("Solution= " + payload.get(9));
+            System.out.println("*********************************");
+        }
+    }
+
+    private class NoMoreExercicesPopup extends VBox {
+
+        public NoMoreExercicesPopup(String exerciseCategory) {
+            setId("PopupWindow");
+            setSpacing(10);
+            setMaxSize(530, USE_PREF_SIZE);
+            // block mouse clicks
+            setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent t) {
+                    t.consume();
+                }
+            });
+
+            Text explanation = new Text("The system could not find an exercise which"
+                    + " you haven't answered yet for this particular exercise category."
+                    + " Please notify your course supervisor or press the OK button"
+                    + " to go back to the Practice menu.");
+            explanation.setWrappingWidth(500);
+
+            BorderPane explPane = new BorderPane();
+            VBox.setMargin(explPane, new Insets(5, 5, 5, 5));
+            explPane.setCenter(explanation);
+            BorderPane.setMargin(explanation, new Insets(5, 5, 5, 5));
+
+            // create title
+            Label title = new Label("NO MORE EXERCISES FOR " + exerciseCategory.toUpperCase()
+                    + " CATEGORY");
+            title.setId("title");
+            title.setMaxWidth(Double.MAX_VALUE);
+            title.setAlignment(Pos.CENTER);
+            getChildren().add(title);
+
+            Button okButton = new Button("OK");
+            okButton.setAlignment(Pos.CENTER_RIGHT);
+            okButton.setId("dark-blue");
+            okButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    JScape.getJSCAPE().hideModalMessage();
+                    setCenter(mainMenu);
+                    setRight(null);
+                }
+            });
+            
+            HBox buttonHBox = new HBox(0);
+            buttonHBox.setAlignment(Pos.CENTER_RIGHT);
+            buttonHBox.getChildren().add(okButton);
+            
+            getChildren().addAll(explPane, buttonHBox);
         }
     }
 }

@@ -1,9 +1,10 @@
-package jscape.views;
+package jscape.practice.views;
 
 /**
  * All credit for this code goes to jewelsea. Source:
  * https://gist.github.com/jewelsea/1463485
  */
+import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 
 /**
@@ -13,12 +14,18 @@ import javafx.scene.web.WebView;
  * See http://codemirror.net for more information on using the codemirror
  * editor.
  */
-public class CodeEditor {
+public class CodeEditor extends StackPane {
 
     /**
-     * a Webview used to encapsulate the CodeMirror JavaScript.
+     * a webview used to encapsulate the CodeMirror JavaScript.
      */
-    private static final WebView webview = new WebView();
+    final WebView webview = new WebView();
+
+    /**
+     * a snapshot of the code to be edited kept for easy initilization and
+     * reversion of editable code.
+     */
+    private String editingCode;
 
     /**
      * a template for editing code - this can be changed to any template derived
@@ -48,11 +55,33 @@ public class CodeEditor {
             + "</body>"
             + "</html>";
 
-    public static void applyEditingTemplate(String editingCode) {
-        webview.getEngine().loadContent(editingTemplate.replace("${code}", editingCode));
+    /**
+     * applies the editing template to the editing code to create the
+     * html+javascript source for a code editor.
+     */
+    private String applyEditingTemplate() {
+        return editingTemplate.replace("${code}", editingCode);
     }
-    
-    public static WebView getWebview() {
-        return webview;
+
+    /**
+     * sets the current code in the editor and creates an editing snapshot of
+     * the code which can be reverted to.
+     */
+    public void setCode(String newCode) {
+        this.editingCode = newCode;
+        webview.getEngine().loadContent(applyEditingTemplate());
+    }
+
+    /**
+     * Create a new code editor.
+     *
+     * @param editingCode the initial code to be edited in the code editor.
+     */
+    public CodeEditor(String editingCode) {
+        this.editingCode = editingCode;
+
+        webview.getEngine().loadContent(applyEditingTemplate());
+
+        this.getChildren().add(webview);
     }
 }

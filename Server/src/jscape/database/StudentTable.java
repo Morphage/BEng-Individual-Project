@@ -53,7 +53,7 @@ public class StudentTable {
             profileInfo.add(df.format(date));
 
             date = resultSet.getDate(LAST_EXERCISE_ANSWERED);
-            profileInfo.add(df.format(date));         
+            profileInfo.add(df.format(date));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -68,13 +68,37 @@ public class StudentTable {
 
         return profileInfo;
     }
-    
+
     public static void updateLastLogin(String loginName) {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
-        
+
         try {
-            String query = "UPDATE " + TABLE_NAME + " SET " + LAST_LOGIN + " = ? WHERE " 
+            String query = "UPDATE " + TABLE_NAME + " SET " + LAST_LOGIN + " = ? WHERE "
+                    + LOGIN_NAME + " = ?";
+            ps = connection.prepareStatement(query);
+            ps.setDate(1, new Date(new java.util.Date().getTime()));
+            ps.setString(2, loginName);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void updateLastExerciseAnswered(String loginName) {
+        PreparedStatement ps = null;
+        Connection connection = Database.getConnection();
+
+        try {
+            String query = "UPDATE " + TABLE_NAME + " SET " + LAST_EXERCISE_ANSWERED + " = ? WHERE "
                     + LOGIN_NAME + " = ?";
             ps = connection.prepareStatement(query);
             ps.setDate(1, new Date(new java.util.Date().getTime()));

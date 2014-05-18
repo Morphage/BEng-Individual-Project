@@ -1,0 +1,6 @@
+public class SyntaxExercise {
+    
+	public static void main(String[] args) {
+        	
+	}
+}

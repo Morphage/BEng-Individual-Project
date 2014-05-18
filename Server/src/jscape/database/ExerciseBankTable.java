@@ -6,7 +6,6 @@
 package jscape.database;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +34,7 @@ public class ExerciseBankTable {
         Connection connection = Database.getConnection();
         ResultSet resultSet;
 
-        ArrayList<String> profileInfo = new ArrayList<>();
+        ArrayList<String> exerciseInfo = new ArrayList<>();
 
         try {
             String subquery = "SELECT " + EXERCISE_ID + " FROM " + TABLE_NAME2
@@ -47,21 +46,23 @@ public class ExerciseBankTable {
             ps.setString(1, exerciseCategory);
             ps.setString(2, loginName);
             resultSet = ps.executeQuery();
+            
+            if (resultSet.next()) {
+                exerciseInfo.add(resultSet.getString(EXERCISE_ID));
 
-            resultSet.next();
-
-            profileInfo.add(resultSet.getString(EXERCISE_ID));
-
-            Exercise exercise = ExerciseParser.parseXMLExercise(resultSet.getString(EXERCISE_TEXT));
-            profileInfo.add(exercise.getLeftDisplayView());
-            profileInfo.add(exercise.getLeftDisplayValue());
-            profileInfo.add(exercise.getRightDisplayView());
-            profileInfo.add(exercise.getRightDisplayValue());
-            profileInfo.add(exercise.getChoice1());
-            profileInfo.add(exercise.getChoice2());
-            profileInfo.add(exercise.getChoice3());
-            profileInfo.add(exercise.getChoice4());
-            profileInfo.add(exercise.getSolution());
+                Exercise exercise = ExerciseParser.parseXMLExercise(resultSet.getString(EXERCISE_TEXT));
+                exerciseInfo.add(exercise.getLeftDisplayView());
+                exerciseInfo.add(exercise.getLeftDisplayValue());
+                exerciseInfo.add(exercise.getRightDisplayView());
+                exerciseInfo.add(exercise.getRightDisplayValue());
+                exerciseInfo.add(exercise.getChoice1());
+                exerciseInfo.add(exercise.getChoice2());
+                exerciseInfo.add(exercise.getChoice3());
+                exerciseInfo.add(exercise.getChoice4());
+                exerciseInfo.add(exercise.getSolution());
+            } else {
+                exerciseInfo = null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -74,7 +75,7 @@ public class ExerciseBankTable {
             }
         }
 
-        return profileInfo;
+        return exerciseInfo;
     }
 
     public static void addExercise(int exerciseID) {
@@ -88,20 +89,21 @@ public class ExerciseBankTable {
                 + "        <value>public class SyntaxExercise {\n"
                 + "            public static void main(String[] args) {\n"
                 + "            int x = 4;\n"
-                + "            int y = 6;\n"
+                + "            y = 6;\n"
+                + "            int z = 6;\n"
                 + "		\n"
-                + "            x+\"y\"\n"
+                + "            x++;\n"
                 + "            }\n"
                 + "            }</value>\n"
                 + "    </display>\n"
                 + "    <display>\n"
                 + "        <view>Exercise</view>\n"
                 + "        <value>The compiler is unable to compile this code and execute it. Which line has a syntax error?</value>\n"
-                + "        <choice1>line 2</choice1>\n"
-                + "        <choice2>line 6</choice2>\n"
-                + "        <choice3>line 3</choice3>\n"
-                + "        <choice4>line 4</choice4>\n"
-                + "        <solution>2</solution>\n"
+                + "        <choice0>line 2</choice0>\n"
+                + "        <choice1>line 7</choice1>\n"
+                + "        <choice2>line 5</choice2>\n"
+                + "        <choice3>line 4</choice3>\n"
+                + "        <solution>3</solution>\n"
                 + "    </display>\n"
                 + "</exercise>";
 

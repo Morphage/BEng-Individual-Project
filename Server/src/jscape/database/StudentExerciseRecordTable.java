@@ -21,16 +21,19 @@ public class StudentExerciseRecordTable {
     private static final String EXERCISE_ID = "exercise_id";
     private static final String ANSWER_ID = "answer_id";
 
-    public static void answerExercise(String loginName, int exerciseId, int answerId) {
+    public static void answerExercise(String loginName, String exerciseId, String answerId) {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
+        
+        int exerciseID = Integer.valueOf(exerciseId);
+        int answerID = Integer.valueOf(answerId);
 
         try {
             String query = "INSERT INTO " + TABLE_NAME + " VALUES (?,?,?)";
             ps = connection.prepareStatement(query);
             ps.setString(1, loginName);
-            ps.setInt(2, exerciseId);
-            ps.setInt(3, answerId);
+            ps.setInt(2, exerciseID);
+            ps.setInt(3, answerID);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

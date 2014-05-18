@@ -58,10 +58,10 @@ public class ExerciseParser {
 
                 rdv = eElement.getElementsByTagName("view").item(0).getTextContent();
                 rdv2 = eElement.getElementsByTagName("value").item(0).getTextContent();
-                c1 = eElement.getElementsByTagName("choice1").item(0).getTextContent();
-                c2 = eElement.getElementsByTagName("choice2").item(0).getTextContent();
-                c3 = eElement.getElementsByTagName("choice3").item(0).getTextContent();
-                c4 = eElement.getElementsByTagName("choice4").item(0).getTextContent();
+                c1 = eElement.getElementsByTagName("choice0").item(0).getTextContent();
+                c2 = eElement.getElementsByTagName("choice1").item(0).getTextContent();
+                c3 = eElement.getElementsByTagName("choice2").item(0).getTextContent();
+                c4 = eElement.getElementsByTagName("choice3").item(0).getTextContent();
                 s = eElement.getElementsByTagName("solution").item(0).getTextContent();
             }
         } catch (Exception e) {

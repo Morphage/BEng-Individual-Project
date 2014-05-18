@@ -62,11 +62,12 @@ public class PerformanceTable {
     }
     
     public static void updatePerformanceStats(String loginName, String exerciseCategory,
-            boolean isCorrectAnswer) {
+            String isCorrect) {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
         
         try {
+            boolean isCorrectAnswer = Boolean.valueOf(isCorrect);
             String updateColumn = isCorrectAnswer ? CORRECT_ANSWERS : WRONG_ANSWERS;
             
             String query = "UPDATE " + TABLE_NAME + " SET (" + EXERCISES_ANSWERED

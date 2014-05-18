@@ -18,6 +18,7 @@ import jscape.communication.MessageCode;
 import jscape.database.CategoryTable;
 import jscape.database.ExerciseBankTable;
 import jscape.database.PerformanceTable;
+import jscape.database.StudentExerciseRecordTable;
 
 /**
  *
@@ -94,7 +95,19 @@ class ServerThread implements Runnable {
             case GET_EXERCISE:
                 payload = ExerciseBankTable.getExercise(request.getPayload().get(0), 
                         request.getPayload().get(1));
-                break;                
+                break;
+            case ANSWER_EXERCISE:
+                String loginName = request.getPayload().get(0);
+                String exerciseId = request.getPayload().get(1); 
+                String answerId = request.getPayload().get(2);
+                String exerciseCategory = request.getPayload().get(3);
+                String isCorrectAnswer = request.getPayload().get(4);
+                
+                StudentExerciseRecordTable.answerExercise(loginName, exerciseId, answerId); 
+                PerformanceTable.updatePerformanceStats(loginName, exerciseCategory, isCorrectAnswer);
+                StudentTable.updateLastExerciseAnswered(loginName);
+                payload = null;
+                break;
         }
         
         return new Message(messageCode, payload);
