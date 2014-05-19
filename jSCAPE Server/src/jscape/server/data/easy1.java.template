@@ -1,0 +1,10 @@
+public class SyntaxExercise {
+    public static void main(String[] args) {
+        int a = 03;
+        int b = 4;
+        int c = 20;
+       
+        double average = (a + b + c)/5.0;
+        System.out.println(average);
+    }
+}

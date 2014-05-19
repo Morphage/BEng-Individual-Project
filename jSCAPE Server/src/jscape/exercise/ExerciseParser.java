@@ -32,6 +32,7 @@ public class ExerciseParser {
         
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            dbFactory.setExpandEntityReferences(false);
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             InputSource inputSource = new InputSource(new StringReader(xmlExercise));
             Document doc = dBuilder.parse(inputSource);

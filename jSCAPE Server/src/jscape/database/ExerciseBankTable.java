@@ -78,41 +78,16 @@ public class ExerciseBankTable {
         return exerciseInfo;
     }
 
-    public static void addExercise(int exerciseID) {
+    public static void addExercise(String exerciseCategory, String xmlExercise) {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
 
-        String xmlExercise = "<?xml version=\"1.0\"?>\n"
-                + "<exercise>\n"
-                + "    <display>\n"
-                + "        <view>CodeEditor</view>\n"
-                + "        <value>public class SyntaxExercise {\n"
-                + "            public static void main(String[] args) {\n"
-                + "            int x = 4;\n"
-                + "            y = 6;\n"
-                + "            int z = 6;\n"
-                + "		\n"
-                + "            x++;\n"
-                + "            }\n"
-                + "            }</value>\n"
-                + "    </display>\n"
-                + "    <display>\n"
-                + "        <view>Exercise</view>\n"
-                + "        <value>The compiler is unable to compile this code and execute it. Which line has a syntax error?</value>\n"
-                + "        <choice0>line 2</choice0>\n"
-                + "        <choice1>line 7</choice1>\n"
-                + "        <choice2>line 5</choice2>\n"
-                + "        <choice3>line 4</choice3>\n"
-                + "        <solution>3</solution>\n"
-                + "    </display>\n"
-                + "</exercise>";
-
         try {
-            String query = "INSERT INTO " + TABLE_NAME + " VALUES (?,?,?)";
+            String query = "INSERT INTO " + TABLE_NAME + "(exercise_category,"
+                    + "exercise_text) VALUES (?,?)";
             ps = connection.prepareStatement(query);
-            ps.setInt(1, exerciseID);
-            ps.setString(2, "Syntax");
-            ps.setString(3, xmlExercise);
+            ps.setString(1, exerciseCategory);
+            ps.setString(2, xmlExercise);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

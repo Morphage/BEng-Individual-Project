@@ -1,0 +1,7 @@
+public class SyntaxExercise {
+    public static void main(String[] args) {
+        %VARIABLES_DECLARATIONS%        
+        %VARIABLE_ASSIGNMENTS%
+        %PRINT_STATEMENTS%
+    }
+}

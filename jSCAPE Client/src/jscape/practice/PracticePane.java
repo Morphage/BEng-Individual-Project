@@ -286,9 +286,9 @@ public class PracticePane extends BorderPane {
             submitButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
-                    int solution = Integer.valueOf(currentExercise.getSolution());
                     int selected = group.getToggles().indexOf(group.getSelectedToggle());
-                    boolean isCorrectAnswer = (group.getToggles().get(solution) == group.getSelectedToggle());
+                    RadioButton selectedButton = (RadioButton) group.getSelectedToggle();
+                    boolean isCorrectAnswer = (selectedButton.getText().equals(currentExercise.getSolution()));
 
                     runAnswerExerciseTask("ac6609", currentExercise.getExerciseId(), selected,
                             exerciseCategory, isCorrectAnswer);
@@ -367,10 +367,11 @@ public class PracticePane extends BorderPane {
                             rb3.setText(payload.get(7));
                             rb4.setText(payload.get(8));
 
+                            /*
                             RadioButton solutionButton = (RadioButton) group.getToggles().get(Integer.valueOf(payload.get(9)));
-                            String solution = solutionButton.getText();
+                            String solution = solutionButton.getText(); */
 
-                            solutionText.setText(solution);
+                            solutionText.setText(payload.get(9));
                         }
                     } else if (t1 == Worker.State.FAILED) {
                         //Failed to get exercise => show stuff
@@ -404,7 +405,7 @@ public class PracticePane extends BorderPane {
             GridPane.setConstraints(discTitle, 0, sideRow++);
             sidebar.getChildren().add(discTitle);
             Text disc = new Text(sideBarInfo.get(exerciseCategory).getDescription());
-            disc.setWrappingWidth(250);
+            disc.setWrappingWidth(320);
             disc.getStyleClass().add("right-sidebar-body");
             GridPane.setConstraints(disc, 0, sideRow++);
             sidebar.getChildren().add(disc);
@@ -422,6 +423,7 @@ public class PracticePane extends BorderPane {
 
             for (final String link : lectureNotes) {
                 Hyperlink hyperLink = new Hyperlink(link);
+                hyperLink.setWrapText(true);
                 hyperLink.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent t) {
@@ -445,6 +447,7 @@ public class PracticePane extends BorderPane {
 
             for (final String link : helpfulLinks) {
                 Hyperlink hyperLink = new Hyperlink(link);
+                hyperLink.setWrapText(true);
                 hyperLink.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent t) {
@@ -501,6 +504,7 @@ public class PracticePane extends BorderPane {
             setMaxSize(530, USE_PREF_SIZE);
             // block mouse clicks
             setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
                 public void handle(MouseEvent t) {
                     t.consume();
                 }
