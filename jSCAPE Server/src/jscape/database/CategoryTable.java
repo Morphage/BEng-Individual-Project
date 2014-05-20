@@ -23,7 +23,8 @@ public class CategoryTable {
     private static final String DESCRIPTION = "description";
     private static final String LECTURE_NOTES = "lecture_notes";
     private static final String HELPFUL_LINKS = "helpful_links";
-
+    private static final String VISIBLE = "visible";
+    
     public static ArrayList<String> getExerciseCategories() {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
@@ -33,7 +34,8 @@ public class CategoryTable {
 
         try {
             String query = "SELECT " + EXERCISE_CATEGORY + "," + DESCRIPTION +
-                    "," + LECTURE_NOTES + "," + HELPFUL_LINKS + " FROM " + TABLE_NAME;
+                    "," + LECTURE_NOTES + "," + HELPFUL_LINKS + " FROM " + TABLE_NAME + 
+                    " WHERE " + VISIBLE + " = true";
             ps = connection.prepareStatement(query);
             resultSet = ps.executeQuery();
 

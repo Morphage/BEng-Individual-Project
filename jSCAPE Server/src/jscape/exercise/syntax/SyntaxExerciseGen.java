@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jscape.server.utils;
+package jscape.exercise.syntax;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -23,20 +23,20 @@ public class SyntaxExerciseGen {
     private static final String encoding = "UTF-8";
     private static String pathToTemplate = "src\\jscape\\server\\data\\easy1.java.template";
 
-    private static String xmlExercise = "<?xml version=\"1.0\"?>\n"
+    private static final String xmlExercise = "<?xml version=\"1.0\"?>\n"
             + "<exercise>\n"
             + "    <display>\n"
             + "        <view>CodeEditor</view>\n"
             + "        <value>";
 
-    private static List<String> lines = null;
+    private List<String> lines = null;
 
-    private static String solutionText;
-    private static int solutionLine;
+    private String solutionText;
+    private int solutionLine;
 
-    private static Random random = new Random();
+    private Random random = new Random();
 
-    private static List<Integer> linesUsed;
+    private List<Integer> linesUsed;
 
     public SyntaxExerciseGen() {
     }

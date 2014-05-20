@@ -62,9 +62,13 @@ public class PracticePane extends BorderPane {
 
     private GridPane exerciseCategories;
     private VBox mainMenu;
+    
+    private String myLoginName;
 
     public PracticePane() {
         super();
+        
+        myLoginName = JScape.getJSCAPE().loginName;
 
         mainMenu = new VBox(80);
 
@@ -286,11 +290,12 @@ public class PracticePane extends BorderPane {
             submitButton.setOnAction(new EventHandler() {
                 @Override
                 public void handle(Event event) {
+                    JScape.getJSCAPE().runPerformanceStatsService = true;
                     int selected = group.getToggles().indexOf(group.getSelectedToggle());
                     RadioButton selectedButton = (RadioButton) group.getSelectedToggle();
                     boolean isCorrectAnswer = (selectedButton.getText().equals(currentExercise.getSolution()));
 
-                    runAnswerExerciseTask("ac6609", currentExercise.getExerciseId(), selected,
+                    runAnswerExerciseTask(myLoginName, currentExercise.getExerciseId(), selected,
                             exerciseCategory, isCorrectAnswer);
                     rb1.setDisable(true);
                     rb2.setDisable(true);
@@ -330,7 +335,7 @@ public class PracticePane extends BorderPane {
                 @Override
                 protected Task<Message> createTask() {
                     ArrayList<String> payload = new ArrayList<String>();
-                    payload.add("ac6609");
+                    payload.add(myLoginName);
                     payload.add(exerciseCategory);
                     Message requestMessage = new Message(MessageCode.GET_EXERCISE, payload);
 
@@ -366,11 +371,6 @@ public class PracticePane extends BorderPane {
                             rb2.setText(payload.get(6));
                             rb3.setText(payload.get(7));
                             rb4.setText(payload.get(8));
-
-                            /*
-                            RadioButton solutionButton = (RadioButton) group.getToggles().get(Integer.valueOf(payload.get(9)));
-                            String solution = solutionButton.getText(); */
-
                             solutionText.setText(payload.get(9));
                         }
                     } else if (t1 == Worker.State.FAILED) {

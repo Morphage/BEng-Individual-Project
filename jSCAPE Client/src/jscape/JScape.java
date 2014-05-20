@@ -35,9 +35,7 @@ import javafx.util.Duration;
  */
 public class JScape extends Application {
 
-    // GUI elements constants, e.g. size, orientation, etc...
     private static final String HOST = "localhost";
-    //private static final String HOST = "10.187.195.124";
     private static final int PORT = 9000;
 
     private BorderPane rootPane;
@@ -52,9 +50,10 @@ public class JScape extends Application {
     private AboutPane aboutPane;
 
     private static JScape jSCAPE;
-
-    // DEBUG variables/constants - remove when program is done
-    private static final boolean DEBUG = true;
+    
+    public boolean runPerformanceStatsService = false;
+    
+    public String loginName = "ac6609";
 
     public static JScape getJSCAPE() {
         return jSCAPE;
@@ -77,6 +76,7 @@ public class JScape extends Application {
         modalDimmer = new StackPane();
         modalDimmer.setId("ModalDimmer");
         modalDimmer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
             public void handle(MouseEvent t) {
                 t.consume();
             }
@@ -85,8 +85,7 @@ public class JScape extends Application {
         layerPane.getChildren().add(modalDimmer);
 
         profilePane = new ProfilePane();
-        //profilePane.runFetchPerformanceStatsService();
-        profilePane.runFetchPerformanceStatsTask();
+        profilePane.runFetchPerformanceStatsService();
         profilePane.runFetchProfileInfoTask();
 
         practicePane = new PracticePane();
@@ -119,10 +118,10 @@ public class JScape extends Application {
                         String tabName = t1.getText();
 
                         if ("PROFILE".equals(tabName)) {
-                            System.out.println("Profile selected");
-                            //read boolean to see if an exercise was answered or not
-                            //and then reset boolean
-                            //profilePane.runFetchPerformanceStatsService();
+                            if (runPerformanceStatsService) {
+                                profilePane.runFetchPerformanceStatsService();
+                                runPerformanceStatsService = false;
+                            }
                         }
                     }
                 }
@@ -142,6 +141,7 @@ public class JScape extends Application {
         TimelineBuilder.create().keyFrames(
                 new KeyFrame(Duration.seconds(1),
                         new EventHandler<ActionEvent>() {
+                            @Override
                             public void handle(ActionEvent t) {
                                 modalDimmer.setCache(false);
                             }
@@ -155,6 +155,7 @@ public class JScape extends Application {
         TimelineBuilder.create().keyFrames(
                 new KeyFrame(Duration.seconds(1),
                         new EventHandler<ActionEvent>() {
+                            @Override
                             public void handle(ActionEvent t) {
                                 modalDimmer.setCache(false);
                                 modalDimmer.setVisible(false);
