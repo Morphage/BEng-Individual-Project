@@ -33,10 +33,8 @@ public class BSTExerciseGen {
         int type = random.nextInt(3);
         if ((type == 0) || (type == 1)) {
             bst = createBalancedBST(randomNumbers);
-            System.out.println("********Balanced*******");
         } else {
             bst = createRandomBST(randomNumbers);
-            System.out.println("********Random*******");
         }
 
         traversalOrders = new ArrayList<>();
@@ -94,6 +92,10 @@ public class BSTExerciseGen {
 
     private void insertBalanced(BST<Integer> bst, List<Integer> data, int start, int end) {
         int add = (end - start) / 2;
+        if ((add == 0) && (start == 0)) {
+            bst.insert(data.get(0));
+        }
+        
         if (add != 0) {
             int mid = start + (end - start) / 2;
             bst.insert(data.get(mid));
@@ -115,11 +117,11 @@ public class BSTExerciseGen {
     private List<Integer> getRandomNumbers() {
         ArrayList<Integer> nums = new ArrayList<>();
 
-        for (int i = 1; i < 50; i++) {
+        for (int i = 1; i < 60; i++) {
             nums.add(i);
         }
 
-        int r = random.nextInt(10) + 3;
+        int r = random.nextInt(13) + 3;
 
         Collections.shuffle(nums);
         return nums.subList(0, r);

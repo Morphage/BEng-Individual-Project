@@ -142,7 +142,7 @@ public class BST<K extends Comparable<K>> {
     private void toJSON(BSTNode<K> root, StringBuilder sb) {
         if ((root.getLeft() != null) || (root.getRight() != null)) {
             sb.append("{\n" + "        id: \"")
-                    .append(root.getKey())
+                    .append(root.getKey()).append("00")
                     .append("\",\n" + "        name: \"")
                     .append(root.getKey())
                     .append("\",\n")
@@ -150,17 +150,29 @@ public class BST<K extends Comparable<K>> {
                     .append("        children: [");
             if (root.getLeft() != null) {
                 toJSON(root.getLeft(), sb);
-                if (root.getRight() != null) {
-                    sb.append(",");
-                }
+                sb.append(", ");
+            } else {
+                sb.append("{\n" + "        id: \"")
+                    .append((Integer) root.getKey() - 1).append("90")
+                    .append("\",\n" + "        name: \"null")
+                    .append("\",\n")
+                    .append("        data: {},\n")
+                    .append("        children: []},");
             }
             if (root.getRight() != null) {
                 toJSON(root.getRight(), sb);
+            } else {
+                sb.append("{\n" + "        id: \"")
+                    .append((Integer) root.getKey() + 1).append("90")
+                    .append("\",\n" + "        name: \"null")
+                    .append("\",\n")
+                    .append("        data: {},\n")
+                    .append("        children: []}");
             }
             sb.append("]}");
         } else {
             sb.append("{\n" + "        id: \"")
-                    .append(root.getKey())
+                    .append(root.getKey()).append("00")
                     .append("\",\n" + "        name: \"")
                     .append(root.getKey())
                     .append("\",\n")
@@ -169,29 +181,11 @@ public class BST<K extends Comparable<K>> {
         }
     }
 
-    public static void main(String[] args) {
-        BST bst = new BST();
-        bst.insert(26);
-        bst.insert(8);
-        bst.insert(4);
-        bst.insert(24);
-        bst.insert(42);
-        //bst.insert(28);
-        bst.insert(43);
-
-        System.out.println("In-order: " + bst.inOrderTraversal());
-        System.out.println("Pre-order: " + bst.preOrderTraversal());
-        System.out.println("Post-order: " + bst.postOrderTraversal());
-        System.out.println("Level-order: " + bst.levelOrderTraversal());
-        System.out.println("Height = " + bst.height());
-        System.out.println(bst.toJSON());
-    }
-
-    private static class BSTNode<K> {
+    private class BSTNode<K> {
 
         private K key;
         private BSTNode<K> left;
-        private BSTNode<K> right;
+        private BSTNode<K> right;       
 
         public BSTNode(K key, BSTNode<K> left, BSTNode<K> right) {
             this.key = key;
@@ -201,10 +195,6 @@ public class BST<K extends Comparable<K>> {
 
         public K getKey() {
             return key;
-        }
-
-        public void setKey(K key) {
-            this.key = key;
         }
 
         public BSTNode<K> getLeft() {

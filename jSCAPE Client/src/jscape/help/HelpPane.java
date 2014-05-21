@@ -18,7 +18,7 @@ import javafx.scene.web.WebView;
  */
 public class HelpPane extends BorderPane {
     
-    public static final String DEFAULT_URL = "http://www.doc.ic.ac.uk/~ac6609/manual.html";
+    public static final String DEFAULT_URL = "http://www.doc.ic.ac.uk/~ac6609/html/manual.html";
     
     public HelpPane() {
         super();

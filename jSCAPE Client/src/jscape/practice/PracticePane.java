@@ -46,6 +46,7 @@ import jscape.JScape;
 import jscape.communication.Message;
 import jscape.communication.MessageCode;
 import jscape.communication.RequestServerTask;
+import jscape.practice.views.BinaryTree;
 import jscape.practice.views.CodeEditor;
 
 /**
@@ -194,15 +195,14 @@ public class PracticePane extends BorderPane {
                     + "-fx-font-weight: bold;");
 
             //final CodeEditor codeEditor = new CodeEditor("");
-            WebView webview = new WebView();
-            webview.getEngine().load("http://www.doc.ic.ac.uk/~ac6609/binary_tree.html");
+            final BinaryTree binaryTree = new BinaryTree("");
 
             VBox leftVBox = new VBox(8);
             //leftVBox.getChildren().addAll(exerciseData, codeEditor);
             //VBox.setVgrow(codeEditor, Priority.NEVER);
             
-            leftVBox.getChildren().addAll(exerciseData, webview);
-            VBox.setVgrow(webview, Priority.NEVER);
+            leftVBox.getChildren().addAll(exerciseData, binaryTree);
+            VBox.setVgrow(binaryTree, Priority.NEVER);
             
             BorderPane leftSplitPane = new BorderPane();
             leftSplitPane.setCenter(leftVBox);
@@ -251,11 +251,13 @@ public class PracticePane extends BorderPane {
             VBox exerciseVBox = new VBox(8);
             exerciseVBox.getChildren().addAll(exerciseLabel, exerciseText, rb1,
                     rb2, rb3, rb4, correctOrWrong);
-            VBox.setMargin(rb1, new Insets(0, 0, 0, 30));
-            VBox.setMargin(rb2, new Insets(0, 0, 0, 30));
-            VBox.setMargin(rb3, new Insets(0, 0, 0, 30));
-            VBox.setMargin(rb4, new Insets(0, 0, 0, 30));
-            VBox.setMargin(correctOrWrong, new Insets(15, 0, 0, 30));
+            VBox.setMargin(exerciseLabel, new Insets(0, 0, 0, 15));
+            VBox.setMargin(exerciseText, new Insets(0, 0, 0, 15));
+            VBox.setMargin(rb1, new Insets(0, 0, 0, 45));
+            VBox.setMargin(rb2, new Insets(0, 0, 0, 45));
+            VBox.setMargin(rb3, new Insets(0, 0, 0, 45));
+            VBox.setMargin(rb4, new Insets(0, 0, 0, 45));
+            VBox.setMargin(correctOrWrong, new Insets(15, 0, 0, 45));
 
             Label solutionLabel = new Label("Solution:");
             solutionLabel.setFont(font20);
@@ -268,7 +270,8 @@ public class PracticePane extends BorderPane {
             final VBox solutionVBox = new VBox(8);
             solutionVBox.getChildren().addAll(solutionLabel, solutionText);
             solutionVBox.setVisible(false);
-            VBox.setMargin(solutionText, new Insets(0, 0, 0, 30));
+            VBox.setMargin(solutionLabel, new Insets(0, 0, 0, 15));
+            VBox.setMargin(solutionText, new Insets(0, 0, 0, 45));
 
             VBox rightMainVBox = new VBox(30);
             rightMainVBox.getChildren().addAll(exerciseVBox, solutionVBox);
@@ -332,6 +335,7 @@ public class PracticePane extends BorderPane {
             BorderPane rightSplitPane = new BorderPane();
             rightSplitPane.setCenter(rightMainVBox);
             rightSplitPane.setBottom(buttonHBox);
+            VBox.setVgrow(rightSplitPane, Priority.ALWAYS);
 
             SplitPane splitPane = new SplitPane();
             splitPane.getItems().addAll(leftSplitPane, rightSplitPane);
@@ -356,7 +360,6 @@ public class PracticePane extends BorderPane {
                         ArrayList<String> payload = replyMessage.getPayload();
 
                         if (payload == null) {
-                            System.out.println("NO MORE EXERCISES");
                             JScape.getJSCAPE().showModalMessage(new NoMoreExercicesPopup(exerciseCategory));
                         } else {
                             printDebugExerciseInfo(payload);
@@ -368,6 +371,7 @@ public class PracticePane extends BorderPane {
                             prepareExercise(currentExercise);
 
                             //codeEditor.setCode(payload.get(2));
+                            binaryTree.setJSON(payload.get(2));
                             exerciseText.setText(payload.get(4));
                             rb1.setText(payload.get(5));
                             rb2.setText(payload.get(6));
@@ -385,7 +389,7 @@ public class PracticePane extends BorderPane {
             practiceMain.getStyleClass().add("category-page");
 
             // This is needed, don't remove
-            //VBox.setVgrow(splitPane, Priority.ALWAYS);
+            VBox.setVgrow(splitPane, Priority.ALWAYS);
             setCenter(practiceMain);
             setRight(createSidebar(exerciseCategory));
         }
@@ -460,6 +464,7 @@ public class PracticePane extends BorderPane {
                 sidebar.getChildren().add(hyperLink);
             }
 
+            GridPane.setVgrow(sidebar, Priority.NEVER);
             return sidebar;
         }
 
