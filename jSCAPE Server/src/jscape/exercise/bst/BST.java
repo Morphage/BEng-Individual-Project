@@ -80,12 +80,12 @@ public class BST<K extends Comparable<K>> {
 
     public String levelOrderTraversal() {
         StringBuilder sb = new StringBuilder();
-        
+
         int height = height();
         for (int i = 1; i <= height; i++) {
             sb.append(givenLevelAsString(i)).append(", ");
         }
-        
+
         return sb.toString().substring(0, sb.toString().length() - 2);
     }
 
@@ -107,7 +107,7 @@ public class BST<K extends Comparable<K>> {
             }
         }
     }
-    
+
     public void printAllLevels() {
         for (int i = 1; i <= height(); i++) {
             System.out.println("Level " + i + "= " + givenLevelAsString(i));
@@ -133,23 +133,58 @@ public class BST<K extends Comparable<K>> {
         }
     }
 
+    public String toJSON() {
+        StringBuilder sb = new StringBuilder();
+        toJSON(root, sb);
+        return sb.toString() + ";";
+    }
+    
+    private void toJSON(BSTNode<K> root, StringBuilder sb) {
+        if ((root.getLeft() != null) || (root.getRight() != null)) {
+            sb.append("{\n" + "        id: \"")
+                    .append(root.getKey())
+                    .append("\",\n" + "        name: \"")
+                    .append(root.getKey())
+                    .append("\",\n")
+                    .append("        data: {},\n")
+                    .append("        children: [");
+            if (root.getLeft() != null) {
+                toJSON(root.getLeft(), sb);
+                if (root.getRight() != null) {
+                    sb.append(",");
+                }
+            }
+            if (root.getRight() != null) {
+                toJSON(root.getRight(), sb);
+            }
+            sb.append("]}");
+        } else {
+            sb.append("{\n" + "        id: \"")
+                    .append(root.getKey())
+                    .append("\",\n" + "        name: \"")
+                    .append(root.getKey())
+                    .append("\",\n")
+                    .append("        data: {},\n")
+                    .append("        children: []\n    }");
+        }
+    }
+
     public static void main(String[] args) {
         BST bst = new BST();
-        bst.insert("F");
-        bst.insert("B");
-        bst.insert("G");
-        bst.insert("A");
-        bst.insert("D");
-        bst.insert("C");
-        bst.insert("E");
-        bst.insert("I");
-        bst.insert("H");
+        bst.insert(26);
+        bst.insert(8);
+        bst.insert(4);
+        bst.insert(24);
+        bst.insert(42);
+        //bst.insert(28);
+        bst.insert(43);
 
         System.out.println("In-order: " + bst.inOrderTraversal());
         System.out.println("Pre-order: " + bst.preOrderTraversal());
         System.out.println("Post-order: " + bst.postOrderTraversal());
         System.out.println("Level-order: " + bst.levelOrderTraversal());
         System.out.println("Height = " + bst.height());
+        System.out.println(bst.toJSON());
     }
 
     private static class BSTNode<K> {

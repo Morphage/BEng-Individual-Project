@@ -41,6 +41,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import jscape.JScape;
 import jscape.communication.Message;
 import jscape.communication.MessageCode;
@@ -192,12 +193,17 @@ public class PracticePane extends BorderPane {
             exerciseData.setStyle("-fx-text-fill: #e1fdff;"
                     + "-fx-font-weight: bold;");
 
-            final CodeEditor codeEditor = new CodeEditor("");
+            //final CodeEditor codeEditor = new CodeEditor("");
+            WebView webview = new WebView();
+            webview.getEngine().load("http://www.doc.ic.ac.uk/~ac6609/binary_tree.html");
 
             VBox leftVBox = new VBox(8);
-            leftVBox.getChildren().addAll(exerciseData, codeEditor);
-            VBox.setVgrow(codeEditor, Priority.NEVER);
-
+            //leftVBox.getChildren().addAll(exerciseData, codeEditor);
+            //VBox.setVgrow(codeEditor, Priority.NEVER);
+            
+            leftVBox.getChildren().addAll(exerciseData, webview);
+            VBox.setVgrow(webview, Priority.NEVER);
+            
             BorderPane leftSplitPane = new BorderPane();
             leftSplitPane.setCenter(leftVBox);
             leftSplitPane.setBottom(backButton);
@@ -361,11 +367,7 @@ public class PracticePane extends BorderPane {
 
                             prepareExercise(currentExercise);
 
-                            codeEditor.setCode(payload.get(2));
-                            /*exerciseText.setText("This is a big ass question that takes"
-                             + " plenty of space. I want to see whether the text"
-                             + " hopefully wraps around but I doubt it because that"
-                             + " would be too convenient now wouldn't it?");*/
+                            //codeEditor.setCode(payload.get(2));
                             exerciseText.setText(payload.get(4));
                             rb1.setText(payload.get(5));
                             rb2.setText(payload.get(6));

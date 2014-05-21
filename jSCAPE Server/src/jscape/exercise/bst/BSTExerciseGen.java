@@ -47,7 +47,7 @@ public class BSTExerciseGen {
 
         String exercise = xmlExercise;
         
-        exercise += "BINARY TREE GRAPHICAL REPRESENTATION";
+        exercise += bst.toJSON();
 
         int rand = random.nextInt(4);
         String solutionTraversalOrder = traversalOrders.get(rand);
@@ -124,5 +124,4 @@ public class BSTExerciseGen {
         Collections.shuffle(nums);
         return nums.subList(0, r);
     }
-
 }
