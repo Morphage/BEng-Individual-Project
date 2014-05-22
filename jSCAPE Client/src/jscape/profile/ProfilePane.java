@@ -53,6 +53,7 @@ public class ProfilePane extends BorderPane {
     private Label firstName;
     private Label lastName;
     private Label loginName;
+    private Label className;
     private Label lastLogin;
     private Label lastExerciseAnswered;
 
@@ -64,33 +65,37 @@ public class ProfilePane extends BorderPane {
     private RequestServerTask fetchProfileInfoTask;
 
     private Service fetchPerformanceStatsService;
-    
+
     private String myLoginName;
 
     public ProfilePane() {
         super();
-        
+
         myLoginName = JScape.getJSCAPE().loginName;
 
         firstName = new Label();
         lastName = new Label();
         loginName = new Label();
+        className = new Label();
         lastLogin = new Label();
         lastExerciseAnswered = new Label();
 
         // TODO: PUT THIS IN CSS
         firstName.setFont(new Font("Arial", 18));
         firstName.setStyle("-fx-text-fill: #2E211C;");
-        
+
         lastName.setFont(new Font("Arial", 20));
         lastName.setStyle("-fx-text-fill: #2E211C;");
-        
+
         loginName.setFont(new Font("Arial", 14));
         loginName.setStyle("-fx-text-fill: #2E211C;");
-        
+
+        className.setFont(new Font("Arial", 14));
+        className.setStyle("-fx-text-fill: #2E211C;");
+
         lastLogin.setFont(new Font("Arial", 13));
         lastLogin.setStyle("-fx-text-fill: #2E211C");
-        
+
         lastExerciseAnswered.setFont(new Font("Arial", 13));
         lastExerciseAnswered.setStyle("-fx-text-fill: #2E211C;");
 
@@ -107,8 +112,19 @@ public class ProfilePane extends BorderPane {
                     firstName.setText(replyMessage.getPayload().get(0));
                     lastName.setText(replyMessage.getPayload().get(1));
                     loginName.setText(myLoginName);
-                    lastLogin.setText("Last login: " + replyMessage.getPayload().get(2));
-                    lastExerciseAnswered.setText("Last exercise answered: " + replyMessage.getPayload().get(3));
+                    className.setText(replyMessage.getPayload().get(2));
+
+                    if ("null".equals(replyMessage.getPayload().get(3))) {
+                        lastLogin.setText("Last login: NO DATA YET");
+                    } else {
+                        lastLogin.setText("Last login: " + replyMessage.getPayload().get(3));
+                    }
+
+                    if ("null".equals(replyMessage.getPayload().get(4))) {
+                        lastExerciseAnswered.setText("Last exercise answered: NO DATA YET");
+                    } else {
+                        lastExerciseAnswered.setText("Last exercise answered: " + replyMessage.getPayload().get(4));
+                    }
                 } else if (t1 == Worker.State.FAILED) {
                     // Platform run later not needed here I think....check to be sure
                     Platform.runLater(new Runnable() {
@@ -129,14 +145,14 @@ public class ProfilePane extends BorderPane {
         profileInfo.setId("page-tree");
 
         VBox profileInfoTop = new VBox();
-        profileInfoTop.getChildren().addAll(firstName, lastName, loginName);
+        profileInfoTop.getChildren().addAll(firstName, lastName, loginName, className);
         profileInfoTop.setAlignment(Pos.TOP_CENTER);
-        VBox.setMargin(firstName, new Insets(20, 0, 0 , 0));
+        VBox.setMargin(firstName, new Insets(20, 0, 0, 0));
 
         VBox profileInfoBottom = new VBox();
         profileInfoBottom.getChildren().addAll(lastLogin, lastExerciseAnswered);
         profileInfoBottom.setAlignment(Pos.BOTTOM_CENTER);
-        VBox.setMargin(lastExerciseAnswered, new Insets(0, 0, 20 , 0));
+        VBox.setMargin(lastExerciseAnswered, new Insets(0, 0, 20, 0));
 
         profileInfo.setTop(profileInfoTop);
         profileInfo.setBottom(profileInfoBottom);
@@ -193,7 +209,7 @@ public class ProfilePane extends BorderPane {
                     if (categoryBox.getSelectionModel().getSelectedItem() == null) {
                         ObservableList<String> exerciseCategories = performanceStatsTable.getExerciseCategories();
                         exerciseCategories.add("-- Total answers per category --");
-                        
+
                         categoryBox.setItems(exerciseCategories);
                         categoryBox.getSelectionModel().selectFirst();
                     } else {
@@ -211,7 +227,7 @@ public class ProfilePane extends BorderPane {
                 }
             }
         });
-        
+
         // Combine performance label and performance table into a VBox
         VBox performanceVBox = new VBox();
         performanceVBox.getChildren().addAll(performanceSummary, performanceStatsTable);
@@ -321,7 +337,7 @@ public class ProfilePane extends BorderPane {
         final StackedBarChart stackedBar = new StackedBarChart(xAxis, yAxis, barChartData, 100.0d);
         StackPane stackPane = new StackPane();
         stackPane.getChildren().add(stackedBar);
-        
+
         graphTypesBox.valueProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue ov, Object t, Object t1) {
@@ -332,7 +348,7 @@ public class ProfilePane extends BorderPane {
                 }
             }
         });
-        
+
         profileStatistics.getChildren().add(stackPane);
 
         profileStatistics.getStyleClass().add("category-page");

@@ -64,12 +64,12 @@ public class PracticePane extends BorderPane {
 
     private GridPane exerciseCategories;
     private VBox mainMenu;
-    
+
     private String myLoginName;
 
     public PracticePane() {
         super();
-        
+
         myLoginName = JScape.getJSCAPE().loginName;
 
         mainMenu = new VBox(80);
@@ -161,12 +161,23 @@ public class PracticePane extends BorderPane {
 
         VBox practiceMain;
 
-        private Exercise currentExercise;
+        private Exercise currentExercise = null;
 
         private Service fetchExerciseService;
 
         private final Button nextButton = new Button("Next Exercise");
         private final Button submitButton = new Button("Submit Answer");
+
+        private VBox leftVBox;
+
+        private Text exerciseText;
+
+        private RadioButton rb1;
+        private RadioButton rb2;
+        private RadioButton rb3;
+        private RadioButton rb4;
+
+        private Text solutionText;
 
         public PracticeSplitPane(final String exerciseCategory) {
             practiceMain = new VBox(30);
@@ -197,13 +208,10 @@ public class PracticePane extends BorderPane {
             //final CodeEditor codeEditor = new CodeEditor("");
             final BinaryTree binaryTree = new BinaryTree("");
 
-            VBox leftVBox = new VBox(8);
-            //leftVBox.getChildren().addAll(exerciseData, codeEditor);
-            //VBox.setVgrow(codeEditor, Priority.NEVER);
-            
+            leftVBox = new VBox(8);
             leftVBox.getChildren().addAll(exerciseData, binaryTree);
             VBox.setVgrow(binaryTree, Priority.NEVER);
-            
+
             BorderPane leftSplitPane = new BorderPane();
             leftSplitPane.setCenter(leftVBox);
             leftSplitPane.setBottom(backButton);
@@ -215,7 +223,7 @@ public class PracticePane extends BorderPane {
             exerciseLabel.setStyle("-fx-text-fill: #e1fdff;"
                     + "-fx-font-weight: bold;");
 
-            final Text exerciseText = new Text();
+            exerciseText = new Text();
             exerciseText.setFont(font14);
             exerciseText.setWrappingWidth(600);
 
@@ -228,19 +236,19 @@ public class PracticePane extends BorderPane {
                 }
             });
 
-            final RadioButton rb1 = new RadioButton();
+            rb1 = new RadioButton();
             rb1.setFont(font12);
             rb1.setToggleGroup(group);
 
-            final RadioButton rb2 = new RadioButton();
+            rb2 = new RadioButton();
             rb2.setFont(font12);
             rb2.setToggleGroup(group);
 
-            final RadioButton rb3 = new RadioButton();
+            rb3 = new RadioButton();
             rb3.setFont(font12);
             rb3.setToggleGroup(group);
 
-            final RadioButton rb4 = new RadioButton();
+            rb4 = new RadioButton();
             rb4.setFont(font12);
             rb4.setToggleGroup(group);
 
@@ -264,7 +272,7 @@ public class PracticePane extends BorderPane {
             solutionLabel.setStyle("-fx-text-fill: #e1fdff;"
                     + "-fx-font-weight: bold;");
 
-            final Text solutionText = new Text();
+            solutionText = new Text();
             solutionText.setFont(font12);
 
             final VBox solutionVBox = new VBox(8);
@@ -364,20 +372,18 @@ public class PracticePane extends BorderPane {
                         } else {
                             printDebugExerciseInfo(payload);
 
-                            currentExercise = new Exercise(Integer.valueOf(payload.get(0)), payload.get(1),
-                                    payload.get(2), payload.get(3), payload.get(4), payload.get(5),
-                                    payload.get(6), payload.get(7), payload.get(8), payload.get(9));
-
-                            prepareExercise(currentExercise);
-
-                            //codeEditor.setCode(payload.get(2));
-                            binaryTree.setJSON(payload.get(2));
-                            exerciseText.setText(payload.get(4));
-                            rb1.setText(payload.get(5));
-                            rb2.setText(payload.get(6));
-                            rb3.setText(payload.get(7));
-                            rb4.setText(payload.get(8));
-                            solutionText.setText(payload.get(9));
+                            if (currentExercise == null) {
+                                currentExercise = new Exercise(Integer.valueOf(payload.get(0)), payload.get(1),
+                                        payload.get(2), payload.get(3), payload.get(4), payload.get(5),
+                                        payload.get(6), payload.get(7), payload.get(8), payload.get(9));
+                                prepareView(currentExercise.getLeftDisplayView());
+                                prepareExercise();
+                            } else {
+                                currentExercise = new Exercise(Integer.valueOf(payload.get(0)), payload.get(1),
+                                        payload.get(2), payload.get(3), payload.get(4), payload.get(5),
+                                        payload.get(6), payload.get(7), payload.get(8), payload.get(9));
+                                prepareExercise();
+                            }
                         }
                     } else if (t1 == Worker.State.FAILED) {
                         //Failed to get exercise => show stuff
@@ -394,8 +400,31 @@ public class PracticePane extends BorderPane {
             setRight(createSidebar(exerciseCategory));
         }
 
-        private void prepareExercise(Exercise exercise) {
+        private void prepareView(String leftDisplayView) {
+            if ("BinaryTree".equals(leftDisplayView)) {
+                leftVBox.getChildren().remove(1);
+                leftVBox.getChildren().add(new BinaryTree(""));
+            } else if ("CodeEditor".equals(leftDisplayView)) {
+                leftVBox.getChildren().remove(1);
+                leftVBox.getChildren().add(new CodeEditor(""));
+            }
+        }
 
+        private void prepareExercise() {
+            String view = currentExercise.getLeftDisplayView();
+
+            if ("BinaryTree".equals(view)) {
+                ((BinaryTree) leftVBox.getChildren().get(1)).setJSON(currentExercise.getLeftDisplayValue());
+            } else if ("CodeEditor".equals(view)) {
+                ((CodeEditor) leftVBox.getChildren().get(1)).setCode(currentExercise.getLeftDisplayValue());
+            }
+
+            exerciseText.setText(currentExercise.getRightDisplayValue());
+            rb1.setText(currentExercise.getChoice1());
+            rb2.setText(currentExercise.getChoice2());
+            rb3.setText(currentExercise.getChoice3());
+            rb4.setText(currentExercise.getChoice4());
+            solutionText.setText(currentExercise.getSolution());
         }
 
         private GridPane createSidebar(String exerciseCategory) {
@@ -547,11 +576,11 @@ public class PracticePane extends BorderPane {
                     setRight(null);
                 }
             });
-            
+
             HBox buttonHBox = new HBox(0);
             buttonHBox.setAlignment(Pos.CENTER_RIGHT);
             buttonHBox.getChildren().add(okButton);
-            
+
             getChildren().addAll(explPane, buttonHBox);
         }
     }

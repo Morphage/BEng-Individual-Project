@@ -31,3 +31,4 @@
 /jSCAPE Server/build/
 /jSCAPE Client/build/
 /jSCAPE Client/dist/bundles/*
+/jSCAPE Server/dist/

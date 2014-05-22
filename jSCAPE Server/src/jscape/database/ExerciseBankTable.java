@@ -83,8 +83,8 @@ public class ExerciseBankTable {
         Connection connection = Database.getConnection();
 
         try {
-            String query = "INSERT INTO " + TABLE_NAME + "(exercise_category,"
-                    + "exercise_text) VALUES (?,?)";
+            String query = "INSERT INTO " + TABLE_NAME + "(" + EXERCISE_CATEGORY + ", "
+                    + EXERCISE_TEXT + ") VALUES (?,?)";
             ps = connection.prepareStatement(query);
             ps.setString(1, exerciseCategory);
             ps.setString(2, xmlExercise);

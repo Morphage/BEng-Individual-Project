@@ -24,8 +24,8 @@ public class ExerciseGenerator {
             //System.out.println(beg.makeExercise());
             //System.out.println(seg.makeType1Exercise());
             //ExerciseBankTable.addExercise("Syntax", seg.makeType2Exercise());
-            //ExerciseBankTable.addExercise("Syntax", seg.makeType1Exercise());
-            ExerciseBankTable.addExercise("Binary Trees", beg.makeExercise());
+            ExerciseBankTable.addExercise("Syntax", seg.makeType1Exercise());
+            //ExerciseBankTable.addExercise("Binary Trees", beg.makeExercise());
         }
         
     }
