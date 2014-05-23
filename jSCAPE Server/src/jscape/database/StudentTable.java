@@ -40,7 +40,7 @@ public class StudentTable {
         ArrayList<String> profileInfo = new ArrayList<>();
 
         try {
-            String query = "SELECT " + FIRST_NAME + "," + LAST_NAME + ","  + CLASS + "," 
+            String query = "SELECT " + FIRST_NAME + "," + LAST_NAME + "," + CLASS + ","
                     + LAST_LOGIN + "," + LAST_EXERCISE_ANSWERED + " FROM " + TABLE_NAME
                     + " WHERE " + LOGIN_NAME + " = ?";
             ps = connection.prepareStatement(query);
@@ -155,5 +155,40 @@ public class StudentTable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static ArrayList<String> loginStudent(String loginName, String password) {
+        PreparedStatement ps = null;
+        Connection connection = Database.getConnection();
+        ResultSet resultSet;
+        
+        ArrayList<String> loginStatus = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + LOGIN_NAME + " = ? AND "
+                    + PASSWORD + " = ?";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, loginName);
+            ps.setString(2, password);
+            resultSet = ps.executeQuery();
+            
+            if (resultSet.next()) {
+                loginStatus.add("success");
+            } else {
+                loginStatus.add("fail");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return loginStatus;
     }
 }

@@ -108,6 +108,9 @@ class ServerThread implements Runnable {
                 StudentTable.updateLastExerciseAnswered(loginName);
                 payload = null;
                 break;
+            case LOGIN:
+                payload = StudentTable.loginStudent(request.getPayload().get(0), request.getPayload().get(1));
+                break;
         }
         
         return new Message(messageCode, payload);

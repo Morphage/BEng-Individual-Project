@@ -5,6 +5,9 @@
  */
 package jscape;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -16,18 +19,26 @@ import jscape.help.HelpPane;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.DepthTest;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import jscape.communication.Message;
+import jscape.communication.MessageCode;
+import jscape.communication.RequestServerTask;
 
 /**
  *
@@ -35,6 +46,7 @@ import javafx.util.Duration;
  */
 public class JScape extends Application {
 
+    private static final String FXML = "Login.fxml";
     private static final String HOST = "localhost";
     private static final int PORT = 9000;
 
@@ -50,10 +62,13 @@ public class JScape extends Application {
     private AboutPane aboutPane;
 
     private static JScape jSCAPE;
-    
+
     public boolean runPerformanceStatsService = false;
-    
-    public String loginName = "ac6609";
+
+    public String myLoginName;
+
+    private Stage currentStage = null;
+    private LoginController loginController = null;
 
     public static JScape getJSCAPE() {
         return jSCAPE;
@@ -61,7 +76,40 @@ public class JScape extends Application {
 
     @Override
     public void start(final Stage stage) {
+        currentStage = stage;
+
+        try {
+            loginController = (LoginController) gotoLogin();
+            loginController.setApp(this);
+        } catch (Exception e) {
+        }
+    }
+
+    private Initializable gotoLogin() throws Exception {
+        FXMLLoader loader = new FXMLLoader();
+        InputStream in = JScape.class.getResourceAsStream(FXML);
+        loader.setBuilderFactory(new JavaFXBuilderFactory());
+        loader.setLocation(JScape.class.getResource(FXML));
+        AnchorPane page = null;
+        try {
+            page = (AnchorPane) loader.load(in);
+        } catch (IOException ex) {
+        } finally {
+            try {
+                in.close();
+            } catch (IOException ie) {
+            }
+        }
+        Scene loginScene = new Scene(page, 1020, 700);
+        currentStage.setScene(loginScene);
+        currentStage.sizeToScene();
+        currentStage.show();
+        return (Initializable) loader.getController();
+    }
+
+    private void gotoApp(String loginName) {
         jSCAPE = this;
+        myLoginName = loginName;
         StackPane layerPane = new StackPane();
 
         rootPane = new BorderPane();
@@ -69,7 +117,7 @@ public class JScape extends Application {
         layerPane.setDepthTest(DepthTest.DISABLE);
         layerPane.getChildren().add(rootPane);
 
-        Scene scene = new Scene(layerPane, 1020, 700);
+        final Scene scene = new Scene(layerPane, currentStage.getWidth(), currentStage.getHeight());
         scene.getStylesheets().add(JScape.class.getResource("jscape.css").toExternalForm());
 
         // create modal dimmer, to dim screen when showing modal dialogs
@@ -129,8 +177,35 @@ public class JScape extends Application {
 
         this.rootPane.setCenter(tabPane);
 
-        stage.setScene(scene);
-        stage.show();
+        currentStage.setScene(scene);
+        currentStage.sizeToScene();
+        currentStage.show();
+    }
+
+    public void login(final String loginName, final String password) {
+        ArrayList<String> payload = new ArrayList<String>();
+        payload.add(loginName);
+        payload.add(password);
+
+        Message requestMessage = new Message(MessageCode.LOGIN, payload);
+        final RequestServerTask loginTask = new RequestServerTask(HOST, PORT, requestMessage);
+        loginTask.stateProperty().addListener(new ChangeListener<Worker.State>() {
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
+                if (t1 == Worker.State.SUCCEEDED) {
+                    Message replyMessage = loginTask.getValue();
+                    if ("success".equals(replyMessage.getPayload().get(0))) {
+                        gotoApp(loginName);
+                    } else {
+                        loginController.failedLogin();
+                    }
+                } else if (t1 == Worker.State.FAILED) {
+
+                }
+            }
+        });
+
+        new Thread(loginTask, "LoginThread").start();
     }
 
     public void showModalMessage(Node message) {

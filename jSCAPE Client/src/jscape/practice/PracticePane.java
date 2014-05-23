@@ -70,7 +70,7 @@ public class PracticePane extends BorderPane {
     public PracticePane() {
         super();
 
-        myLoginName = JScape.getJSCAPE().loginName;
+        myLoginName = JScape.getJSCAPE().myLoginName;
 
         mainMenu = new VBox(80);
 

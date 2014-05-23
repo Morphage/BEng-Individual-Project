@@ -71,7 +71,7 @@ public class ProfilePane extends BorderPane {
     public ProfilePane() {
         super();
 
-        myLoginName = JScape.getJSCAPE().loginName;
+        myLoginName = JScape.getJSCAPE().myLoginName;
 
         firstName = new Label();
         lastName = new Label();
