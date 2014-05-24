@@ -284,7 +284,6 @@ public class ProfilePane extends BorderPane {
 
         // Create choose label
         Label chooseGraphLabel = new Label("Choose Graph Type:");
-        //chooseGraphLabel.setAlignment(Pos.BASELINE_CENTER);
         chooseGraphLabel.setStyle("-fx-text-fill: #e1fdff;"
                 + "-fx-font-weight: bold;");
 
@@ -301,7 +300,6 @@ public class ProfilePane extends BorderPane {
 
         // Create choose exercise category for graph label
         final Label chooseGraphCategoryLabel = new Label("Choose Exercise Category:");
-        //chooseGraphCategoryLabel.setAlignment(Pos.BASELINE_CENTER);
         chooseGraphCategoryLabel.setStyle("-fx-text-fill: #e1fdff;"
                 + "-fx-font-weight: bold;");
 
@@ -317,7 +315,6 @@ public class ProfilePane extends BorderPane {
 
         // Create choose month label
         final Label chooseMonthLabel = new Label("Choose Month:");
-        //chooseMonthLabel.setAlignment(Pos.BASELINE_CENTER);
         chooseMonthLabel.setStyle("-fx-text-fill: #e1fdff;"
                 + "-fx-font-weight: bold;");
 

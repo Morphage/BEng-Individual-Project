@@ -151,7 +151,6 @@ public class SyntaxExerciseGen {
         List<Integer> linesToReplace = getUniqueRandoms(numberOfErrors);
 
         for (Integer i : linesToReplace) {
-            System.out.println(i + 1);
             replaceLine(i);
         }
 
