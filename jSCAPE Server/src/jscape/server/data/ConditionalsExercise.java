@@ -12,17 +12,23 @@ package jscape.server.data;
 public class ConditionalsExercise {
 
     public static void main(String[] args) {
-        int var1 = 45;
-        int var2 = 50;
-        String var3 = "hello";
-        boolean var4 = true;
+        int var7;
+        boolean var8;
+        boolean var9;
+        String var10;
 
-        if (var4 && (var1 == 45)) {
-            var1 = 75;
-            var3 += " world";
+        var7 = 362;
+        var8 = true;
+        var9 = false;
+        var10 = "summer test";
+
+        if (var7 >= 106) {
+            //var10 = 383;
+            //var10 = 111 - 301;
+            //var8 = 455;
+            //var10 = 271 - 269;
+        } else {
+            var7 = 397;
         }
-        
-        System.out.println(var1);
-        System.out.println(var3);
     }
 }

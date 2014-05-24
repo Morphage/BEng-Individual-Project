@@ -77,12 +77,15 @@ public class JScape extends Application {
     @Override
     public void start(final Stage stage) {
         currentStage = stage;
+        gotoApp("ac6609");
 
+        /* Commented out so that I don't have to keep loggin in all the time */
+        /*
         try {
             loginController = (LoginController) gotoLogin();
             loginController.setApp(this);
         } catch (Exception e) {
-        }
+        } */
     }
 
     private Initializable gotoLogin() throws Exception {

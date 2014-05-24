@@ -31,6 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -58,6 +59,7 @@ public class ProfilePane extends BorderPane {
     private Label lastExerciseAnswered;
 
     private ComboBox categoryBox;
+    private ComboBox graphCategoryBox;
 
     private PerformanceStatsTable performanceStatsTable;
     private PerformancePieChart performancePieChart;
@@ -212,6 +214,8 @@ public class ProfilePane extends BorderPane {
 
                         categoryBox.setItems(exerciseCategories);
                         categoryBox.getSelectionModel().selectFirst();
+                        graphCategoryBox.setItems(exerciseCategories);
+                        graphCategoryBox.getSelectionModel().selectFirst();
                     } else {
                         String selectedCategory = categoryBox.getSelectionModel().getSelectedItem().toString();
                         performancePieChart.setData(selectedCategory);
@@ -280,25 +284,66 @@ public class ProfilePane extends BorderPane {
 
         // Create choose label
         Label chooseGraphLabel = new Label("Choose Graph Type:");
-        chooseGraphLabel.setAlignment(Pos.TOP_CENTER);
+        //chooseGraphLabel.setAlignment(Pos.BASELINE_CENTER);
         chooseGraphLabel.setStyle("-fx-text-fill: #e1fdff;"
                 + "-fx-font-weight: bold;");
 
         // Create combo box for graph types
         ObservableList<String> graphTypes
-                = FXCollections.observableArrayList("This Month's history", "Skill curve", "Monthly average");
+                = FXCollections.observableArrayList("Monthly Progress", "Yearly Progress", "Knowledge Distribution");
         ComboBox graphTypesBox = new ComboBox(graphTypes);
-        graphTypesBox.getSelectionModel().selectFirst();
         graphTypesBox.setMaxWidth(Double.MAX_VALUE);
+        graphTypesBox.getSelectionModel().selectFirst();
 
         // Combine the two and add to the scene
         HBox graphTypeHBox = new HBox(5);
         graphTypeHBox.getChildren().addAll(chooseGraphLabel, graphTypesBox);
-        profileStatistics.getChildren().add(graphTypeHBox);
+
+        // Create choose exercise category for graph label
+        final Label chooseGraphCategoryLabel = new Label("Choose Exercise Category:");
+        //chooseGraphCategoryLabel.setAlignment(Pos.BASELINE_CENTER);
+        chooseGraphCategoryLabel.setStyle("-fx-text-fill: #e1fdff;"
+                + "-fx-font-weight: bold;");
+
+        // Create graph exercise category box
+        graphCategoryBox = new ComboBox();
+        graphCategoryBox.setMinWidth(150);
+        graphCategoryBox.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(graphCategoryBox, Priority.ALWAYS);
+
+        // Combine the two
+        final HBox graphCategoryHBox = new HBox(5);
+        graphCategoryHBox.getChildren().addAll(chooseGraphCategoryLabel, graphCategoryBox);
+
+        // Create choose month label
+        final Label chooseMonthLabel = new Label("Choose Month:");
+        //chooseMonthLabel.setAlignment(Pos.BASELINE_CENTER);
+        chooseMonthLabel.setStyle("-fx-text-fill: #e1fdff;"
+                + "-fx-font-weight: bold;");
+
+        // Create combo box for months
+        ObservableList<String> months
+                = FXCollections.observableArrayList("January", "February", "March", "April", "May",
+                        "June", "July", "August", "September", "October", "November", "December");
+        ComboBox monthBox = new ComboBox(months);
+        monthBox.setMaxWidth(Double.MAX_VALUE);
+        monthBox.getSelectionModel().selectFirst();
+        
+        // Create HBox and add months stuff
+        final HBox monthHBox = new HBox(5);
+        monthHBox.getChildren().addAll(chooseMonthLabel, monthBox);
+
+        // Create main graph selection HBox and add to scene
+        HBox graphSelectHBox = new HBox(20);
+        graphSelectHBox.getChildren().addAll(graphTypeHBox, graphCategoryHBox, monthHBox);
+        profileStatistics.getChildren().add(graphSelectHBox);
 
         // Add charts
-        String[] days = {"07/05/14", "08/05/14", "09/05/14", "10/05/14", "11/05/14",
-            "12/05/14", "13/05/14", "14/05/14", "15/05/14", "16/05/14"};
+        String[] days = {"01/05/14", "02/05/14", "03/05/14", "04/05/14", "05/05/14", "06/05/14",
+            "07/05/14", "08/05/14", "09/05/14", "10/05/14", "11/05/14",
+            "12/05/14", "13/05/14", "14/05/14", "15/05/14", "16/05/14", "17/05/14", "18/05/14",
+            "19/05/14", "20/05/14", "21/05/14", "22/05/14", "23/05/14", "24/05/14", "25/05/14",
+            "26/05/14", "27/05/14", "28/05/14", "29/05/14", "30/05/14"};
         CategoryAxis xAxis = CategoryAxisBuilder.create()
                 .categories(FXCollections.<String>observableArrayList(days)).build();
         xAxis.setLabel("Days");
@@ -334,22 +379,26 @@ public class ProfilePane extends BorderPane {
                         ))
         );
 
-        final StackedBarChart stackedBar = new StackedBarChart(xAxis, yAxis, barChartData, 100.0d);
-        StackPane stackPane = new StackPane();
-        stackPane.getChildren().add(stackedBar);
+        final StackedBarChart stackedBar = new StackedBarChart(xAxis, yAxis, barChartData, 10d);
+        StackPane graphStackPane = new StackPane();
+        graphStackPane.getChildren().add(stackedBar);
 
         graphTypesBox.valueProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue ov, Object t, Object t1) {
-                if ("This Month's history".equals(t1.toString())) {
+                if ("Monthly Progress".equals(t1.toString())) {
                     stackedBar.setVisible(true);
+                    graphCategoryHBox.setVisible(true);
+                    monthHBox.setVisible(true);
                 } else {
                     stackedBar.setVisible(false);
+                    graphCategoryHBox.setVisible(false);
+                    monthHBox.setVisible(false);
                 }
             }
         });
 
-        profileStatistics.getChildren().add(stackPane);
+        profileStatistics.getChildren().add(graphStackPane);
 
         profileStatistics.getStyleClass().add("category-page");
 

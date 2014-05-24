@@ -6,7 +6,9 @@
 
 package jscape.about;
 
+import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import jscape.JScape;
@@ -16,29 +18,25 @@ import jscape.JScape;
  * @author achantreau
  */
 public class AboutPane extends BorderPane {
-    
-    private JScape jscape;
-    
+        
     private Text textArea;
     
     public AboutPane() {
         super();
         
-        textArea = new Text("This project was developed as part of my BEng Computing"
-                + " final year project in 2014. All rights reserved, Alexis Chantreau,"
-                + " Copyright C 2014 \n"
-                + "The project was implemented using JavaFX for the GUI, Java for the "
-                + " client side and server side, and PostreSQL for the database management"
-                + " system");
-        
-        /* jSCAPE (Java Self-assessment Center of Adaptive Programming Exercises) is a
-           blablabla + description + jSCAPE logo + version number
-        */
-        
-        //textArea.getStyleClass().add("right-sidebar");
-        textArea.setFont(Font.font("Verdana", 14));
+        VBox vbox = new VBox();
+        textArea = new Text("jSCAPE (Java Self-assessment Center of Adaptive Programming Exercises) is a web application designed to give"
+                + " student the opportunity to practice their knowledge of programming concepts and theory, while tracking their progress"
+                + " using statistical data.\n\n"
+                + "This application was developed as part of my BEng Computing final year project in 2014. Technologies used include Java,"
+                + " JavaFX, Javascript, HTML/CSS and SQL.\n\n"
+                + "Copyright " +  "\u00a9"  + " 2014 Alexis Chantreau\n");
+        textArea.setWrappingWidth(600);        
+        textArea.setFont(Font.font("Arial", 14));
+        vbox.setAlignment(Pos.CENTER);
+        vbox.getChildren().add(textArea);
         getStyleClass().add("category-page");
-        this.setCenter(textArea);              
+        this.setCenter(vbox);              
     }
     
 }
