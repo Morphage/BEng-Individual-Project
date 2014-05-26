@@ -100,7 +100,7 @@ public class ConditionalsExerciseGen {
         }
 
         int id3 = random.nextInt(numberOfVariables) + randomOffset;
-        while (id1 == id3) {
+        while ((id1 == id3) || (id2 == id3)) {
             id3 = random.nextInt(numberOfVariables) + randomOffset;
         }
 
@@ -109,7 +109,7 @@ public class ConditionalsExerciseGen {
         String randomVar3 = "var" + id3;
         String randomVar1Type = variablesType.get(randomVar1);
         String randomVar2Type = variablesType.get(randomVar2);
-        String randomVar3Type = variablesType.get(randomVar2);
+        String randomVar3Type = variablesType.get(randomVar3);
 
         Interpreter i = new Interpreter();  // Construct an interpreter
         String oldValue1 = "";
@@ -152,19 +152,19 @@ public class ConditionalsExerciseGen {
             choicesList.add(randomVar1 + " = " + getRandomValue(randomVar1Type) + "; " + randomVar2 + " = " + getRandomValue(randomVar2Type)
             + "; " + randomVar3 + " = " + getRandomValue(randomVar3Type));
         } else {
-            choicesList.add(randomVar1 + " = " + oldValue1 + "; " + randomVar2 + " = " + getRandomValue(randomVar2Type));
+            choicesList.add(randomVar1 + " = " + newValue1 + "; " + randomVar2 + " = " + oldValue2 + "; " + randomVar3 + " = " + getRandomValue(randomVar3Type));
         }
 
         if (newValue1.equals(oldValue1)) {
-            choicesList.add(randomVar1 + " = " + getRandomValue(randomVar1Type) + "; " + randomVar2 + " = " + newValue2);
+            choicesList.add(randomVar1 + " = " + getRandomValue(randomVar1Type) + "; " + randomVar2 + " = " + newValue2 + "; " + randomVar3 + " = " + newValue3);
         } else {
-            choicesList.add(randomVar1 + " = " + oldValue1 + "; " + randomVar2 + " = " + newValue2);
+            choicesList.add(randomVar1 + " = " + oldValue1 + "; " + randomVar2 + " = " + newValue2 + "; " + randomVar3 + " = " + newValue3);
         }
 
         if (newValue2.equals(oldValue2)) {
-            choicesList.add(randomVar1 + " = " + newValue1 + "; " + randomVar2 + " = " + getRandomValue(randomVar2Type));
+            choicesList.add(randomVar1 + " = " + newValue1 + "; " + randomVar2 + " = " + getRandomValue(randomVar2Type) + "; " + randomVar3 + " = " + newValue3);
         } else {
-            choicesList.add(randomVar1 + " = " + newValue1 + "; " + randomVar2 + " = " + oldValue2);
+            choicesList.add(randomVar1 + " = " + newValue1 + "; " + randomVar2 + " = " + oldValue2 + "; " + randomVar3 + " = " + newValue3);
         }
         Collections.shuffle(choicesList);
 
@@ -546,8 +546,8 @@ public class ConditionalsExerciseGen {
             ifStatements += ";\n";
         }
 
-        int createElseStatement = random.nextInt(2);
-        if (createElseStatement != 1) {
+        int createElseStatement = random.nextInt(10);
+        if (createElseStatement < 7) {
             ifStatements += "        } else {\n";
 
             int elseStatements = random.nextInt(5) + 1;

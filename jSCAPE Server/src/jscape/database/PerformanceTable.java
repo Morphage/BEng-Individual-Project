@@ -6,6 +6,7 @@
 package jscape.database;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -80,6 +81,36 @@ public class PerformanceTable {
             ps.setInt(2, 1);
             ps.setString(3, loginName);
             ps.setString(4, exerciseCategory);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public static void addPerformanceData(String loginName, String exerciseCategory,
+            int exercisesAnswered, int correctAnswers, int wrongAnswers) {
+        PreparedStatement ps = null;
+        Connection connection = Database.getConnection();
+        
+        try {            
+            String query = "UPDATE " + TABLE_NAME + " SET (" + EXERCISES_ANSWERED
+                    + "," + CORRECT_ANSWERS + "," + WRONG_ANSWERS + ") = (?,?,?) WHERE "
+                    + LOGIN_NAME + " = ?"+ " AND " + EXERCISE_CATEGORY + " = ?";
+            
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, exercisesAnswered);
+            ps.setInt(2, correctAnswers);
+            ps.setInt(3, wrongAnswers);
+            ps.setString(4, loginName);
+            ps.setString(5, exerciseCategory);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -41,7 +41,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.web.WebView;
 import jscape.JScape;
 import jscape.communication.Message;
 import jscape.communication.MessageCode;
@@ -372,7 +371,9 @@ public class PracticePane extends BorderPane {
                         } else {
                             printDebugExerciseInfo(payload);
 
-                            if (currentExercise == null) {
+                            if ((currentExercise == null)
+                                    || ((currentExercise != null) 
+                                        && !currentExercise.getLeftDisplayView().equals(payload.get(1)))){
                                 currentExercise = new Exercise(Integer.valueOf(payload.get(0)), payload.get(1),
                                         payload.get(2), payload.get(3), payload.get(4), payload.get(5),
                                         payload.get(6), payload.get(7), payload.get(8), payload.get(9));
