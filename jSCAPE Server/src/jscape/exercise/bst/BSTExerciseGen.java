@@ -66,7 +66,7 @@ public class BSTExerciseGen {
         String rest = "</value>\n"
                 + "    </display>\n"
                 + "    <display>\n"
-                + "        <view>Exercise</view>\n"
+                + "        <view>Multiple Choice</view>\n"
                 + "        <value>What should be printed if the binary tree is traversed using the "
                 + traversalOrder + " algorithm?</value>\n"
                 + "        <choice0>" + traversalOrders.get(0) + "</choice0>\n"

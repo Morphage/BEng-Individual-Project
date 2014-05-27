@@ -104,24 +104,27 @@ public class InitializeDatabase {
         PerformanceTable.addPerformanceData("demo", "Binary Trees", 334, 212, 122);
         PerformanceTable.addPerformanceData("demo", "Syntax", 334, 212, 122);
         
-        HistoryTable.addHistoryData("demo", "2014-04-01", "Binary Trees", 10, 3, 7);
-        HistoryTable.addHistoryData("demo", "2014-04-02", "Binary Trees", 10, 2, 8);
-        HistoryTable.addHistoryData("demo", "2014-04-03", "Binary Trees", 8, 4, 4);
-        HistoryTable.addHistoryData("demo", "2014-04-04", "Binary Trees", 12, 5, 7);
+        HistoryTable.addHistoryData("demo", "2013-11-01", "Binary Trees", 10, 3, 7);
+        HistoryTable.addHistoryData("demo", "2013-11-02", "Binary Trees", 10, 2, 8);
+        HistoryTable.addHistoryData("demo", "2013-11-03", "Binary Trees", 8, 4, 4);
+        HistoryTable.addHistoryData("demo", "2013-11-06", "Binary Trees", 7, 3, 4);
+        HistoryTable.addHistoryData("demo", "2013-11-08", "Binary Trees", 12, 7, 5);
+        HistoryTable.addHistoryData("demo", "2013-11-11", "Binary Trees", 15, 7, 8);
+        HistoryTable.addHistoryData("demo", "2013-11-17", "Binary Trees", 13, 5, 8);
+        HistoryTable.addHistoryData("demo", "2013-11-19", "Binary Trees", 10, 6, 4);
+        HistoryTable.addHistoryData("demo", "2013-11-25", "Binary Trees", 8, 6, 2);
+        
+        HistoryTable.addHistoryData("demo", "2014-04-01", "Binary Trees", 10, 2, 8);
+        HistoryTable.addHistoryData("demo", "2014-04-02", "Binary Trees", 14, 4, 10);
         HistoryTable.addHistoryData("demo", "2014-04-05", "Binary Trees", 15, 8, 7);
         HistoryTable.addHistoryData("demo", "2014-04-06", "Binary Trees", 13, 6, 7);
         HistoryTable.addHistoryData("demo", "2014-04-07", "Binary Trees", 18, 10, 8);
-        HistoryTable.addHistoryData("demo", "2014-04-08", "Binary Trees", 12, 7, 5);
-        HistoryTable.addHistoryData("demo", "2014-04-09", "Binary Trees", 14, 8, 6);
-        HistoryTable.addHistoryData("demo", "2014-04-10", "Binary Trees", 9, 6, 3);
         HistoryTable.addHistoryData("demo", "2014-04-11", "Binary Trees", 11, 9, 2);
         HistoryTable.addHistoryData("demo", "2014-04-12", "Binary Trees", 20, 12, 8);
         HistoryTable.addHistoryData("demo", "2014-04-13", "Binary Trees", 13, 7, 6);
         HistoryTable.addHistoryData("demo", "2014-04-14", "Binary Trees", 5, 4, 1);
         HistoryTable.addHistoryData("demo", "2014-04-15", "Binary Trees", 10, 6, 4);
         HistoryTable.addHistoryData("demo", "2014-04-16", "Binary Trees", 4, 3, 1);
-        HistoryTable.addHistoryData("demo", "2014-04-17", "Binary Trees", 12, 10, 2);
-        HistoryTable.addHistoryData("demo", "2014-04-18", "Binary Trees", 15, 13, 2);
         HistoryTable.addHistoryData("demo", "2014-04-19", "Binary Trees", 6, 3, 3);
         HistoryTable.addHistoryData("demo", "2014-04-20", "Binary Trees", 7, 4, 3);
         HistoryTable.addHistoryData("demo", "2014-04-21", "Binary Trees", 3, 3, 0);

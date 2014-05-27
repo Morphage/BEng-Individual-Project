@@ -44,7 +44,7 @@ public class HistoryTable {
         try {
             String query = "SELECT DISTINCT EXTRACT(MONTH FROM " + DAY
                     + ") AS month, EXTRACT(YEAR FROM " + DAY + ") AS year FROM " + TABLE_NAME
-                    + " WHERE " + LOGIN_NAME + " = ? ORDER BY month,year";
+                    + " WHERE " + LOGIN_NAME + " = ? ORDER BY year, month";
             ps = connection.prepareStatement(query);
             ps.setString(1, loginName);
             resultSet = ps.executeQuery();
