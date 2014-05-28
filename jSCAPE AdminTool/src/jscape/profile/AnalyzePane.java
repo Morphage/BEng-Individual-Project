@@ -10,16 +10,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.chart.CategoryAxis;
@@ -28,6 +26,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -36,10 +35,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import jscape.JScape;
-import jscape.communication.Message;
-import jscape.communication.MessageCode;
-import jscape.communication.RequestServerTask;
+import jscape.database.HistoryTable;
+import jscape.database.PerformanceTable;
+import jscape.database.StudentTable;
 import jscape.profile.graphs.MonthlyProgress;
 import jscape.profile.graphs.YearlyProgress;
 import jscape.profile.performance.PerformancePieChart;
@@ -49,10 +47,7 @@ import jscape.profile.performance.PerformanceStatsTable;
  *
  * @author achantreau
  */
-public class ProfilePane extends BorderPane {
-
-    private static final String HOST = "localhost";
-    private static final int PORT = 9000;
+public class AnalyzePane extends BorderPane {
 
     private Label firstName;
     private Label lastName;
@@ -74,17 +69,116 @@ public class ProfilePane extends BorderPane {
     private MonthlyProgress monthlyProgressChart;
     private YearlyProgress yearlyProgressChart;
 
-    private RequestServerTask fetchProfileInfoTask;
-    private RequestServerTask fetchDateListTask;
+    private Label selectClassLabel;
+    private ComboBox selectClassBox;
 
-    private Service fetchPerformanceStatsService;
+    private ComboBox selectStudentBox;
+    private Label selectStudentLabel;
 
-    private String myLoginName;
-
-    public ProfilePane() {
+    public AnalyzePane() {
         super();
 
-        myLoginName = JScape.getJSCAPE().myLoginName;
+        selectClassLabel = new Label("Select class:");
+        selectClassLabel.setFont(new Font("Arial", 13));
+        selectClassLabel.setStyle("-fx-text-fill: #2E211C;");
+        selectClassLabel.setAlignment(Pos.TOP_CENTER);
+
+        ArrayList<String> classList = StudentTable.getClassList();
+        ObservableList<String> classObsList
+                = FXCollections.observableArrayList(classList);
+
+        selectClassBox = new ComboBox(classObsList);
+        selectClassBox.setMinWidth(150);
+        selectClassBox.setMaxWidth(Double.MAX_VALUE);
+        selectClassBox.getSelectionModel().selectFirst();
+        selectClassBox.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue ov, Object t, Object t1) {
+                ArrayList<String> studentList = StudentTable.getStudentList((String) selectClassBox.getSelectionModel().getSelectedItem());
+                ObservableList<String> studentObsList = FXCollections.observableArrayList(studentList);
+                selectStudentBox.setItems(studentObsList);
+                selectStudentBox.getSelectionModel().clearSelection();
+            }
+        });
+        
+        HBox selectClassHBox = new HBox(5);
+        selectClassHBox.getChildren().addAll(selectClassLabel, selectClassBox);
+
+        ArrayList<String> studentList = StudentTable.getStudentList((String) selectClassBox.getSelectionModel().getSelectedItem());
+        ObservableList<String> studentObsList = FXCollections.observableArrayList(studentList);
+
+        selectStudentBox = new ComboBox(studentObsList);
+        selectStudentBox.setMinWidth(150);
+        selectStudentBox.setMaxWidth(Double.MAX_VALUE);
+        selectStudentBox.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue ov, Object t, Object t1) {
+                String[] parts = ((String) selectStudentBox.getSelectionModel().getSelectedItem()).split("-");
+                String loginId = parts[0].trim();
+                ArrayList<String> profileInfoPayload = StudentTable.getProfileInfo(loginId);
+
+                firstName.setText(profileInfoPayload.get(0));
+                lastName.setText(profileInfoPayload.get(1));
+                loginName.setText(loginId);
+                className.setText(profileInfoPayload.get(2));
+
+                if ("null".equals(profileInfoPayload.get(3))) {
+                    lastLogin.setText("Last login: NO DATA YET");
+                } else {
+                    lastLogin.setText("Last login: " + profileInfoPayload.get(3));
+                }
+
+                if ("null".equals(profileInfoPayload.get(4))) {
+                    lastExerciseAnswered.setText("Last exercise answered: NO DATA YET");
+                } else {
+                    lastExerciseAnswered.setText("Last exercise answered: " + profileInfoPayload.get(4));
+                }
+
+                ArrayList<String> performanceStatsPayload = PerformanceTable.getPerformanceStats(loginId);
+                performanceStatsTable.setItems(performanceStatsPayload);
+
+                /* Add categories to comboBox, select the first item which triggers
+                 the listener to add the data to the pie chart. */
+                if (categoryBox.getSelectionModel().getSelectedItem() == null) {
+                    ObservableList<String> graphCategories = performanceStatsTable.getExerciseCategories();
+                    graphCategoryBox.setItems(graphCategories);
+
+                    ObservableList<String> exerciseCategories = performanceStatsTable.getExerciseCategories();
+                    exerciseCategories.add("-- Total answers per category --");
+
+                    categoryBox.setItems(exerciseCategories);
+                    categoryBox.getSelectionModel().selectFirst();
+                } else {
+                    String selectedCategory = categoryBox.getSelectionModel().getSelectedItem().toString();
+                    performancePieChart.setData(selectedCategory);
+                }
+
+                // Get date list
+                ArrayList<String> dateList = HistoryTable.getDateList(loginId);
+                ObservableList<String> monthsAndYears = FXCollections.observableArrayList(dateList);
+                monthBox.setItems(monthsAndYears);
+                yearBox.setItems(FXCollections.observableArrayList(getYearList(dateList)));
+                
+                graphCategoryBox.getSelectionModel().clearSelection();
+                monthBox.getSelectionModel().clearSelection();
+                yearBox.getSelectionModel().clearSelection();
+                monthlyProgressChart.setVisible(false);
+                yearlyProgressChart.setVisible(false);
+            }
+        });
+
+        Separator horizontalSeparator = new Separator(Orientation.HORIZONTAL);
+        horizontalSeparator.setStyle("-fx-border-style: solid;\n"
+                + "-fx-border-width: 1px;\n"
+                + "-fx-background-color: black;");
+
+        selectStudentLabel = new Label("Select student:");
+        selectStudentLabel.setFont(new Font("Arial", 13));
+        selectStudentLabel.setStyle("-fx-text-fill: #2E211C;");
+        selectStudentLabel.setAlignment(Pos.TOP_CENTER);
+
+        HBox selectStudentHBox = new HBox(5);
+        selectStudentHBox.getChildren().addAll(selectStudentLabel, selectStudentBox);
 
         firstName = new Label();
         lastName = new Label();
@@ -112,43 +206,6 @@ public class ProfilePane extends BorderPane {
         lastExerciseAnswered.setFont(new Font("Arial", 13));
         lastExerciseAnswered.setStyle("-fx-text-fill: #2E211C;");
 
-        ArrayList<String> payload = new ArrayList<String>();
-        payload.add(myLoginName);
-        Message requestMessage = new Message(MessageCode.PROFILE_INFO, payload);
-        fetchProfileInfoTask = new RequestServerTask(HOST, PORT, requestMessage);
-        fetchProfileInfoTask.stateProperty().addListener(new ChangeListener<Worker.State>() {
-            @Override
-            public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
-                if (t1 == Worker.State.SUCCEEDED) {
-                    Message replyMessage = fetchProfileInfoTask.getValue();
-                    firstName.setText(replyMessage.getPayload().get(0));
-                    lastName.setText(replyMessage.getPayload().get(1));
-                    loginName.setText(myLoginName);
-                    className.setText(replyMessage.getPayload().get(2));
-
-                    if ("null".equals(replyMessage.getPayload().get(3))) {
-                        lastLogin.setText("Last login: NO DATA YET");
-                    } else {
-                        lastLogin.setText("Last login: " + replyMessage.getPayload().get(3));
-                    }
-
-                    if ("null".equals(replyMessage.getPayload().get(4))) {
-                        lastExerciseAnswered.setText("Last exercise answered: NO DATA YET");
-                    } else {
-                        lastExerciseAnswered.setText("Last exercise answered: " + replyMessage.getPayload().get(4));
-                    }
-                } else if (t1 == Worker.State.FAILED) {
-                    // Platform run later not needed here I think....check to be sure
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Stack Pane stuff + error message + modal dimmer + terminate app
-                        }
-                    });
-                }
-            }
-        });
-
         BorderPane profileInfo = new BorderPane();
         profileInfo.setMinWidth(285);
         profileInfo.setMaxWidth(285);
@@ -157,8 +214,10 @@ public class ProfilePane extends BorderPane {
         profileInfo.setId("page-tree");
 
         VBox profileInfoTop = new VBox();
-        profileInfoTop.getChildren().addAll(firstName, lastName, loginName, className);
+        profileInfoTop.getChildren().addAll(selectClassHBox, selectStudentHBox, horizontalSeparator, firstName, lastName, loginName, className);
         profileInfoTop.setAlignment(Pos.TOP_CENTER);
+        VBox.setMargin(selectClassHBox, new Insets(20, 0, 5, 10));
+        VBox.setMargin(selectStudentHBox, new Insets(20, 0, 15, 10));
         VBox.setMargin(firstName, new Insets(20, 0, 0, 0));
 
         VBox profileInfoBottom = new VBox();
@@ -197,50 +256,6 @@ public class ProfilePane extends BorderPane {
         // Create Performance Statistics Table and Performance Pie Chart
         performanceStatsTable = new PerformanceStatsTable();
         performancePieChart = new PerformancePieChart(performanceStatsTable);
-
-        fetchPerformanceStatsService = new Service<Message>() {
-            @Override
-            protected Task<Message> createTask() {
-                ArrayList<String> payload = new ArrayList<String>();
-                payload.add(myLoginName);
-                Message requestMessage = new Message(MessageCode.PERFORMANCE_STATS, payload);
-
-                return new RequestServerTask(HOST, PORT, requestMessage);
-            }
-        };
-        fetchPerformanceStatsService.stateProperty().addListener(new ChangeListener<Worker.State>() {
-            @Override
-            public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
-                if (t1 == Worker.State.SUCCEEDED) {
-                    Message replyMessage = (Message) fetchPerformanceStatsService.getValue();
-                    performanceStatsTable.setItems(replyMessage.getPayload());
-
-                    /* Add categories to comboBox, select the first item which triggers
-                     the listener to add the data to the pie chart. */
-                    if (categoryBox.getSelectionModel().getSelectedItem() == null) {
-                        ObservableList<String> graphCategories = performanceStatsTable.getExerciseCategories();
-                        graphCategoryBox.setItems(graphCategories);
-
-                        ObservableList<String> exerciseCategories = performanceStatsTable.getExerciseCategories();
-                        exerciseCategories.add("-- Total answers per category --");
-
-                        categoryBox.setItems(exerciseCategories);
-                        categoryBox.getSelectionModel().selectFirst();
-                    } else {
-                        String selectedCategory = categoryBox.getSelectionModel().getSelectedItem().toString();
-                        performancePieChart.setData(selectedCategory);
-                    }
-                } else if (t1 == Worker.State.FAILED) {
-                    // Platform run later not needed here I think....check to be sure
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Stack Pane stuff + error message + modal dimmer + terminate app
-                        }
-                    });
-                }
-            }
-        });
 
         // Combine performance label and performance table into a VBox
         VBox performanceVBox = new VBox();
@@ -351,23 +366,6 @@ public class ProfilePane extends BorderPane {
             }
         });
 
-        // Fetch date list from database
-        payload = new ArrayList<String>();
-        payload.add(myLoginName);
-        requestMessage = new Message(MessageCode.GET_DATE_LIST, payload);
-        fetchDateListTask = new RequestServerTask(HOST, PORT, requestMessage);
-        fetchDateListTask.stateProperty().addListener(new ChangeListener<Worker.State>() {
-            @Override
-            public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
-                if (t1 == Worker.State.SUCCEEDED) {
-                    Message replyMessage = fetchDateListTask.getValue();
-                    ObservableList<String> monthsAndYears = FXCollections.observableArrayList(replyMessage.getPayload());
-                    monthBox.setItems(monthsAndYears);
-                    yearBox.setItems(FXCollections.observableArrayList(getYearList(replyMessage.getPayload())));
-                }
-            }
-        });
-
         // Create HBox and add months stuff
         final HBox monthHBox = new HBox(5);
         monthHBox.getChildren().addAll(chooseMonthLabel, monthBox);
@@ -474,100 +472,44 @@ public class ProfilePane extends BorderPane {
         setCenter(scrollPane);
     }
 
-    public void runFetchProfileInfoTask() {
-        new Thread(fetchProfileInfoTask, "FetchProfileInfoThread").start();
-    }
-
-    public void runFetchDateListTask() {
-        new Thread(fetchDateListTask, "FetchDateListThread").start();
-    }
-
-    public void runFetchPerformanceStatsService() {
-        fetchPerformanceStatsService.restart();
-    }
-
     private void runFetchYearlyProgressTask() {
+        String[] parts = ((String) selectStudentBox.getSelectionModel().getSelectedItem()).split("-");
+        String loginId = parts[0].trim();
+
         if ((String) yearBox.getSelectionModel().getSelectedItem() != null) {
             if ("Total".equals((String) graphCategoryBox.getSelectionModel().getSelectedItem())) {
-                ArrayList<String> payload = new ArrayList<String>();
-                payload.add(myLoginName);
-                payload.add((String) yearBox.getSelectionModel().getSelectedItem());
+                ArrayList<String> graphStatsPayload = HistoryTable.getTotalForYear(loginId, Integer.valueOf((String) yearBox.getSelectionModel().getSelectedItem()));
 
-                Message requestMessage = new Message(MessageCode.GET_TOTAL_PER_YEAR, payload);
-                final RequestServerTask getGraphTotalStatsTask = new RequestServerTask(HOST, PORT, requestMessage);
-                getGraphTotalStatsTask.stateProperty().addListener(new ChangeListener<Worker.State>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
-                        if (t1 == Worker.State.SUCCEEDED) {
-                            Message replyMessage = getGraphTotalStatsTask.getValue();
-                            yearlyProgressChart.setData(replyMessage.getPayload());
-                            yearlyProgressChart.setVisible(true);
-                        }
-                    }
-                });
-                new Thread(getGraphTotalStatsTask, "GetGraphYearTotalStatsThread").start();
+                yearlyProgressChart.setData(graphStatsPayload);
+                yearlyProgressChart.setVisible(true);
             } else {
-                ArrayList<String> payload = new ArrayList<String>();
-                payload.add(myLoginName);
-                payload.add((String) graphCategoryBox.getSelectionModel().getSelectedItem());
-                payload.add((String) yearBox.getSelectionModel().getSelectedItem());
+                ArrayList<String> graphStatsPayload = HistoryTable.getYearData(loginId,
+                        (String) graphCategoryBox.getSelectionModel().getSelectedItem(),
+                        Integer.valueOf((String) yearBox.getSelectionModel().getSelectedItem()));
 
-                Message requestMessage = new Message(MessageCode.GET_YEARLY_PROGRESS, payload);
-                final RequestServerTask getGraphStatsTask = new RequestServerTask(HOST, PORT, requestMessage);
-                getGraphStatsTask.stateProperty().addListener(new ChangeListener<Worker.State>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
-                        if (t1 == Worker.State.SUCCEEDED) {
-                            Message replyMessage = getGraphStatsTask.getValue();
-                            yearlyProgressChart.setData(replyMessage.getPayload());
-                            yearlyProgressChart.setVisible(true);
-                        }
-                    }
-                });
-                new Thread(getGraphStatsTask, "GetGraphYearStatsThread").start();
+                yearlyProgressChart.setData(graphStatsPayload);
+                yearlyProgressChart.setVisible(true);
             }
         }
     }
 
     private void runFetchMonthlyProgressTask() {
+        String[] parts = ((String) selectStudentBox.getSelectionModel().getSelectedItem()).split("-");
+        String loginId = parts[0].trim();
+
         if ((String) monthBox.getSelectionModel().getSelectedItem() != null) {
             if ("Total".equals((String) graphCategoryBox.getSelectionModel().getSelectedItem())) {
-                ArrayList<String> payload = new ArrayList<String>();
-                payload.add(myLoginName);
-                payload.add((String) monthBox.getSelectionModel().getSelectedItem());
+                ArrayList<String> graphStatsPayload = HistoryTable.getTotalForMonth(loginId, (String) monthBox.getSelectionModel().getSelectedItem());
 
-                Message requestMessage = new Message(MessageCode.GET_TOTAL_PER_DAY, payload);
-                final RequestServerTask getGraphTotalStatsTask = new RequestServerTask(HOST, PORT, requestMessage);
-                getGraphTotalStatsTask.stateProperty().addListener(new ChangeListener<Worker.State>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
-                        if (t1 == Worker.State.SUCCEEDED) {
-                            Message replyMessage = getGraphTotalStatsTask.getValue();
-                            monthlyProgressChart.setData(replyMessage.getPayload(), (String) monthBox.getSelectionModel().getSelectedItem());
-                            monthlyProgressChart.setVisible(true);
-                        }
-                    }
-                });
-                new Thread(getGraphTotalStatsTask, "GetGraphTotalStatsThread").start();
+                monthlyProgressChart.setData(graphStatsPayload, (String) monthBox.getSelectionModel().getSelectedItem());
+                monthlyProgressChart.setVisible(true);
             } else {
-                ArrayList<String> payload = new ArrayList<String>();
-                payload.add(myLoginName);
-                payload.add((String) monthBox.getSelectionModel().getSelectedItem());
-                payload.add((String) graphCategoryBox.getSelectionModel().getSelectedItem());
+                ArrayList<String> graphStatsPayload = HistoryTable.getHistoryDataForMonth(loginId,
+                        (String) monthBox.getSelectionModel().getSelectedItem(),
+                        (String) graphCategoryBox.getSelectionModel().getSelectedItem());
 
-                Message requestMessage = new Message(MessageCode.GET_MONTHLY_PROGRESS, payload);
-                final RequestServerTask getGraphStatsTask = new RequestServerTask(HOST, PORT, requestMessage);
-                getGraphStatsTask.stateProperty().addListener(new ChangeListener<Worker.State>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Worker.State> ov, Worker.State t, Worker.State t1) {
-                        if (t1 == Worker.State.SUCCEEDED) {
-                            Message replyMessage = getGraphStatsTask.getValue();
-                            monthlyProgressChart.setData(replyMessage.getPayload(), (String) monthBox.getSelectionModel().getSelectedItem());
-                            monthlyProgressChart.setVisible(true);
-                        }
-                    }
-                });
-                new Thread(getGraphStatsTask, "GetGraphStatsThread").start();
+                monthlyProgressChart.setData(graphStatsPayload, (String) monthBox.getSelectionModel().getSelectedItem());
+                monthlyProgressChart.setVisible(true);
             }
         }
     }

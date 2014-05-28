@@ -32,3 +32,6 @@
 /jSCAPE Client/build/
 /jSCAPE Client/dist/bundles/*
 /jSCAPE Server/dist/
+/jSCAPE AdminTool/nbproject/private/
+/jSCAPE AdminTool/build/
+/jSCAPE AdminTool/dist/

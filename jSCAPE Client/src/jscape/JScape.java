@@ -77,7 +77,7 @@ public class JScape extends Application {
     @Override
     public void start(final Stage stage) {
         currentStage = stage;
-        gotoApp("ac6609");
+        gotoApp("demo");
 
         /* Commented out so that I don't have to keep loggin in all the time */
         /*

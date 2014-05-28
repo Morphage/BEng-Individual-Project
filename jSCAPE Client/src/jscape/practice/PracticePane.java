@@ -108,13 +108,7 @@ public class PracticePane extends BorderPane {
                         exerciseCategories.getChildren().add(tile);
                     }
                 } else if (t1 == Worker.State.FAILED) {
-                    // Platform run later not needed here I think....check to be sure
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Stack Pane stuff + error message + modal dimmer + terminate app
-                        }
-                    });
+                    
                 }
             }
         });
