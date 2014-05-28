@@ -203,8 +203,6 @@ public class JScape extends Application {
                     } else {
                         loginController.failedLogin();
                     }
-                } else if (t1 == Worker.State.FAILED) {
-
                 }
             }
         });

@@ -32,13 +32,13 @@ public class ExerciseGenerator {
          //ExerciseBankTable.addExercise("Syntax", seg.makeType1Exercise());
          //ExerciseBankTable.addExercise("Binary Trees", beg.makeExercise());
          //ExerciseBankTable.addExercise("Conditionals", ceg.makeExercise());
-             ExerciseBankTable.addExercise("Strings", stringEG.makeExercise());
+             //ExerciseBankTable.addExercise("Strings", stringEG.makeExercise());
          }
         
         
-        /*for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < 10; i++) {
             System.out.println(stringEG.makeExercise());
-        }*/
+        }
 
     }
 }
