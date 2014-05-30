@@ -60,21 +60,21 @@ public class PerformanceTable {
 
         return performanceData;
     }
-    
+
     public static void updatePerformanceStats(String loginName, String exerciseCategory,
             String isCorrect) {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
-        
+
         try {
             boolean isCorrectAnswer = Boolean.valueOf(isCorrect);
             String updateColumn = isCorrectAnswer ? CORRECT_ANSWERS : WRONG_ANSWERS;
-            
+
             String query = "UPDATE " + TABLE_NAME + " SET (" + EXERCISES_ANSWERED
                     + "," + updateColumn + ") = (" + EXERCISES_ANSWERED + "+?,"
                     + updateColumn + "+?) WHERE " + LOGIN_NAME + " = ?"
                     + " AND " + EXERCISE_CATEGORY + " = ?";
-            
+
             ps = connection.prepareStatement(query);
             ps.setInt(1, 1);
             ps.setInt(2, 1);
@@ -93,17 +93,17 @@ public class PerformanceTable {
             }
         }
     }
-    
+
     public static void addPerformanceData(String loginName, String exerciseCategory,
             int exercisesAnswered, int correctAnswers, int wrongAnswers) {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
-        
-        try {            
+
+        try {
             String query = "UPDATE " + TABLE_NAME + " SET (" + EXERCISES_ANSWERED
                     + "," + CORRECT_ANSWERS + "," + WRONG_ANSWERS + ") = (?,?,?) WHERE "
-                    + LOGIN_NAME + " = ?"+ " AND " + EXERCISE_CATEGORY + " = ?";
-            
+                    + LOGIN_NAME + " = ?" + " AND " + EXERCISE_CATEGORY + " = ?";
+
             ps = connection.prepareStatement(query);
             ps.setInt(1, exercisesAnswered);
             ps.setInt(2, correctAnswers);
@@ -122,5 +122,47 @@ public class PerformanceTable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static ArrayList<String> getAverageStudentPerformance(String className) {
+        PreparedStatement ps = null;
+        Connection connection = Database.getConnection();
+        ResultSet resultSet;
+        
+        ArrayList<String> performanceData = new ArrayList<>();
+
+        try {
+            String query = "SELECT " + EXERCISE_CATEGORY + ", ROUND(AVG(" + CORRECT_ANSWERS + "::numeric * 100/" + EXERCISES_ANSWERED
+                    + "), 0) AS correct_pc,"
+                    + "ROUND(AVG(" + WRONG_ANSWERS + "::numeric * 100/" + EXERCISES_ANSWERED
+                    + "), 0) AS wrong_pc"
+                    + " FROM " + TABLE_NAME
+                    + " JOIN student ON performance.login_name = student.login_name" 
+                    + " WHERE " + EXERCISES_ANSWERED + " > 0"
+                    + " AND class = ?"
+                    + " GROUP BY " + EXERCISE_CATEGORY;
+            ps = connection.prepareStatement(query);
+            ps.setString(1, className);
+            resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                performanceData.add(resultSet.getString(EXERCISE_CATEGORY));
+                performanceData.add("100");
+                performanceData.add("" + resultSet.getInt("correct_pc"));
+                performanceData.add("" + resultSet.getInt("wrong_pc"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return performanceData;
     }
 }

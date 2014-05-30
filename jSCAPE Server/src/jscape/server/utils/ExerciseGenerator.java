@@ -22,23 +22,22 @@ public class ExerciseGenerator {
         BSTExerciseGen beg = new BSTExerciseGen();
         ConditionalsExerciseGen ceg = new ConditionalsExerciseGen();
         StringExerciseGen stringEG = new StringExerciseGen();
-        
-         for (int i = 0; i < 40; i++) {
+
+        for (int i = 0; i < 40; i++) {
          //System.out.println(beg.makeExercise());
-         //System.out.println(seg.makeType1Exercise());
-         //System.out.println(ceg.makeExercise());
-         //System.out.println(stringEG.makeExercise());
-         //ExerciseBankTable.addExercise("Syntax", seg.makeType2Exercise());
-         //ExerciseBankTable.addExercise("Syntax", seg.makeType1Exercise());
-         //ExerciseBankTable.addExercise("Binary Trees", beg.makeExercise());
-         //ExerciseBankTable.addExercise("Conditionals", ceg.makeExercise());
-             //ExerciseBankTable.addExercise("Strings", stringEG.makeExercise());
-         }
-        
-        
+            //System.out.println(seg.makeType1Exercise());
+            //System.out.println(ceg.makeExercise());
+            //System.out.println(stringEG.makeExercise());
+            ExerciseBankTable.addExercise("Syntax", seg.makeType2Exercise());
+            ExerciseBankTable.addExercise("Syntax", seg.makeType1Exercise());
+            ExerciseBankTable.addExercise("Binary Trees", beg.makeExercise());
+            ExerciseBankTable.addExercise("Conditionals", ceg.makeExercise());
+            ExerciseBankTable.addExercise("Strings", stringEG.makeExercise());
+        }
+/*
         for (int i = 0; i < 10; i++) {
             System.out.println(stringEG.makeExercise());
-        }
+        } */
 
     }
 }

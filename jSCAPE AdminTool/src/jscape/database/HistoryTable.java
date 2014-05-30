@@ -324,6 +324,48 @@ public class HistoryTable {
             }
         }
     }
+    
+    public static ArrayList<String> getAverageMonthDataForCategory(String exerciseCategory, String selectedDate) {
+        PreparedStatement ps = null;
+        Connection connection = Database.getConnection();
+        ResultSet resultSet;
+
+        ArrayList<String> historyData = new ArrayList<>();
+
+        String[] words = selectedDate.split(" ");
+        int month = monthToInt(words[0]);
+        int year = Integer.valueOf(words[1]);
+
+        try {
+            String query = "SELECT " + DAY + ", ROUND(AVG(" + CORRECT_ANSWERS + "::numeric * 100/" + EXERCISES_ANSWERED + "),0)"
+                    + " AS correct_pc, ROUND(AVG(" + WRONG_ANSWERS + "::numeric * 100/" + EXERCISES_ANSWERED + "),0)"
+                    + " AS wrong_pc FROM " + TABLE_NAME + " WHERE " + EXERCISE_CATEGORY + " = ? AND"
+                    + " EXTRACT(MONTH FROM DAY) = ? AND EXTRACT(YEAR FROM DAY) = ? GROUP BY DAY";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, exerciseCategory);
+            ps.setInt(2, month);
+            ps.setInt(3, year);
+            resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                historyData.add(df.format(resultSet.getDate(DAY)));
+                historyData.add("" + resultSet.getInt("correct_pc"));
+                historyData.add("" + resultSet.getInt("wrong_pc"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return historyData;
+    }
 
     private static int monthToInt(String month) {
         int converted = 0;

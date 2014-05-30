@@ -161,7 +161,7 @@ public class StudentTable {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
         ResultSet resultSet;
-        
+
         ArrayList<String> loginStatus = new ArrayList<>();
 
         try {
@@ -171,7 +171,7 @@ public class StudentTable {
             ps.setString(1, loginName);
             ps.setString(2, password);
             resultSet = ps.executeQuery();
-            
+
             if (resultSet.next()) {
                 loginStatus.add("success");
             } else {
@@ -188,30 +188,30 @@ public class StudentTable {
                 e.printStackTrace();
             }
         }
-        
+
         return loginStatus;
     }
-    
+
     public static ArrayList<String> getStudentList(String className) {
-                PreparedStatement ps = null;
+        PreparedStatement ps = null;
         Connection connection = Database.getConnection();
         ResultSet resultSet;
-        
+
         ArrayList<String> studentList = new ArrayList<>();
 
         try {
-            String query = "SELECT " + LOGIN_NAME + ", " + FIRST_NAME + ", " + LAST_NAME 
+            String query = "SELECT " + LOGIN_NAME + ", " + FIRST_NAME + ", " + LAST_NAME
                     + " FROM " + TABLE_NAME + " WHERE " + CLASS + " = ?";
             ps = connection.prepareStatement(query);
             ps.setString(1, className);
             resultSet = ps.executeQuery();
-            
-            while(resultSet.next()) {
+
+            while (resultSet.next()) {
                 studentList.add(resultSet.getString(LOGIN_NAME)
-                              + " - " + resultSet.getString(FIRST_NAME)
-                              + " " + resultSet.getString(LAST_NAME));
+                        + " - " + resultSet.getString(FIRST_NAME)
+                        + " " + resultSet.getString(LAST_NAME));
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -223,26 +223,26 @@ public class StudentTable {
                 e.printStackTrace();
             }
         }
-        
+
         return studentList;
     }
-    
+
     public static ArrayList<String> getClassList() {
-                PreparedStatement ps = null;
+        PreparedStatement ps = null;
         Connection connection = Database.getConnection();
         ResultSet resultSet;
-        
+
         ArrayList<String> classList = new ArrayList<>();
 
         try {
-            String query = "SELECT DISTINCT " + CLASS + " FROM " + TABLE_NAME;
+            String query = "SELECT DISTINCT " + CLASS + " FROM " + TABLE_NAME + " ORDER BY " + CLASS;
             ps = connection.prepareStatement(query);
             resultSet = ps.executeQuery();
-            
-            while(resultSet.next()) {
+
+            while (resultSet.next()) {
                 classList.add(resultSet.getString(CLASS));
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -254,7 +254,7 @@ public class StudentTable {
                 e.printStackTrace();
             }
         }
-        
+
         return classList;
     }
 }

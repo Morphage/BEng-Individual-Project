@@ -94,6 +94,10 @@ public class MonthlyProgress extends StackedBarChart {
 
         return daysArray;
     }
+    
+    public void setYAxis(String axisLabel) {
+        yAxis.setLabel(axisLabel);
+    }
 
     private int monthToInt(String month) {
         int converted = 0;
