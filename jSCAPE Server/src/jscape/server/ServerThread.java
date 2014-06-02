@@ -94,7 +94,7 @@ class ServerThread implements Runnable {
                 payload = CategoryTable.getExerciseCategories();
                 break;
             case GET_EXERCISE:
-                payload = ExerciseBankTable.getExercise(request.getPayload().get(0),
+                payload = ExerciseBankTable.getExerciseWithDifficulty(request.getPayload().get(0),
                         request.getPayload().get(1));
                 break;
             case ANSWER_EXERCISE:
@@ -105,6 +105,12 @@ class ServerThread implements Runnable {
                 String isCorrectAnswer = request.getPayload().get(4);
 
                 StudentExerciseRecordTable.answerExercise(loginName, exerciseId, answerId);
+                ExerciseBankTable.updateExerciseStats(exerciseId, isCorrectAnswer);
+
+                if ("DIFFICULTY_CATEGORY".equals(server.getServerMode())) {
+                    PerformanceTable.updateDifficultyCategory(loginName, exerciseCategory, isCorrectAnswer);
+                }
+
                 PerformanceTable.updatePerformanceStats(loginName, exerciseCategory, isCorrectAnswer);
                 StudentTable.updateLastExerciseAnswered(loginName);
                 HistoryTable.updateHistoryData(loginName, exerciseCategory, isCorrectAnswer);
@@ -117,7 +123,7 @@ class ServerThread implements Runnable {
                 payload = HistoryTable.getDateList(request.getPayload().get(0));
                 break;
             case GET_MONTHLY_PROGRESS:
-                payload = HistoryTable.getHistoryDataForMonth(request.getPayload().get(0), 
+                payload = HistoryTable.getHistoryDataForMonth(request.getPayload().get(0),
                         request.getPayload().get(1), request.getPayload().get(2));
                 break;
             case GET_TOTAL_PER_DAY:

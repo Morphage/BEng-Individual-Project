@@ -74,8 +74,15 @@ public class AnalyzePane extends BorderPane {
     private ComboBox selectStudentBox;
     private Label selectStudentLabel;
 
+    private VBox globalViewVBox;
+    private ScrollPane scrollPane;
+
+    private StackPane stackPane;
+
     public AnalyzePane() {
         super();
+
+        stackPane = new StackPane();
 
         selectClassLabel = new Label("Select class:    ");
         selectClassLabel.setFont(new Font("Arial", 13));
@@ -95,8 +102,7 @@ public class AnalyzePane extends BorderPane {
             public void changed(ObservableValue ov, Object t, Object t1) {
                 ArrayList<String> studentList = StudentTable.getStudentList((String) selectClassBox.getSelectionModel().getSelectedItem());
                 ObservableList<String> studentObsList = FXCollections.observableArrayList(studentList);
-                studentObsList.add("Class average");
-                studentObsList.add("Class median");
+                studentObsList.add("Global view");
                 selectStudentBox.setItems(studentObsList);
                 selectStudentBox.getSelectionModel().selectFirst();
             }
@@ -107,8 +113,7 @@ public class AnalyzePane extends BorderPane {
 
         ArrayList<String> studentList = StudentTable.getStudentList((String) selectClassBox.getSelectionModel().getSelectedItem());
         ObservableList<String> studentObsList = FXCollections.observableArrayList(studentList);
-        studentObsList.add("Class average");
-        studentObsList.add("Class median");
+        studentObsList.add("Global view");
 
         selectStudentBox = new ComboBox(studentObsList);
         selectStudentBox.setMinWidth(150);
@@ -118,52 +123,22 @@ public class AnalyzePane extends BorderPane {
             public void changed(ObservableValue ov, Object t, Object t1) {
                 String selectedItem = (String) selectStudentBox.getSelectionModel().getSelectedItem();
 
-                if ("Class average".equals(selectedItem)) {
-                    String classId = (String) selectClassBox.getSelectionModel().getSelectedItem();
-                    ArrayList<String> performanceStatsPayload = PerformanceTable.getAverageStudentPerformance(classId);
-                    performanceStatsTable.setItems(performanceStatsPayload, PerformanceStatsTable.PERCENTAGE_TYPE);
+                if (selectedItem != null) {
+                    if ("Global view".equals(selectedItem)) {
+                        scrollPane.setVisible(false);
+                        globalViewVBox.setVisible(true);
+                        
+                        firstName.setText("");
+                        lastName.setText("");
+                        loginName.setText("");
+                        className.setText("");
+                        lastLogin.setText("");
+                        lastExerciseAnswered.setText("");
 
-                    firstName.setText("Class average data");
-                    lastName.setText("");
-                    loginName.setText("");
-                    className.setText((String) selectClassBox.getSelectionModel().getSelectedItem());
-                    lastLogin.setText("");
-                    lastExerciseAnswered.setText("");
-
-                    /* Add categories to comboBox, select the first item which triggers
-                     the listener to add the data to the pie chart. */
-                    if (categoryBox.getSelectionModel().getSelectedItem() == null) {
-                        ObservableList<String> exerciseCategories = performanceStatsTable.getExerciseCategories();
-                        graphCategoryBox.setItems(exerciseCategories);
-
-                        categoryBox.setItems(exerciseCategories);
-                        categoryBox.getSelectionModel().selectFirst();
                     } else {
-                        ObservableList items = categoryBox.getItems();
+                        globalViewVBox.setVisible(false);
+                        scrollPane.setVisible(true);
 
-                        if (items.contains("-- Total answers per category --")) {
-                            categoryBox.getItems().remove("-- Total answers per category --");
-                        }
-
-                        String selectedCategory = categoryBox.getSelectionModel().getSelectedItem().toString();
-                        performancePieChart.setData(selectedCategory);
-                    }
-
-                    // Get date list
-                    ArrayList<String> dateList = HistoryTable.getDateList("demo001");
-                    ObservableList<String> monthsAndYears = FXCollections.observableArrayList(dateList);
-                    monthBox.setItems(monthsAndYears);
-                    yearBox.setItems(FXCollections.observableArrayList(getYearList(dateList)));
-
-                    graphCategoryBox.getSelectionModel().clearSelection();
-                    monthBox.getSelectionModel().clearSelection();
-                    yearBox.getSelectionModel().clearSelection();
-                    monthlyProgressChart.setVisible(false);
-                    yearlyProgressChart.setVisible(false);
-                } else if ("Class median".equals(selectedItem)) {
-
-                } else {
-                    if (selectedItem != null) {
                         String[] parts = selectedItem.split("-");
                         String loginId = parts[0].trim();
                         ArrayList<String> profileInfoPayload = StudentTable.getProfileInfo(loginId);
@@ -186,7 +161,7 @@ public class AnalyzePane extends BorderPane {
                         }
 
                         ArrayList<String> performanceStatsPayload = PerformanceTable.getPerformanceStats(loginId);
-                        performanceStatsTable.setItems(performanceStatsPayload, PerformanceStatsTable.NORMAL_TYPE);
+                        performanceStatsTable.setItems(performanceStatsPayload);
 
                         /* Add categories to comboBox, select the first item which triggers
                          the listener to add the data to the pie chart. */
@@ -522,13 +497,26 @@ public class AnalyzePane extends BorderPane {
         profileStatistics.getStyleClass().add("category-page");
 
         // Add scroll pane
-        ScrollPane scrollPane = new ScrollPane();
+        scrollPane = new ScrollPane();
         scrollPane.getStyleClass().add("noborder-scroll-pane");
         scrollPane.setFitToWidth(true);
         scrollPane.setContent(profileStatistics);
 
+        globalViewVBox = new VBox();
+
+        Label globalViewStatistics = new Label("      GLOBAL VIEW STATISTICS - CLASS " + selectClassBox.getSelectionModel().getSelectedItem());
+        globalViewStatistics.setMaxWidth(Double.MAX_VALUE);
+        globalViewStatistics.setMinHeight(Control.USE_PREF_SIZE);
+        globalViewStatistics.getStyleClass().add("category-header");
+
+        globalViewVBox.getChildren().add(globalViewStatistics);
+        globalViewVBox.getStyleClass().add("category-page");
+        globalViewVBox.setVisible(false);
+
+        stackPane.getChildren().addAll(scrollPane, globalViewVBox);
+
         setLeft(profileInfo);
-        setCenter(scrollPane);
+        setCenter(stackPane);
     }
 
     private void runFetchYearlyProgressTask() {
@@ -561,35 +549,25 @@ public class AnalyzePane extends BorderPane {
         String loginId = parts[0].trim();
 
         if ((String) monthBox.getSelectionModel().getSelectedItem() != null) {
-            if ("Class average".equals((String) selectStudentBox.getSelectionModel().getSelectedItem())) {
-                ArrayList<String> graphStatsPayload = HistoryTable.getAverageMonthDataForCategory((String) graphCategoryBox.getSelectionModel().getSelectedItem(), (String) monthBox.getSelectionModel().getSelectedItem());
+            if ("Total".equals((String) graphCategoryBox.getSelectionModel().getSelectedItem())) {
+                ArrayList<String> graphStatsPayload = HistoryTable.getTotalForMonth(loginId, (String) monthBox.getSelectionModel().getSelectedItem());
 
                 monthlyProgressChart.setData(graphStatsPayload, (String) monthBox.getSelectionModel().getSelectedItem());
-                monthlyProgressChart.setYAxis("Average percentage");
                 monthlyProgressChart.setVisible(true);
             } else {
-                if ("Total".equals((String) graphCategoryBox.getSelectionModel().getSelectedItem())) {
-                    ArrayList<String> graphStatsPayload = HistoryTable.getTotalForMonth(loginId, (String) monthBox.getSelectionModel().getSelectedItem());
+                ArrayList<String> graphStatsPayload = HistoryTable.getHistoryDataForMonth(loginId,
+                        (String) monthBox.getSelectionModel().getSelectedItem(),
+                        (String) graphCategoryBox.getSelectionModel().getSelectedItem());
 
-                    monthlyProgressChart.setData(graphStatsPayload, (String) monthBox.getSelectionModel().getSelectedItem());
-                    monthlyProgressChart.setYAxis("Exercises Answered");
-                    monthlyProgressChart.setVisible(true);
-                } else {
-                    ArrayList<String> graphStatsPayload = HistoryTable.getHistoryDataForMonth(loginId,
-                            (String) monthBox.getSelectionModel().getSelectedItem(),
-                            (String) graphCategoryBox.getSelectionModel().getSelectedItem());
-
-                    monthlyProgressChart.setData(graphStatsPayload, (String) monthBox.getSelectionModel().getSelectedItem());
-                    monthlyProgressChart.setYAxis("Exercises Answered");
-                    monthlyProgressChart.setVisible(true);
-                }
+                monthlyProgressChart.setData(graphStatsPayload, (String) monthBox.getSelectionModel().getSelectedItem());
+                monthlyProgressChart.setVisible(true);
             }
         }
     }
 
     private ArrayList<String> getYearList(ArrayList<String> payload) {
-        ArrayList<String> yearList = new ArrayList<String>();
-        Set<String> yearSet = new HashSet<String>();
+        ArrayList<String> yearList = new ArrayList<>();
+        Set<String> yearSet = new HashSet<>();
 
         for (String s : payload) {
             String[] words = s.split(" ");

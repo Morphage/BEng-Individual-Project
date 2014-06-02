@@ -205,7 +205,7 @@ public class SyntaxExerciseGen {
                 + "    </display>\n"
                 + "    <display>\n"
                 + "        <view>Multiple Choice</view>\n"
-                + "        <value>The compiler is unable to compile this code and execute it. Which line has a syntax error?</value>\n"
+                + "        <value>The compiler is unable to compile this code and execute it. Which line needs to be fixed?</value>\n"
                 + "        <choice0>Line " + linesUsed.get(0) + "</choice0>\n"
                 + "        <choice1>Line " + linesUsed.get(1) + "</choice1>\n"
                 + "        <choice2>Line " + linesUsed.get(2) + "</choice2>\n"

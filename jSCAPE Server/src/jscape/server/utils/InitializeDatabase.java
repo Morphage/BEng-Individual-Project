@@ -69,7 +69,7 @@ public class InitializeDatabase {
     
     // STRINGS
     private static final String STRINGS_DESCRIPTION = "Strings, which are widely used in Java programming, are a sequence of characters."
-            + " In the Java programming language, strings are objects. The Java platform provides the String class, which includes methods"
+            + " In the Java programming language, strings are objects.\nThe Java platform provides the String class, which includes methods"
             + " for examining individual characters of the sequence, for comparing strings, for searching strings, for extracting substrings,"
             + " and for creating a copy of a string with all characters translated to uppercase or to lowercase, etc...";
     private static final String STRINGS_LECTURE_NOTES = "https://cate.doc.ic.ac.uk";
@@ -90,10 +90,14 @@ public class InitializeDatabase {
 
         // Add students
         StudentTable.addStudent("ac6609", "Alexis", "Chantreau", "cs101", "ac6609");
-        StudentTable.addStudent("user001", "user001", "user001", "cs101", "user001");
-        StudentTable.addStudent("user002", "user002", "user002", "cs101", "user002");
-        StudentTable.addStudent("user003", "user003", "user003", "cs101", "user003");
-        StudentTable.addStudent("user004", "user004", "user004", "cs101", "user004");
+        StudentTable.addStudent("user1", "user1", "user1", "cs101", "user1");
+        StudentTable.addStudent("user2", "user2", "user2", "cs101", "user2");
+        StudentTable.addStudent("user3", "user3", "user3", "cs101", "user3");
+        StudentTable.addStudent("user4", "user4", "user4", "cs101", "user4");
+        StudentTable.addStudent("user5", "user5", "user5", "cs101", "user5");
+        StudentTable.addStudent("user6", "user6", "user6", "cs101", "user6");
+        StudentTable.addStudent("user7", "user7", "user7", "cs101", "user7");
+        StudentTable.addStudent("user8", "user8", "user8", "cs101", "user8");
         
         // Add history data
         

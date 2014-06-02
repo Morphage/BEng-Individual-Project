@@ -1,0 +1,232 @@
+run:
+Item 1, a=0.600000024, b=2.0, c=0.25
+Item 2, a=1.10000002, b=5.0, c=0.25
+Item 6, a=1.20000005, b=6.0, c=0.25
+Item 4, a=1.39999998, b=10.0, c=0.25
+Item 7, a=1.29999995, b=8.0, c=0.25
+Item 8, a=1.29999995, b=9.0, c=0.25
+Item 9, a=1.29999995, b=8.0, c=0.25
+Item 10, a=1.20000005, b=7.0, c=0.25
+Item 3, a=0.899999976, b=4.0, c=0.25
+Item 5, a=1.10000002, b=6.0, c=0.25
+Item 11, a=0.899999976, b=5.0, c=0.25
+Item 13, a=1.20000005, b=6.0, c=0.25
+Item 12, a=1.20000005, b=7.0, c=0.25
+Item 14, a=1.20000005, b=5.0, c=0.25
+Item 19, a=1.10000002, b=8.0, c=0.25
+Item 16, a=0.899999976, b=4.0, c=0.25
+Item 20, a=1.10000002, b=6.0, c=0.25
+Item 17, a=1.0, b=6.0, c=0.25
+Item 18, a=1.0, b=6.0, c=0.25
+Item 15, a=1.10000002, b=8.0, c=0.25
+
+
+ItemID with max information=14....item difficulty = 5.0
+Answering item correctly...
+Level 0; p(X) = 0.03636769115505164
+Level 1; p(X) = 0.037206623471527936
+Level 2; p(X) = 0.038260317342103396
+Level 3; p(X) = 0.04081036191593649
+Level 4; p(X) = 0.05349299152794003
+Level 5; p(X) = 0.10165259009990486
+Level 6; p(X) = 0.1468438899647491
+Level 7; p(X) = 0.1455581552386823
+Level 8; p(X) = 0.13531360399937065
+Level 9; p(X) = 0.12710657491229954
+Level 10; p(X) = 0.12100612155365803
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=6....item difficulty = 6.0
+Answering item correctly...
+Level 0; p(X) = 0.013124740793219158
+Level 1; p(X) = 0.013542401445264645
+Level 2; p(X) = 0.014057388340824017
+Level 3; p(X) = 0.015215361137360064
+Level 4; p(X) = 0.02100213737667263
+Level 5; p(X) = 0.051797448304890685
+Level 6; p(X) = 0.14268364973784606
+Level 7; p(X) = 0.20760489960552594
+Level 8; p(X) = 0.1916296772375679
+Level 9; p(X) = 0.16853841728581867
+Level 10; p(X) = 0.15231185483440784
+After answering item, theta estimate is now 7
+
+
+ItemID with max information=10....item difficulty = 7.0
+Answering item incorrectly...
+Level 0; p(X) = 0.03426092158943807
+Level 1; p(X) = 0.03350256540359772
+Level 2; p(X) = 0.03313907735209839
+Level 3; p(X) = 0.03431631472252459
+Level 4; p(X) = 0.04532468027557683
+Level 5; p(X) = 0.10467277882139388
+Level 6; p(X) = 0.23442418103313054
+Level 7; p(X) = 0.16747623219413782
+Level 8; p(X) = 0.03676628018469355
+Level 9; p(X) = 0.004815402028441693
+Level 10; p(X) = 5.768602180674826E-4
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=13....item difficulty = 6.0
+Answering item correctly...
+Level 0; p(X) = 0.02028756239063162
+Level 1; p(X) = 0.020005962646609306
+Level 2; p(X) = 0.019964567998580075
+Level 3; p(X) = 0.02095836406139418
+Level 4; p(X) = 0.029109831216476114
+Level 5; p(X) = 0.08704278780210205
+Level 6; p(X) = 0.3676788788796302
+Level 7; p(X) = 0.31762619226094463
+Level 8; p(X) = 0.058659118650767436
+Level 9; p(X) = 0.007504854463641741
+Level 10; p(X) = 8.965732158816038E-4
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=5....item difficulty = 6.0
+Answering item correctly...
+Level 0; p(X) = 0.007921854133211843
+Level 1; p(X) = 0.007851530701417237
+Level 2; p(X) = 0.007884102039918992
+Level 3; p(X) = 0.008393036691102489
+Level 4; p(X) = 0.012396255823329205
+Level 5; p(X) = 0.048885794487403086
+Level 6; p(X) = 0.376655920288866
+Level 7; p(X) = 0.4641986540411844
+Level 8; p(X) = 0.0770970854357723
+Level 9; p(X) = 0.009774176795030516
+Level 10; p(X) = 0.0011669386976239583
+After answering item, theta estimate is now 7
+
+
+ItemID with max information=12....item difficulty = 7.0
+Answering item incorrectly...
+Level 0; p(X) = 0.011877887469279843
+Level 1; p(X) = 0.011702978802794266
+Level 2; p(X) = 0.011684072562684555
+Level 3; p(X) = 0.012365574101473823
+Level 4; p(X) = 0.018122648551965423
+Level 5; p(X) = 0.06984984926009075
+Level 6; p(X) = 0.47022057826311203
+Level 7; p(X) = 0.29318522593170404
+Level 8; p(X) = 0.012563089704461445
+Level 9; p(X) = 2.3258255458602479E-4
+Level 10; p(X) = 3.6644645983882904E-6
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=20....item difficulty = 6.0
+Answering item correctly...
+Level 0; p(X) = 0.004855919229956476
+Level 1; p(X) = 0.0047992460547199075
+Level 2; p(X) = 0.004811970748426527
+Level 3; p(X) = 0.0051542622134070825
+Level 4; p(X) = 0.008016402606395278
+Level 5; p(X) = 0.040641160894608244
+Level 6; p(X) = 0.49678042634666586
+Level 7; p(X) = 0.43378398292523146
+Level 8; p(X) = 0.016802005427202126
+Level 9; p(X) = 3.139215345169494E-4
+Level 10; p(X) = 4.956930909540798E-6
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=17....item difficulty = 6.0
+Answering item incorrectly...
+Level 0; p(X) = 0.012857979860137338
+Level 1; p(X) = 0.012442169512784512
+Level 2; p(X) = 0.0122216494348138
+Level 3; p(X) = 0.012785562238543855
+Level 4; p(X) = 0.019000760832745923
+Level 5; p(X) = 0.08203210562478577
+Level 6; p(X) = 0.547234697520948
+Level 7; p(X) = 0.13984693166143292
+Level 8; p(X) = 0.0012510896478464977
+Level 9; p(X) = 4.391050717578476E-6
+Level 10; p(X) = 1.2729688571107645E-8
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=18....item difficulty = 6.0
+Answering item incorrectly...
+Level 0; p(X) = 0.029678874782892165
+Level 1; p(X) = 0.027641126423564
+Level 2; p(X) = 0.02624051311476951
+Level 3; p(X) = 0.026517157227254406
+Level 4; p(X) = 0.037304834991676875
+Level 5; p(X) = 0.135841766493143
+Level 6; p(X) = 0.49202963517146353
+Level 7; p(X) = 0.04087346140850065
+Level 8; p(X) = 7.872920151215608E-5
+Level 9; p(X) = 5.1851911423047384E-8
+Level 10; p(X) = 2.7597504092165085E-11
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=2....item difficulty = 5.0
+Answering item correctly...
+Level 0; p(X) = 0.01218621570180688
+Level 1; p(X) = 0.011447973091770907
+Level 2; p(X) = 0.011042318093585394
+Level 3; p(X) = 0.011882275557934254
+Level 4; p(X) = 0.02203393938987174
+Level 5; p(X) = 0.1445151599655469
+Level 6; p(X) = 0.7467401069214272
+Level 7; p(X) = 0.04885256915234908
+Level 8; p(X) = 9.460065717340942E-5
+Level 9; p(X) = 6.244833073308885E-8
+Level 10; p(X) = 3.324920495966649E-11
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=11....item difficulty = 5.0
+Answering item correctly...
+Level 0; p(X) = 0.003788639987107719
+Level 1; p(X) = 0.0035868035884545025
+Level 2; p(X) = 0.0035494662597438304
+Level 3; p(X) = 0.004215996938004986
+Level 4; p(X) = 0.010600922414678006
+Level 5; p(X) = 0.11394109994797201
+Level 6; p(X) = 0.8364204181699381
+Level 7; p(X) = 0.05545773866937719
+Level 8; p(X) = 1.0946553006657731E-4
+Level 9; p(X) = 7.268882619609612E-8
+Level 10; p(X) = 3.875146904084948E-11
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=3....item difficulty = 4.0
+Answering item correctly...
+Level 0; p(X) = 9.795168022923113E-4
+Level 1; p(X) = 9.497394751603832E-4
+Level 2; p(X) = 0.0010356521315317583
+Level 3; p(X) = 0.001664706600190618
+Level 4; p(X) = 0.006828712076886231
+Level 5; p(X) = 0.10200537508217888
+Level 6; p(X) = 0.844156542398744
+Level 7; p(X) = 0.057034236666960246
+Level 8; p(X) = 1.1306244281980126E-4
+Level 9; p(X) = 7.517390516847282E-8
+Level 10; p(X) = 4.008750839724127E-11
+After answering item, theta estimate is now 6
+
+
+ItemID with max information=16....item difficulty = 4.0
+Answering item correctly...
+Level 0; p(X) = 2.5500873149534046E-4
+Level 1; p(X) = 2.5309431275512853E-4
+Level 2; p(X) = 3.039646180160208E-4
+Level 3; p(X) = 6.608577852321254E-4
+Level 4; p(X) = 0.004419795981432214
+Level 5; p(X) = 0.0916758728146013
+Level 6; p(X) = 0.8540744186749987
+Level 7; p(X) = 0.05867119922756449
+Level 8; p(X) = 1.1680139881184215E-4
+Level 9; p(X) = 7.775981216800935E-8
+Level 10; p(X) = 4.1478074941804744E-11
+After answering item, theta estimate is now 6
+
+
+BUILD SUCCESSFUL (total time: 1 second)

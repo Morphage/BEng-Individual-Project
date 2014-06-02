@@ -54,6 +54,9 @@ public class ConditionalsExerciseGen {
     private int numberOfVariables;
     private int randomOffset;
 
+    private int numberOfIfStatementsCreated;
+    private int numberOfElseStatementsCreated;
+
     private String justVariables = "";
 
     public ConditionalsExerciseGen() {
@@ -66,6 +69,9 @@ public class ConditionalsExerciseGen {
     }
 
     public String makeExercise() {
+        numberOfElseStatementsCreated = 0;
+        numberOfIfStatementsCreated = 0;
+
         int difficulty = random.nextInt(3);
         String exercise = "";
 
@@ -150,7 +156,7 @@ public class ConditionalsExerciseGen {
 
         if (newValue1.equals(oldValue1) && newValue2.equals(oldValue2) && newValue3.equals(oldValue3)) {
             choicesList.add(randomVar1 + " = " + getRandomValue(randomVar1Type) + "; " + randomVar2 + " = " + getRandomValue(randomVar2Type)
-            + "; " + randomVar3 + " = " + getRandomValue(randomVar3Type));
+                    + "; " + randomVar3 + " = " + getRandomValue(randomVar3Type));
         } else {
             choicesList.add(randomVar1 + " = " + newValue1 + "; " + randomVar2 + " = " + oldValue2 + "; " + randomVar3 + " = " + getRandomValue(randomVar3Type));
         }
@@ -168,6 +174,16 @@ public class ConditionalsExerciseGen {
         }
         Collections.shuffle(choicesList);
 
+        String difficulty;
+        int totalStatementsCreated = numberOfElseStatementsCreated + numberOfIfStatementsCreated;
+        if (totalStatementsCreated <= 2) {
+            difficulty = "A";
+        } else if (totalStatementsCreated <= 4) {
+            difficulty = "B";
+        } else {
+            difficulty = "C";
+        }
+
         String rest = "</value>\n"
                 + "    </display>\n"
                 + "    <display>\n"
@@ -178,6 +194,9 @@ public class ConditionalsExerciseGen {
                 + "        <choice2>" + choicesList.get(2) + "</choice2>\n"
                 + "        <choice3>" + choicesList.get(3) + "</choice3>\n"
                 + "        <solution>" + solutionValue + "</solution>\n"
+                + "    </display>\n"
+                + "    <display>\n"
+                + "        <difficulty>" + difficulty + "</difficulty>\n"
                 + "    </display>\n"
                 + "</exercise>";
 
@@ -262,6 +281,16 @@ public class ConditionalsExerciseGen {
         }
         Collections.shuffle(choicesList);
 
+        String difficulty;
+        int totalStatementsCreated = numberOfElseStatementsCreated + numberOfIfStatementsCreated;
+        if (totalStatementsCreated <= 2) {
+            difficulty = "A";
+        } else if (totalStatementsCreated <= 4) {
+            difficulty = "B";
+        } else {
+            difficulty = "C";
+        }
+
         String rest = "</value>\n"
                 + "    </display>\n"
                 + "    <display>\n"
@@ -272,6 +301,9 @@ public class ConditionalsExerciseGen {
                 + "        <choice2>" + choicesList.get(2) + "</choice2>\n"
                 + "        <choice3>" + choicesList.get(3) + "</choice3>\n"
                 + "        <solution>" + solutionValue + "</solution>\n"
+                + "    </display>\n"
+                + "    <display>\n"
+                + "        <difficulty>" + difficulty + "</difficulty>\n"
                 + "    </display>\n"
                 + "</exercise>";
 
@@ -335,6 +367,16 @@ public class ConditionalsExerciseGen {
 
         Set<String> choicesSet = new HashSet<>();
         ArrayList<String> choicesList = new ArrayList<>();
+        
+        String difficulty;
+        int totalStatementsCreated = numberOfElseStatementsCreated + numberOfIfStatementsCreated;
+        if (totalStatementsCreated <= 2) {
+            difficulty = "A";
+        } else if (totalStatementsCreated <= 4) {
+            difficulty = "B";
+        } else {
+            difficulty = "C";
+        }
 
         if ("boolean".equals(variablesType.get(randomVar))) {
             rest = "</value>\n"
@@ -347,6 +389,9 @@ public class ConditionalsExerciseGen {
                     + "        <choice2>true</choice2>\n"
                     + "        <choice3>false</choice3>\n"
                     + "        <solution>" + solutionValue + "</solution>\n"
+                    + "    </display>\n"
+                    + "    <display>\n"
+                    + "        <difficulty>" + difficulty + "</difficulty>\n"
                     + "    </display>\n"
                     + "</exercise>";
         } else if ("int".equals(variablesType.get(randomVar))) {
@@ -378,6 +423,9 @@ public class ConditionalsExerciseGen {
                     + "        <choice3>" + choicesList.get(3) + "</choice3>\n"
                     + "        <solution>" + solutionValue + "</solution>\n"
                     + "    </display>\n"
+                    + "    <display>\n"
+                    + "        <difficulty>" + difficulty + "</difficulty>\n"
+                    + "    </display>\n"
                     + "</exercise>";
 
         } else if ("String".equals(variablesType.get(randomVar))) {
@@ -408,6 +456,9 @@ public class ConditionalsExerciseGen {
                     + "        <choice2>" + choicesList.get(2) + "</choice2>\n"
                     + "        <choice3>" + choicesList.get(3) + "</choice3>\n"
                     + "        <solution>" + solutionValue + "</solution>\n"
+                    + "    </display>\n"
+                    + "    <display>\n"
+                    + "        <difficulty>" + difficulty + "</difficulty>\n"
                     + "    </display>\n"
                     + "</exercise>";
         }
@@ -450,6 +501,7 @@ public class ConditionalsExerciseGen {
             int createIfStatement = random.nextInt(10);
 
             if (createIfStatement < 4) {
+                numberOfIfStatementsCreated++;
                 switch (type) {
                     case "int":
                         String intComparisonOp = intComparisonOps[random.nextInt(intComparisonOps.length)];
@@ -548,6 +600,7 @@ public class ConditionalsExerciseGen {
 
         int createElseStatement = random.nextInt(10);
         if (createElseStatement < 7) {
+            numberOfElseStatementsCreated++;
             ifStatements += "        } else {\n";
 
             int elseStatements = random.nextInt(5) + 1;
@@ -582,8 +635,20 @@ public class ConditionalsExerciseGen {
                             ifStatements += "            " + newVar + " = (" + getRandomVariableOrValue("boolean", "", true);
                             ifStatements += " " + booleanComparisonOps[random.nextInt(booleanComparisonOps.length)] + " " + getRandomVariableOrValue("boolean", "", true) + ")";
                         } else if ("String".equals(complexVariableType)) {
-                            ifStatements += "            " + newVar + " = (" + getRandomVariableOrValue("String", "", true);
-                            ifStatements += ".equals(" + getRandomVariableOrValue("String", "", true) + "))";
+                            String randomVariableOrValue = getRandomVariableOrValue("String", "", true);
+                            String randomVariableOrValue2 = getRandomVariableOrValue("String", "", true);
+
+                            if (stringVariables.contains(randomVariableOrValue)) {
+                                ifStatements += "            " + newVar + " = (" + randomVariableOrValue;
+                            } else {
+                                ifStatements += "            " + newVar + " = (\"" + randomVariableOrValue + "\"";
+                            }
+
+                            if (stringVariables.contains(randomVariableOrValue2)) {
+                                ifStatements += ".equals(" + randomVariableOrValue2 + "))";
+                            } else {
+                                ifStatements += ".equals(\"" + randomVariableOrValue2 + "\"))";
+                            }
                         }
 
                     } else if ("String".equals(newVarType)) {

@@ -8,7 +8,6 @@ package jscape.exercise.strings;
 import bsh.EvalError;
 import bsh.Interpreter;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -57,7 +56,7 @@ public class StringExerciseGen {
 
     public String makeExercise() {
         int difficulty = random.nextInt(100);
-        String exercise;    
+        String exercise;
 
         s1Possibilities = new ArrayList<>();
         s2Possibilities = new ArrayList<>();
@@ -87,10 +86,12 @@ public class StringExerciseGen {
         String solutionValue = "";
 
         exercise += randomCode;
+        String s1Solution = "";
 
         try {
             i.eval(evalCode);
-            solutionValue = "s1 = " + i.get("s1") + "; " + "s2 = " + i.get("s2") + "; "
+            s1Solution = (String) i.get("s1");
+            solutionValue = "s1 = " + s1Solution + "; " + "s2 = " + i.get("s2") + "; "
                     + "s3 = " + i.get("s3") + "; " + "s4 = " + i.get("s4");
         } catch (EvalError ee) {
             ee.printStackTrace();
@@ -100,7 +101,7 @@ public class StringExerciseGen {
         Collections.shuffle(s2Possibilities);
         Collections.shuffle(s3Possibilities);
         Collections.shuffle(s4Possibilities);
-        String choice1 = "s1 = " + s1Possibilities.get(0) + "; " + "s2 = " + s2Possibilities.get(0) + "; "
+        String choice1 = "s1 = " + s1Solution + "; " + "s2 = " + s2Possibilities.get(0) + "; "
                 + "s3 = " + s3Possibilities.get(0) + "; " + "s4 = " + s4Possibilities.get(0);
 
         Collections.shuffle(s1Possibilities);
@@ -134,6 +135,9 @@ public class StringExerciseGen {
                 + "        <choice2>" + choicesList.get(2) + "</choice2>\n"
                 + "        <choice3>" + choicesList.get(3) + "</choice3>\n"
                 + "        <solution>" + solutionValue + "</solution>\n"
+                + "    </display>\n"
+                + "    <display>\n"
+                + "        <difficulty>C</difficulty>\n"
                 + "    </display>\n"
                 + "</exercise>";
 
@@ -199,6 +203,9 @@ public class StringExerciseGen {
                 + "        <choice2>" + choicesList.get(2) + "</choice2>\n"
                 + "        <choice3>" + choicesList.get(3) + "</choice3>\n"
                 + "        <solution>" + solutionValue + "</solution>\n"
+                + "    </display>\n"
+                + "    <display>\n"
+                + "        <difficulty>B</difficulty>\n"
                 + "    </display>\n"
                 + "</exercise>";
 
@@ -271,6 +278,9 @@ public class StringExerciseGen {
                 + "        <choice2>" + choicesList.get(2) + "</choice2>\n"
                 + "        <choice3>" + choicesList.get(3) + "</choice3>\n"
                 + "        <solution>" + solutionValue + "</solution>\n"
+                + "    </display>\n"
+                + "    <display>\n"
+                + "        <difficulty>A</difficulty>\n"
                 + "    </display>\n"
                 + "</exercise>";
 
@@ -563,13 +573,13 @@ public class StringExerciseGen {
 
         Interpreter i = new Interpreter();
         String solutionValue = "";
-        
+
         try {
             i.eval(evalCode);
             solutionValue = "" + i.eval("(s1 == s2)") + ", " + i.eval("s1.equals(s2)");
         } catch (EvalError ee) {
         }
-        
+
         exercise += randomCode;
 
         String rest = "</value>\n"
@@ -582,10 +592,22 @@ public class StringExerciseGen {
                 + "        <choice2>true, true</choice2>\n"
                 + "        <choice3>false, true</choice3>\n"
                 + "        <solution>" + solutionValue + "</solution>\n"
-                + "    </display>\n"
-                + "</exercise>";
+                + "    </display>\n";
 
         exercise += rest;
+
+        int prob = random.nextInt(2);
+        if (prob == 0) {
+            exercise += "    <display>\n"
+                    + "        <difficulty>A</difficulty>\n"
+                    + "    </display>\n";
+        } else {
+            exercise += "    <display>\n"
+                    + "        <difficulty>B</difficulty>\n"
+                    + "    </display>\n";
+        }
+        
+        exercise += "</exercise>";
 
         return exercise;
     }
@@ -593,7 +615,7 @@ public class StringExerciseGen {
     private String createReferenceExerciseCode() {
         String buildCode = "";
         int type = random.nextInt(7);
-        
+
         if (type == 0) {
             buildCode = referenceExercise1();
         } else if (type == 1) {
@@ -609,7 +631,6 @@ public class StringExerciseGen {
         } else if (type == 6) {
             buildCode = referenceExercise7();
         }
-        
 
         return buildCode;
     }
@@ -628,7 +649,7 @@ public class StringExerciseGen {
 
         return buildCode;
     }
-    
+
     private String referenceExercise2() {
         String buildCode = "public class StringExercise {\n"
                 + "    public static void main(String[] args) {\n";
@@ -643,7 +664,7 @@ public class StringExerciseGen {
 
         return buildCode;
     }
-    
+
     private String referenceExercise3() {
         String buildCode = "public class StringExercise {\n"
                 + "    public static void main(String[] args) {\n";
@@ -658,7 +679,7 @@ public class StringExerciseGen {
 
         return buildCode;
     }
-    
+
     private String referenceExercise4() {
         String buildCode = "public class StringExercise {\n"
                 + "    public static void main(String[] args) {\n";
@@ -674,7 +695,7 @@ public class StringExerciseGen {
 
         return buildCode;
     }
-    
+
     private String referenceExercise5() {
         String buildCode = "public class StringExercise {\n"
                 + "    public static void main(String[] args) {\n";
@@ -690,7 +711,7 @@ public class StringExerciseGen {
 
         return buildCode;
     }
-    
+
     private String referenceExercise6() {
         String buildCode = "public class StringExercise {\n"
                 + "    public static void main(String[] args) {\n";
@@ -698,7 +719,7 @@ public class StringExerciseGen {
         String p1 = getRandomString();
         String p2 = getRandomString();
         String s1 = p1 + " " + p2;
-                
+
         buildCode += "        String s1 = \"" + s1 + "\";\n";
         buildCode += "        String s2 = \"" + p1 + "\".concat(\" " + p2 + "\");\n\n";
 
@@ -708,7 +729,7 @@ public class StringExerciseGen {
 
         return buildCode;
     }
-    
+
     private String referenceExercise7() {
         String buildCode = "public class StringExercise {\n"
                 + "    public static void main(String[] args) {\n";

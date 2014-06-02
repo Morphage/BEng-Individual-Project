@@ -23,12 +23,26 @@ public class Server {
     
     private static boolean isRunning = true;
     
-    private Server(int port) {
+    private static Server theServer;
+    
+    private final String SERVER_MODE;
+    
+    public static Server getServer() {
+        return theServer;
+    }
+    
+    private Server(int port, String serverMode) {
+        this.SERVER_MODE = serverMode;
         this.port = port;
         connections = new HashSet<>();
     }
+    
+    public String getServerMode() {
+        return SERVER_MODE;
+    }
 
     public void run() {
+        theServer = this;
         serverOutput("Starting on port " + port + ". Ready to accept incoming connections.");
         try {
             ServerSocket serverSocket = new ServerSocket(port);
@@ -71,8 +85,9 @@ public class Server {
         }
 
         int port = Integer.parseInt(args[0]);
+        String serverMode = "DIFFICULTY_CATEGORY";
 
-        Server server = new Server(port);
+        Server server = new Server(port, serverMode);
         server.run();
     }
 }

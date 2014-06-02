@@ -5,6 +5,7 @@
  */
 package jscape.server.utils;
 
+import java.util.ArrayList;
 import jscape.exercise.syntax.SyntaxExerciseGen;
 import jscape.database.ExerciseBankTable;
 import jscape.exercise.bst.BSTExerciseGen;
@@ -28,11 +29,11 @@ public class ExerciseGenerator {
             //System.out.println(seg.makeType1Exercise());
             //System.out.println(ceg.makeExercise());
             //System.out.println(stringEG.makeExercise());
-            ExerciseBankTable.addExercise("Syntax", seg.makeType2Exercise());
-            ExerciseBankTable.addExercise("Syntax", seg.makeType1Exercise());
-            ExerciseBankTable.addExercise("Binary Trees", beg.makeExercise());
-            ExerciseBankTable.addExercise("Conditionals", ceg.makeExercise());
-            ExerciseBankTable.addExercise("Strings", stringEG.makeExercise());
+            //ExerciseBankTable.addExercise("Syntax", seg.makeType2Exercise());
+            //ExerciseBankTable.addExercise("Syntax", seg.makeType1Exercise());
+            ExerciseBankTable.addExerciseWithDifficulty("Binary Trees", beg.makeExercise());
+            ExerciseBankTable.addExerciseWithDifficulty("Conditionals", ceg.makeExercise());
+            ExerciseBankTable.addExerciseWithDifficulty("Strings", stringEG.makeExercise());
         }
 /*
         for (int i = 0; i < 10; i++) {

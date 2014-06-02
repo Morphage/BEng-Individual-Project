@@ -19,6 +19,7 @@ import java.io.StringReader;
 import org.xml.sax.InputSource;
 
 public class ExerciseParser {
+
     public static Exercise parseXMLExercise(String xmlExercise) {
         String ldv = null;
         String ldv2 = null;
@@ -29,7 +30,7 @@ public class ExerciseParser {
         String c3 = null;
         String c4 = null;
         String s = null;
-        
+
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             dbFactory.setExpandEntityReferences(false);
@@ -68,7 +69,36 @@ public class ExerciseParser {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return new Exercise(ldv, ldv2, rdv, rdv2, c1, c2, c3, c4, s);
+    }
+
+    public static String getDifficulty(String xmlExercise) {
+        String difficulty = "";
+
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            dbFactory.setExpandEntityReferences(false);
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            InputSource inputSource = new InputSource(new StringReader(xmlExercise));
+            Document doc = dBuilder.parse(inputSource);
+
+            doc.getDocumentElement().normalize();
+
+            NodeList nList = doc.getElementsByTagName("display");
+
+            int temp = 2;
+            Node nNode = nList.item(temp);
+
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+
+                difficulty = eElement.getElementsByTagName("difficulty").item(0).getTextContent();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return difficulty;
     }
 }

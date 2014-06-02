@@ -44,7 +44,7 @@ public class BSTExerciseGen {
         traversalOrders.add(bst.levelOrderTraversal());
 
         String exercise = xmlExercise;
-        
+
         exercise += bst.toJSON();
 
         int rand = random.nextInt(4);
@@ -62,6 +62,17 @@ public class BSTExerciseGen {
         }
 
         Collections.shuffle(traversalOrders);
+        
+        int numOfNodes = traversalOrders.get(0).split(",").length;
+        String difficulty;
+        
+        if (numOfNodes < 7) {
+            difficulty = "A";
+        } else if (numOfNodes < 12) {
+            difficulty = "B";
+        } else {
+            difficulty = "C";
+        }
 
         String rest = "</value>\n"
                 + "    </display>\n"
@@ -74,6 +85,9 @@ public class BSTExerciseGen {
                 + "        <choice2>" + traversalOrders.get(2) + "</choice2>\n"
                 + "        <choice3>" + traversalOrders.get(3) + "</choice3>\n"
                 + "        <solution>" + solutionTraversalOrder + "</solution>\n"
+                + "    </display>\n"
+                + "    <display>\n"
+                + "        <difficulty>" + difficulty + "</difficulty>\n"
                 + "    </display>\n"
                 + "</exercise>";
 
@@ -95,7 +109,7 @@ public class BSTExerciseGen {
         if ((add == 0) && (start == 0)) {
             bst.insert(data.get(0));
         }
-        
+
         if (add != 0) {
             int mid = start + (end - start) / 2;
             bst.insert(data.get(mid));

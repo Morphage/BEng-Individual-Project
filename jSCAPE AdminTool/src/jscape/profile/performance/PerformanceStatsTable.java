@@ -68,7 +68,7 @@ public class PerformanceStatsTable extends TableView<PerformanceStats> {
                 correctAnswersCol, wrongAnswersCol);
     }
 
-    public void setItems(ArrayList<String> payload, int type) {
+    public void setItems(ArrayList<String> payload) {
         ArrayList<PerformanceStats> performanceStatsData = new ArrayList<PerformanceStats>();
         int sumAnswers = 0;
         int sumCorrect = 0;
@@ -85,36 +85,8 @@ public class PerformanceStatsTable extends TableView<PerformanceStats> {
             sumCorrect += correct;
             sumWrong += wrong;
         }
-
-        if (type == NORMAL_TYPE) {
-            performanceStatsData.add(new PerformanceStats("Total", sumAnswers, sumCorrect, sumWrong));
-        } else {
-            int setCorrectPercentage = 0;
-            int setWrongPercentage = 0;
-
-            double correctPercentage = (double) sumCorrect * 100 / sumAnswers;
-            long iPart1 = (long) correctPercentage;
-            double fPart1 = correctPercentage - iPart1;
-
-            if (fPart1 < 0.5) {
-                setCorrectPercentage = (int) iPart1;
-            } else {
-                setCorrectPercentage = (int) iPart1 + 1;
-            }
-
-            double wrongPercentage = (double) sumWrong * 100 / sumAnswers;
-            long iPart2 = (long) wrongPercentage;
-            double fPart2 = wrongPercentage - iPart2;
-
-            if (fPart2 < 0.5) {
-                setWrongPercentage = (int) iPart2;
-            } else {
-                setWrongPercentage = (int) iPart2 + 1;
-            }
-
-            performanceStatsData.add(new PerformanceStats("Total", 100, setCorrectPercentage, setWrongPercentage));
-        }
-
+        
+        performanceStatsData.add(new PerformanceStats("Total", sumAnswers, sumCorrect, sumWrong));
         final ObservableList<PerformanceStats> data = FXCollections.observableArrayList(performanceStatsData);
 
         setItems(data);

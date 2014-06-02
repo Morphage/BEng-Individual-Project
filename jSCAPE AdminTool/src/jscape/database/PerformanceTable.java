@@ -123,34 +123,33 @@ public class PerformanceTable {
             }
         }
     }
-
-    public static ArrayList<String> getAverageStudentPerformance(String className) {
+    
+    public static void getGlobalViewStatistics(String loginName, String exerciseCategory,
+            int exercisesAnswered, int correctAnswers, int wrongAnswers) {
+        /*
+        SELECT login_name, case when exercises_answered<>0 then (correct_answer::numeric*100/exercises_answerd) else 0 end as correct_pc,
+        case when exercises_answered<>0 then (wrong_answers::numeric*100/exercises_answerd) else 0 end as wrong_pc
+        FROM performance
+        WHERE exercise_category=?
+        do some roudning as well
+        */
+        
+        
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
-        ResultSet resultSet;
-        
-        ArrayList<String> performanceData = new ArrayList<>();
 
         try {
-            String query = "SELECT " + EXERCISE_CATEGORY + ", ROUND(AVG(" + CORRECT_ANSWERS + "::numeric * 100/" + EXERCISES_ANSWERED
-                    + "), 0) AS correct_pc,"
-                    + "ROUND(AVG(" + WRONG_ANSWERS + "::numeric * 100/" + EXERCISES_ANSWERED
-                    + "), 0) AS wrong_pc"
-                    + " FROM " + TABLE_NAME
-                    + " JOIN student ON performance.login_name = student.login_name" 
-                    + " WHERE " + EXERCISES_ANSWERED + " > 0"
-                    + " AND class = ?"
-                    + " GROUP BY " + EXERCISE_CATEGORY;
-            ps = connection.prepareStatement(query);
-            ps.setString(1, className);
-            resultSet = ps.executeQuery();
+            String query = "UPDATE " + TABLE_NAME + " SET (" + EXERCISES_ANSWERED
+                    + "," + CORRECT_ANSWERS + "," + WRONG_ANSWERS + ") = (?,?,?) WHERE "
+                    + LOGIN_NAME + " = ?" + " AND " + EXERCISE_CATEGORY + " = ?";
 
-            while (resultSet.next()) {
-                performanceData.add(resultSet.getString(EXERCISE_CATEGORY));
-                performanceData.add("100");
-                performanceData.add("" + resultSet.getInt("correct_pc"));
-                performanceData.add("" + resultSet.getInt("wrong_pc"));
-            }
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, exercisesAnswered);
+            ps.setInt(2, correctAnswers);
+            ps.setInt(3, wrongAnswers);
+            ps.setString(4, loginName);
+            ps.setString(5, exerciseCategory);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -162,7 +161,5 @@ public class PerformanceTable {
                 e.printStackTrace();
             }
         }
-        
-        return performanceData;
     }
 }
