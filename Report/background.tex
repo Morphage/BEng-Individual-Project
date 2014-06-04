@@ -16,50 +16,55 @@ CBTs are typically "fixed-item" tests where all the students answer the same set
 Computerized adaptive testing (CAT), also called \textit{tailored testing}, is a form of computer-based testing which administers questions (referred to as \textit{items} in the psychometrics literature) of the appropriate difficulty by adapting to the examinee's ability.
 For example, if an examinee answers an item correctly, then the next item presented will higher on the difficulty scale. On the other hand, if they answer incorrectly, they will be presented with an item lower on the difficulty scale. \newline
 
+From an architectural perspective, a computerized adaptive test (CAT) consists of five components \cite{CAT-Framework}:
+
+\subsubsection{1. Calibrated item pool}
+An item pool is needed to store all the items available for inclusion in a test. This item pool must be calibrated with a psychometric model. During this phase, the item parameters are estimated according to the chosen model and scaled to fit with already existing items. Usually, the psychometric model employed in these systems is called Item Response Theory(IRT) (Section \ref{subsec:IRT}). Calibration is a complex process, and to be done accurately it requires a considerable amount of data. Typically, it is performed by psychometricians, aided by expensive and sophisticated calibration software.
+
+\subsubsection{2. Starting point}
+Initially, when zero items have been administered, no information is known about the examinees and so the CAT is unable to estimate their ability. As a result, the item selection algorithm will fail to choose the next item to be administered.
+If there is previous information available, for example an examinee's ability estimate in a closely related subject, then this can be input into the system to form the starting point configuration. Often this data isn't available or too costly to collect, so the CAT's initial ability estimate for the examinee corresponds to the mean on the ability scale - hence the first item presented will be of average difficulty.
+
+\subsubsection{3. Item selection algorithm}
+The item selection algorithm chooses the next item to present to the examinee based on the ability estimate of the examinee up to that point.
+
+There are several methods available to serve as the item selection algorithm, these will be examined when we consider IRT(section...)
+
+\subsubsection{4. Scoring algorithm}
+After an examinee has answered an item, the CAT will update its estim
+
+\subsubsection{5. Termination criterion}
+
+The CAT shouldn't be terminated too early, so as to allow enough time to estimate the examinee's ability with reasonable accuracy.
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{cat_flowchart}
-\caption{Flowchart of an adaptive test. Adapted from SIETTE paper.}
+\caption{Flowchart of an adaptive test. Adapted from \cite{SIETTE}.}
 \label{fig:cat_flowchart}
 \end{figure}
 
-The flowchart in figure~\ref{fig:cat_flowchart} illustrates the algorithm implemented in computer:
+The flowchart in figure~\ref{fig:cat_flowchart} corresponds to components 2-5, and illustrates the basics of the algorithm implemented in CAT. \cite{CAT-Wiki} gives a more detailed description of the procedure:
 \begin{itemize}
 \item[1.] The pool of items that haven't been administered yet is searched to determine the best item to present to the examinee, according to the current estimation of his ability.
-\item[2.] The chosen item is presented to the examinee, who then answers it correctly or incorrectly
-\item[3.] The ability estimate is updated, based upon all prior answers
-\item[4.] Steps 1–3 are repeated until a termination criterion is met
+\item[2.] The chosen item is presented to the examinee, who then answers it correctly or incorrectly.
+\item[3.] The ability estimate is updated, based upon this new piece of information and the previous ability estimate.
+\item[4.] Steps 1–3 are repeated until a termination criterion is met.
+\item[5.] The algorithm returns a final ability estimate for the examinee's performance along with a confidence level: a percentage value indicating how accurate the estimate is.
 \end{itemize}
 
-Usually, nothing is known about the examinee before administering the first item, so the algorithm is 
-
- However, it is possible to supply the algorithm with relevant information about the examinees such as previous results or previous estimated abilities.
-
-\begin{itemize}
-\item Motivation
-\item Explain how it works
-\item Algorithm picture/flowchart
-\item Advantages and disadvantages of CAT
-%\item (Last sentence) usually based on IRT -> nice lead in to next section ....... In general, CATs use IRT (Section 2.2) as a response model.
-\end{itemize}
+CATs offer several advantages when compared to CBTs. As a result CATs have been used in many areas, ranging from education, hospital questionnaires, etc..
 
 Advantages include
 - precise scores for most test takers
 - requires less items to be administered before arriving at an equally accurate score, in comparison to static multiple choice tests
 - like any computer based test adaptive tests may show results immediately after testing, no grading having to be done by teachers, so saves time and money.
 
-Disadvantages include 
+CATs present many attractive features but they do present a few disadvantages.
 - the need for a large bank of calibrated items to cater to all ability levels.
 - Items are administered one by one, so once an answer to the item has been given there is no turning back. No skipping questions either.
 
-
-%http://edglossary.org/computer-adaptive-test/
-\begin{itemize}
-\item Students can be presented with questions/exercises that are either too easy or too difficult.
-\item CAT is a solution to this problem as it automatically chooses the exercises of the appropriate difficulty level for the students.
-\item Based on IRT for item selection
-\item Evaluation of CAT
-\end{itemize}
+A brief overview of CATs was given in this section. All of these concepts will make more sense after reading the section on IRT and the implementation of adaptive testing in our system, jSCAPE.
 
 \section{Probabilistic Test Theory}
 \subsection{Maximum Likelihood}
@@ -87,6 +92,7 @@ IRT is based on the idea that the probability of a correct/keyed response to an 
 \subsection{Bayes probability theory}
 
 \subsection{Item Response Theory}
+\label{subsec:IRT}
 For these reasons, Item response theory (IRT) has seen frequent usage when it comes to CATs....We present the different models developed to predict the probability of a correct or incorrect response to a particular item.
 \subsubsection{The one-parameter logistic model}
 dfsdfsdf
