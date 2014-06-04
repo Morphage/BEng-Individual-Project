@@ -8,8 +8,6 @@ package jscape;
 
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.DepthTest;
 import javafx.scene.Scene;
@@ -19,7 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import jscape.profile.AnalyzePane;
+import jscape.analyze.AnalyzePane;
 
 /**
  *

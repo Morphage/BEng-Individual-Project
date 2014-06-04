@@ -37,6 +37,15 @@ public class ExerciseBankTable {
     private static final String B = "b";
     private static final String C = "c";
     
+    /**
+     * Gets an exercise from the exercise bank, the selection of the exercise depends
+     * on the mode the server is running in, i.e. random selection, selection based
+     * on the difficulty category or selection based on Item Response Theory (IRT).
+     * 
+     * @param loginName         The login name of the student requesting an exercise.
+     * @param exerciseCategory  The exercise category being requested.
+     * @return An ArrayList containing all the necessary information to build an exercise.
+     */
     public static ArrayList<String> getExercise(String loginName, String exerciseCategory) {
         String serverMode = Server.getServer().getServerMode();
         ArrayList<String> exerciseInfo = new ArrayList<>();
@@ -52,6 +61,13 @@ public class ExerciseBankTable {
         return exerciseInfo;
     }
 
+    /**
+     * Adds an exercise to the exercise bank.
+     * 
+     * @param exerciseCategory The category of the exercise to be added to the exercise
+     *                         bank.
+     * @param xmlExercise      The XML tagged document representing the exercise.
+     */
     public static void addExercise(String exerciseCategory, String xmlExercise) {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
@@ -76,6 +92,14 @@ public class ExerciseBankTable {
         }
     }
 
+    /**
+     * Updates the statistics related to the exercise being answered, namely the number
+     * of correct or wrong answers.
+     * 
+     * @param exerciseId      The unique ID of the exercise.
+     * @param isCorrectAnswer true if the student answered the exercise correctly,
+     *                        false otherwise.
+     */
     public static void updateExerciseStats(String exerciseId, String isCorrectAnswer) {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
@@ -153,9 +177,8 @@ public class ExerciseBankTable {
         return exerciseInfo;
     }
     
-    /*********************  ITEM RESPONSE THEORY METHODS  ****************************/
-    
-    public static ArrayList<Item> getItems(String loginName, String exerciseCategory) {
+    //********************  ITEM RESPONSE THEORY METHODS  ****************************/
+    public static ArrayList<Item> getIRTItems(String loginName, String exerciseCategory) {
         PreparedStatement ps = null;
         Connection connection = Database.getConnection();
         ResultSet resultSet;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jscape.profile.performance;
+package jscape.analyze.performance;
 
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
@@ -21,9 +21,6 @@ import javafx.scene.text.TextBuilder;
 public class PerformanceStatsTable extends TableView<PerformanceStats> {
 
     private static final Font FONT = new Font("Arial", 16);
-
-    public static final int NORMAL_TYPE = 0;
-    public static final int PERCENTAGE_TYPE = 1;
 
     private static final String COL1_HEADER = "Exercise Category";
     private static final String COL2_HEADER = "Exercises Answered";

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jscape.profile;
+package jscape.analyze;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,10 +37,11 @@ import javafx.scene.text.Font;
 import jscape.database.HistoryTable;
 import jscape.database.PerformanceTable;
 import jscape.database.StudentTable;
-import jscape.profile.graphs.MonthlyProgress;
-import jscape.profile.graphs.YearlyProgress;
-import jscape.profile.performance.PerformancePieChart;
-import jscape.profile.performance.PerformanceStatsTable;
+import jscape.analyze.graphs.MonthlyProgress;
+import jscape.analyze.graphs.YearlyProgress;
+import jscape.analyze.performance.GlobalViewStatsTable;
+import jscape.analyze.performance.PerformancePieChart;
+import jscape.analyze.performance.PerformanceStatsTable;
 
 /**
  *
@@ -67,6 +68,9 @@ public class AnalyzePane extends BorderPane {
     private PerformancePieChart performancePieChart;
     private MonthlyProgress monthlyProgressChart;
     private YearlyProgress yearlyProgressChart;
+
+    private GlobalViewStatsTable globalViewStatsTable;
+    private ComboBox globalViewCategoryBox;
 
     private Label selectClassLabel;
     private ComboBox selectClassBox;
@@ -127,7 +131,7 @@ public class AnalyzePane extends BorderPane {
                     if ("Global view".equals(selectedItem)) {
                         scrollPane.setVisible(false);
                         globalViewVBox.setVisible(true);
-                        
+
                         firstName.setText("");
                         lastName.setText("");
                         loginName.setText("");
@@ -168,6 +172,7 @@ public class AnalyzePane extends BorderPane {
                         if (categoryBox.getSelectionModel().getSelectedItem() == null) {
                             ObservableList<String> graphCategories = performanceStatsTable.getExerciseCategories();
                             graphCategoryBox.setItems(graphCategories);
+                            globalViewCategoryBox.setItems(graphCategories);
 
                             ObservableList<String> exerciseCategories = performanceStatsTable.getExerciseCategories();
                             exerciseCategories.add("-- Total answers per category --");
@@ -509,7 +514,34 @@ public class AnalyzePane extends BorderPane {
         globalViewStatistics.setMinHeight(Control.USE_PREF_SIZE);
         globalViewStatistics.getStyleClass().add("category-header");
 
-        globalViewVBox.getChildren().add(globalViewStatistics);
+        // Create choose month label
+        final Label chooseGlobalCategoryLabel = new Label("Choose Exercise Category:");
+        chooseGlobalCategoryLabel.setStyle("-fx-text-fill: #e1fdff;"
+                + "-fx-font-weight: bold;");
+
+        globalViewCategoryBox = new ComboBox();
+        globalViewCategoryBox.setMaxWidth(Double.MAX_VALUE);
+        globalViewCategoryBox.setMinWidth(150);
+        globalViewCategoryBox.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue ov, Object t, Object t1) {
+                if (t1 != null) {
+                    globalViewStatsTable.setItems(PerformanceTable.getGlobalViewStats(t1.toString()));
+                }
+            }
+        });
+
+        HBox globalViewHBox = new HBox(8);
+        globalViewHBox.getChildren().addAll(chooseGlobalCategoryLabel, globalViewCategoryBox);
+        
+        globalViewStatsTable = new GlobalViewStatsTable();
+        
+        HBox globalViewTableHBox = new HBox();
+        globalViewTableHBox.getChildren().add(globalViewStatsTable);
+        globalViewTableHBox.setAlignment(Pos.CENTER);
+        VBox.setMargin(globalViewTableHBox, new Insets(80, 0, 0, 0));
+
+        globalViewVBox.getChildren().addAll(globalViewStatistics, globalViewHBox, globalViewTableHBox);
         globalViewVBox.getStyleClass().add("category-page");
         globalViewVBox.setVisible(false);
 

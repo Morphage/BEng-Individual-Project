@@ -1,5 +1,10 @@
 \documentclass[11pt,a4paper]{report}
 \usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\usepackage[labelfont=bf]{caption}
+\usepackage{float}
+
+\graphicspath{{C:/Users/achantreau/Documents/GitHub/BEng-Individual-Project/Report/images/}}
 
 \usepackage{fancyhdr}
 \setlength{\headheight}{30pt}
@@ -67,8 +72,6 @@ Dr.~Tristan \textsc{Allwood}
 %\begin{abstract}\centering
 %
 %\end{abstract}
-%-----------------------------------------------------------
-
 
 %-----------------------------------------------------------
 % TABLE OF CONTENTS SECTION
@@ -80,158 +83,29 @@ Dr.~Tristan \textsc{Allwood}
 \pagenumbering{arabic}
 
 %-----------------------------------------------------------
+% LIST OF FIGURES SECTION
+%-----------------------------------------------------------
+\listoffigures
+
+%-----------------------------------------------------------
 % INTRODUCTION SECTION
 %-----------------------------------------------------------
-%\include{introduction}
-
-\chapter{Introduction}
-Mention three tier architecture
-
-\section{Motivation}
-
-\begin{itemize}
-\item The rise in MOOCs such as Coursera, Udacity shows that there is a real interest in learning programming.
-\item Programming is considered "difficult'' to learn and it can only be learnt effectively through lots and lots of practice.
-\item This is even more apparent when students are introduced to other programming languages with different paradigms such as Haskell and Prolog, or more low level programming languages such as C.
-\item Hence, the need to provide a platform for students to practice their programming skills and understanding of programming concepts.
-\item Having a lecturer come up with all the exercises by himself can be both time consuming and ineffective: some exercises may not be challenging enough for certain top students, or on the contrary too difficult for struggling students, which can be discouraging.
-\item Lecturers can only rely on a few homework assignments to get an idea of how students are doing. Having a way for lecturers to gather large amounts of data about students' performances would be beneficial. Allows for supplementary material, exercises, etc...
-\end{itemize}
-
-\section{Objectives}
-Having identified the problems associated with teaching and learning programming, we were lead to formulating objectives in order to make the project successful and useful to the parties involved. \newline
-
-The main objective of the project was to produce a web-based teaching infrastructure to complement the introductory first year programming classes. Four key features were identified:
-
-\begin{itemize}
-\item \textbf{Programming questions/exercises -} The web platform should allow students to practice their programming skills and understanding of programming concepts. There should be no limit to the number of questions a student can answer, so that if a student desires more practice, then he should be able to do that. Additionally, it should be possible for a specific set of people, such as lecturers and tutors, to add questions/exercises to the system.
-\item \textbf{Progress tracking -} Designated people, such as lecturers and tutors, should have access to detailed statistics about the students performances. This will provide them with useful information about difficulties particular students, or the entire class, may be facing. In addition, the system should give feedback to the students, in the form of simple statistics, allowing them to identify their weak areas and thus improve on them.
-\item \textbf{Adaptive difficulty -} The questions or exercises presented to the students should be suited to their ability. Not only will this stimulate the learning process, but it will also give a better indication of a student's understanding of the programming concepts being tested.
-\item \textbf{Automated generation -} There should be a mechanism to allow for some degree of automated or semi-automated generation of exercises. This will provide a large supply of ``fresh" questions, so that students don't end up answering the same questions and memorizing the answers to them.
-\end{itemize}
-
-While investigating existing solutions (Section 2.4 - Related Work) we found out that some of these features were less common than others. The availability of programming exercises and progress tracking are very essential in such systems, therefore all of the tools implemented these features. On the other hand, relatively few tools integrated some form of adapting the questions to the students' ability. Finally, almost none of the tools featured automated generation of questions, opting instead to allow exercises to be added manually to the system.
-
-\section{Contributions}
-
-\section{Report Structure}
+\include{introduction}
 
 %-----------------------------------------------------------
 % BACKGROUND SECTION
 %-----------------------------------------------------------
+\include{background}
 
-% Add maximum likelihood background explanation
-% Add Bayesian probability background explanation
-
-\chapter{Background}
-In this chapter, we start off by giving an overview of the theoretical fundamentals which will be used by the developed system. Finally, we conclude with a tour of existing solutions.
-
-\section{Computer Based Tests (CBT)}
-
-\section{Computerized Adaptive Testing (CAT)}
-As seen in the previous section, CBTs are typically "fixed-item" tests where all the students answer the same set of questions,  usually provided by the person responsible for the assessment. This isn't ideal since students can be presented with questions that are too easy or too difficult for them to answer. Consequently, the results of the test won't give a very accurate representation of a student's ability, and for this reason, these types of tests aren't extremely useful. This problem lead to research and the development of computerized adaptive testing (CAT). \newline
-
-Computerized adaptive testing (CAT), also called \textit{tailored testing}, is a form of computer-based test that adapts to the examinee's ability. \newline
-
-The basic algorithm is as follows:
-\begin{itemize}
-\item[1.] The pool of available items is searched for the optimal item, based on the current estimate of the examinee's ability.
-\item[2.] The chosen item is presented to the examinee, who then answers it correctly or incorrectly
-\item[3.] The ability estimate is updated, based upon all prior answers
-\item[4.] Steps 1–3 are repeated until a termination criterion is met
-\end{itemize}
-
-\begin{itemize}
-\item Motivation
-\item Explain how it works
-\item Algorithm picture/flowchart
-\item Advantages and disadvantages of CAT
-%\item (Last sentence) usually based on IRT -> nice lead in to next section ....... In general, CATs use IRT (Section 2.2) as a response model.
-\end{itemize}
-
-7%ttp://edglossary.org/computer-adaptive-test/
-\begin{itemize}
-\item Students can be presented with questions/exercises that are either too easy or too difficult.
-\item CAT is a solution to this problem as it automatically chooses the exercises of the appropriate difficulty level for the students.
-\item Based on IRT for item selection
-\item Evaluation of CAT
-\end{itemize}
-
-\section{Item Response Theory (IRT)}
-% Add maximum likelihood background explanation
-% Conditional probability quick overview?
-% Add Bayesian probability background explanation
-% Bayesian networks
-% Latent variables ?
-
-IRT is based on the idea that the probability of a correct/keyed response to an item is a mathematical function of person and item parameters. 
-
-\begin{itemize}
-\item Calculates the probability of a particular student answering a specific question correctly.
-\item Different IRT models: One-Parameter Logistic (1-PL), Two-Parameter Logistic (2-PL), Three-Parameter Logistic (3-PL). Refers to the number of parameters used in the model. Parameters are: 
-
-\begin{itemize}
-\item[-] question difficulty parameter (\textit{b})
-\item[-] question discrimination parameter (\textit{a})
-\item[-] chance/guessing paramter (\textit{c})
-\end{itemize}
-
-\item Item Characteristic Curve, i.e. probability distribution
-
-\end{itemize}
-
-\section{Related Work}
-Web-based education and adaptive web-based assessment systems are a ``hot" research area, and as a result, numerous tools, environments and infrastructures have emerged. There are common features to all, however some distinguish themselves by having not so common features.
-Automated exercise generation in these tools is usually non-existent or very limited. Moreover, the tools are more focused on assessing students rather than self-assessment, i.e. students take tests which count towards their final grade on these systems.
-
-\subsection{Environment for Learning to Program}
-Environment for Learning to Program (ELP) is an interactive web based environment for teaching programming to first year Information Technology students at Queensland University of Technology (QUT).
-
-\subsection{CourseMarker}
-CourseMarker is a re-design of Ceilidh, a computer based assessment system used at the University of Nottingham for 13 years. Ceilidh was quite a complete system, providing coursework, the management of modules and the presentation of module content.
-
-\subsection{Automatic Exercise Generator with Tagged Documents based on the Intelligence of Students}
-The Automatic Exercise Generator with Tagged Documents based on the Intelligence of Students (AEGIS)
-
-\subsection{Adaptive Self-Assessment Master}
-Adaptive Self-Assessment Master (ASAM) is an extension to CourseMarker, which improves upon it by administering questions which are suited to the student's ability.
-
-\subsection{System of Intelligent Evaluation Using Tests for Tele-education}
-The System of Intelligent Evaluation Using Tests for Tele-education (SIETTE) is a web based environment for generating and constructing adaptive tests.
-
+%-----------------------------------------------------------
+% RELATED WORK SECTION
+%-----------------------------------------------------------
+\include{related_work}
 
 %-----------------------------------------------------------
 % PROJECT PLAN SECTION
 %-----------------------------------------------------------
 
-\chapter{Project Plan}
-\section{Current Progress}
-At the moment, most of the work that I've done on the project has involved researching techniques for adapting the difficulty level of questions and the automated generation of exercises. Through the research that I have done, I have understood the techniques to adapt the difficulty level of questions to suit the student's ability and I feel that the implementation of this aspect should go smoothly. On the other hand, the research of automated exercise generation hasn't shown great results, thus the plan is to implement a very basic amount of automated exercise generation and to leave more advanced methods of automated exercise generation as an extension. \newline
-
-Also, I have figured out the details regarding the programming exercises that will be presented to students. These will be multiple choice questions, true/false questions as well as drag and drop type questions. The exercises will be on topics covered in the introductory java classes, i.e. syntax, arrays, loops, conditionals, data structures, classes, objects.
-\newline
-
-In addition, I have advanced on the details of the implementation, the architecture of the system, as well as the technologies I will be using to complete the project. The application I will develop will be a Java applet embedded in a website. SQL will be used for all database related aspects of the project, for instance, the question bank, student profiles, etc... will be recorded in a database. I will look into Java servlets to deal with requests coming from the Java applet. \newline
-
-I have therefore programmed a basic Java applet to help with getting started.
-
-\section{Plan}
-This is a rough timetable that I will follow to realize the project:
-\begin{itemize}
-\item (21/02/14 - 26/02/14): Finish writing introduction and background sections of the report
-\item (26/02/14 - 02/03/14): Finalize GUI and architecture of the application (on paper)
-\item (03/03/14 - 28/03/14): Revise for exams and take exams
-\item (29/03/14 - 29/04/14): Code, code and code
-\item 
-\end{itemize}
-
-
-\textbf{Extensions -} The realization of these features is dependent on time and whether I can find enough research material to allow me to achieve their implementation. They are:
-\begin{itemize}
-\item Come up with more types of exercises for variety
-\item Better automated generation of exercises
-\item Add support for Haskell and C
-\end{itemize}
 
 %-----------------------------------------------------------
 % EVALUATION SECTION
@@ -278,8 +152,7 @@ The evaluation stage will address mostly these two aspects:
 %-----------------------------------------------------------
 % APPENDICES
 %-----------------------------------------------------------
-\appendix
-\chapter{User Manual}
+\include{appendix}
 
 
 

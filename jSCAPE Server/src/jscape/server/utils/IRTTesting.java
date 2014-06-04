@@ -80,7 +80,7 @@ public class IRTTesting {
         System.out.println(""); */
         //System.out.println(Arrays.toString(KnowledgeDistributionTable.getDistribution("ac6609", "Arrays")));
         
-        ArrayList<Item> itemList = ExerciseBankTable.getItems("ac6609", "Binary Trees");
+        ArrayList<Item> itemList = ExerciseBankTable.getIRTItems("ac6609", "Binary Trees");
         for (Item item : itemList) {
             System.out.println(item.toString());
         }

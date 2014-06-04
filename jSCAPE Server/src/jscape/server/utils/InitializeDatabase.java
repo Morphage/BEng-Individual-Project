@@ -94,16 +94,16 @@ public class InitializeDatabase {
         StudentTable.addStudent("user2", "user2", "user2", "cs101", "user2");
         StudentTable.addStudent("user3", "user3", "user3", "cs101", "user3");
         StudentTable.addStudent("user4", "user4", "user4", "cs101", "user4");
-        StudentTable.addStudent("user5", "user5", "user5", "cs101", "user5");
-        StudentTable.addStudent("user6", "user6", "user6", "cs101", "user6");
-        StudentTable.addStudent("user7", "user7", "user7", "cs101", "user7");
-        StudentTable.addStudent("user8", "user8", "user8", "cs101", "user8");
         
         // Add history data
         
         /* CREATE DEMO STUDENT WITH LOTS OF DATA */
         initializeDemoStudent("demo001");
         initializeDemoStudent("demo002");
+        initializeDemoStudent("user5");
+        initializeDemoStudent("user6");
+        initializeDemoStudent("user7");
+        initializeDemoStudent("user8");
         
     }
     

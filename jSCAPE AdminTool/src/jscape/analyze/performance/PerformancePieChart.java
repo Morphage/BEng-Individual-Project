@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package jscape.profile.performance;
+package jscape.analyze.performance;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

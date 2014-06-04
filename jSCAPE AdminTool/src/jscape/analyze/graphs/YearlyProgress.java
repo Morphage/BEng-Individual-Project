@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package jscape.profile.graphs;
+package jscape.analyze.graphs;
 
 import java.util.ArrayList;
 import java.util.Arrays;

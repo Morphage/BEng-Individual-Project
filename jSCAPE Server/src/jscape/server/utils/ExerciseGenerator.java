@@ -5,7 +5,6 @@
  */
 package jscape.server.utils;
 
-import java.util.ArrayList;
 import jscape.exercise.syntax.SyntaxExerciseGen;
 import jscape.database.ExerciseBankTable;
 import jscape.exercise.bst.BSTExerciseGen;
