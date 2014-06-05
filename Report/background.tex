@@ -1,6 +1,7 @@
 \chapter{Background}
 % Add maximum likelihood background explanation
 % Add Bayesian probability background explanation
+%Add note to say that we use the word examinee to mean someone taking a test although the test may not be an exam per say.
 
 \section{Computer Based Tests}
 CBT abbreviation
@@ -19,23 +20,20 @@ For example, if an examinee answers an item correctly, then the next item presen
 From an architectural perspective, a computerized adaptive test (CAT) consists of five components \cite{CAT-Framework}:
 
 \subsubsection{1. Calibrated item pool}
-An item pool is needed to store all the items available for inclusion in a test. This item pool must be calibrated with a psychometric model. During this phase, the item parameters are estimated according to the chosen model and scaled to fit with already existing items. Usually, the psychometric model employed in these systems is called Item Response Theory(IRT) (Section \ref{subsec:IRT}). Calibration is a complex process, and to be done accurately it requires a considerable amount of data. Typically, it is performed by psychometricians, aided by expensive and sophisticated calibration software.
+An item pool is needed to store all the items available for inclusion in a test. This item pool must be calibrated with a psychometric model. During this phase, the item parameters are estimated according to the chosen model and scaled to fit with already existing items. Usually, the psychometric model employed in these systems is called Item Response Theory (IRT) (section \ref{subsec:IRT}). Calibration is a complex process, and to be done accurately it requires a considerable amount of data. Typically, it is performed by psychometricians, aided by expensive and sophisticated calibration software.
 
 \subsubsection{2. Starting point}
 Initially, when zero items have been administered, no information is known about the examinees and so the CAT is unable to estimate their ability. As a result, the item selection algorithm will fail to choose the next item to be administered.
 If there is previous information available, for example an examinee's ability estimate in a closely related subject, then this can be input into the system to form the starting point configuration. Often this data isn't available or too costly to collect, so the CAT's initial ability estimate for the examinee corresponds to the mean on the ability scale - hence the first item presented will be of average difficulty.
 
 \subsubsection{3. Item selection algorithm}
-The item selection algorithm chooses the next item to present to the examinee based on the ability estimate of the examinee up to that point.
-
-There are several methods available to serve as the item selection algorithm, these will be examined when we consider IRT(section...)
+The item selection algorithm chooses the next item to present to the examinee based on the ability estimate of the examinee up to that point. Several methods exist and largely depend on the psychometric model in use. One of the most commonly used methods is the \textit{maximum information method} (section \ref{subsec:IRT}), which selects the item which maximizes the information function with respect to the estimated ability at that point.
 
 \subsubsection{4. Scoring algorithm}
-After an examinee has answered an item, the CAT will update its estim
+The scoring algorithm refers to the steps taken to update the examinee's ability estimate after an item has been answered. The two most commonly used methods are \textit{maximum likelihood estimation} (SECTION REFERENCE) and \textit{Bayesian estimation} (SECTION REFERENCE).
 
 \subsubsection{5. Termination criterion}
-
-The CAT shouldn't be terminated too early, so as to allow enough time to estimate the examinee's ability with reasonable accuracy.
+The termination criterion specifies when the CAT should finish. For example the CAT can terminate when the change in the ability estimate after each iteration is below a certain threshold, or when time has run out, or when $N$ items have been administered, etc... Obviously, the CAT shouldn't be terminated too early, so as to allow enough time to estimate the examinee's ability with acceptable accuracy.
 
 \begin{figure}[H]
 \centering
@@ -53,20 +51,26 @@ The flowchart in figure~\ref{fig:cat_flowchart} corresponds to components 2-5, a
 \item[5.] The algorithm returns a final ability estimate for the examinee's performance along with a confidence level: a percentage value indicating how accurate the estimate is.
 \end{itemize}
 
-CATs offer several advantages when compared to CBTs. As a result CATs have been used in many areas, ranging from education, hospital questionnaires, etc..
+CATs offer several advantages over traditional CBTs. As a result CATs have been used in many areas\cite{CAT-Areas}, such as education, job hiring, counselling, clinical studies, etc... Since CATs administer items by adapting to the examinee's ability, the test-taking experience ends up being a more positive one. Indeed, examinees won't have to deal with answering items which are too difficult or too easy compared to their ability level, a problem which appears in traditional CBTs.\newline
 
-Advantages include
-- precise scores for most test takers
-- requires less items to be administered before arriving at an equally accurate score, in comparison to static multiple choice tests
-- like any computer based test adaptive tests may show results immediately after testing, no grading having to be done by teachers, so saves time and money.
+In addition, by administering only those items which will yield additional information, CATs end up being more accurate in estimating an examinee's ability level. This contrasts with CBTs which usually provide the best precision for examinees of medium ability, whereas extreme scores end up being less accurate.\newline
 
-CATs present many attractive features but they do present a few disadvantages.
-- the need for a large bank of calibrated items to cater to all ability levels.
-- Items are administered one by one, so once an answer to the item has been given there is no turning back. No skipping questions either.
+Lastly, CATs can come up with an ability estimate much quicker and with fewer administered items when compared to traditional CBTs. Indeed, an adaptive test can typically be shortened by 50\% and still maintain a higher level of precision than a fixed version.\cite{Weiss1984}
+\newline
 
-A brief overview of CATs was given in this section. All of these concepts will make more sense after reading the section on IRT and the implementation of adaptive testing in our system, jSCAPE.
+Despite the advantages mentioned above, CATs have some limitations. A frequent complaint is that an examinee isn't allowed to go back and change his answer to a past item. This limitation exists to prevent the examinee from intentionally answering items incorrectly to make subsequent items easier, and then going back and selecting the correct answers to achieve a perfect score. For similar reasons, it isn't possible to skip items, the examinee must select an answer to move on to the next item.\newline
+
+The second issue has to do with the items themselves. First of all, there is the need for a large bank of items to cater to all ability levels. Developing an item pool of sufficient size can be very time consuming. David J. Weiss writes in \cite{Weiss1985} that item pools with 150-200 items are to be preferred.
+
+Secondly, for the CAT to be of good quality the item pool needs to be calibrated accurately. This requires pre-administering the items to a sizeable sample and then simultaneously estimating all the item parameters for each item. The guidelines in \cite{CAT-Primer} suggest that sample sizes may be as large as $1000$ examinees. This phase is costly, time consuming and often times simply unfeasible.\newline
+
+Lastly, item exposure is a possible security concern. Sometimes particular items may be presented too often and become overused. This may result in examinees becoming familiar with them and sharing them to other examinees of the same ability level, thus corrupting the results of the test. This problem can be solved to some extent by modifying the item selection algorithm to include some exposure control mechanism.\newline
+
+A brief overview of CATs was given in this section. All of these concepts will be explored in more detail in item response theory (section \ref{subsec:IRT}) and in the implementation of adaptive testing in jSCAPE (chapter XX?).
 
 \section{Probabilistic Test Theory}
+Blablablakskdjfksdjfksdsdfk stuff about probability and their usage
+
 \subsection{Maximum Likelihood}
 % Add maximum likelihood background explanation
 % Conditional probability quick overview?
