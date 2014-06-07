@@ -70,28 +70,53 @@ Lastly, item exposure is a possible security concern. Sometimes particular items
 A brief overview of CATs was given in this section. All of these concepts will be explored in more detail in item response theory (section \ref{subsec:IRT}) and in the implementation of adaptive testing in jSCAPE (chapter XX?).
 
 \section{Probabilistic Test Theory}
-In this section we go over a few topics in probability and how they can be implemented successfully in the area of computer assessments.
+\label{sec:probabilistic-test-theory}
+In the previous section we listed some of the components necessary for the development of CATs. Many of these components, especially the item selection and scoring algorithms, rely heavily on probabilistic concepts. Therefore, in this section we go over a few topics in probability and how they can be implemented in a psychometric model to be used in computerized adaptive testing.
+
+\subsection{Probability Theory}
+Probability theory provides us with a means to model uncertainty in data and to infer information from observed data. This is especially useful when it comes to estimating latent variables, i.e. variables that are not directly observed, instead they are inferred from other observed variables. For instance, examinee ability is a latent variable, hence the reason for section \ref{sec:probabilistic-test-theory}.
+\newline
+
+The probability of an event E occurring is a numerical value between 0 and 1, indicating how probable it is that we will observe event E. It is denoted as $P(E)$ and $0 < P(E) < 1$. The value 1 indicates total certainty, whereas the value 0 indicates impossibility. \newline
+
+In addition, there is the concept of conditional probability where the probability of an event $E_1$ occurring, given that event $E_2$ has occurred, can be denoted as $P(E_1|E_2)$. This concept is also important in statistical inference because it allows us to update prior beliefs given additional observed data. This is explained in more detail in sections \ref{subsec:likelihood-and-mle} and \ref{subsec:bayesian-inference}.
 
 \subsection{Likelihood and Maximum Likelihood Estimation}
+\label{subsec:likelihood-and-mle}
 Although the terms probability and likelihood are used interchangeably in every day life, in statistics a distinction can be made.\newline
 
 For any stochastic process, let us denote the observed outcomes as $x$ and the set of parameters as $\theta$. When we say probability, we want to calculate $P(x | \theta)$, i.e. the probability of observing the outcomes $x$ given specific values for the set of parameters $\theta$. \newline
 
-
-
-In more mathematical terms, we have:
-$$L(\theta | x) = P(x | \theta)$$
+However, sometimes we do not know the specific values for $\theta$, instead, we have observed some outcomes $x$, and want to find out how likely a particular value of $\theta$ is given the observed outcomes $x$. We call this the likelihood or likelihood function, and it is denoted as $L(\theta | x)$. The likelihood of a set of parameter values, $\theta$, given outcomes $x$, is equal to the probability of those observed outcomes given those parameter values, i.e. $L(\theta | x) = P(x | \theta)$.\newline
 
 To highlight the distinction we illustrate with an example of how the two terms are used. If we consider a dice, a possible parameter is the fairness of the dice, while possible outcomes are which values are displayed after a roll. For instance, if a fair dice is rolled 5 times, what is the \textit{probability} that a 6 will show up on every roll? If a dice is rolled 5 times and lands on 6 every roll, what is the \textit{likelihood} that the dice is fair? \newline
 
-Maximum likelihood estimation refers to a method of statistical inference where one can find the set of parameter values ($\theta$) which are most \textit{likely} given the observed outcomes ($x$). As mentioned in the name of the method, this is done by finding the parameter values which maximize the likelihood function $L(\theta | x)$.
+\textit{Maximum likelihood estimation} refers to a method of statistical inference where one can find the set of parameter values ($\theta$) which are most \textit{likely} given the observed outcomes ($x$). As mentioned in the name of the method, this is done by finding the parameter values which maximize the likelihood function $L(\theta | x)$.
 
-\subsection{Bayes probability theory}
-% Add maximum likelihood background explanation
-% Conditional probability quick overview?
-% Add Bayesian probability background explanation
-% Bayesian networks
-% Latent variables ?
+\subsection{Bayesian inference}
+\label{subsec:bayesian-inference}
+Bayesian inference is a method of statistical inference where Bayes' theorem is used to update the probability estimate for a hypothesis after observing additional events or outcomes.
+
+\begin{equation} \label{eq:bayes-theorem}
+P(A|B) = \dfrac{P(B|A)P(A)}{P(B)}
+\end{equation}
+
+Let us consider a small example: There is a 60\% chance of it snowing on Thursday. If it snows on Thursday, there is a 20\% chance of it snowing on Friday. If it didn't snow on Thursday, there is a 70\% chance it will snow on Friday.\newline
+
+Before observing any additional data, we can say that the probability of it snowing on Thursday is 60\%. But, we are given additional information, namely that it snowed on Friday. How we can we update the probability that it snowed on Thursday to reflect this observation? \newline
+
+We can do this by using Bayes' theorem shown in equation \ref{eq:bayes-theorem}. Let $A$ be the event ``snowing on Thursday" and $B$ be the event ``snowing on Friday". Then we have:
+
+$$P(A|B) = \dfrac{0.2 \times 0.6}{0.2 \times 0.6 + 0.7 \times 0.4} = 0.3$$
+
+This example shows how additional observed data can affect one's prior beliefs. The observation that it snowed on Friday reduced the probability that it snowed on Thursday from 60\% to 30\%.
+\newline
+
+However, in the context of this project, we are interested in Bayesian inference of the probability distributions of parameters.
+
+$$P(\theta|x) = \dfrac{P(x|\theta)P(\theta)}{P(x)}$$
+
+The prior distribution, $P(\theta)$, is the distribution of the parameters $\theta$ before any data is observed. $P(x|\theta)$ is the distribution of the observed data conditioned on the parameters. The posterior distribution, $P(\theta|x)$, is the probability distribution of the parameters after considering the new information brought by the observed data.
 
 \subsection{Item Response Theory}
 \label{subsec:IRT}
@@ -127,25 +152,77 @@ In section \ref{sec:CAT}, when discussing scoring algorithms, we saw that the tw
 
 In the \textit{maximum likelihood estimation} method, we need to define a likelihood function in terms of the ability level ($\theta$) we are trying to estimate:
 
-\begin{equation} \label{eq:Trait-estimation}
-L(\theta | \textbf{u}) = L(\theta | u_1, ..., u_n) = P(u_1, ..., u_n | \theta) = \prod_{i=1}^n P_i(\theta)^{u_i}(1 - P_i(\theta))^{(1 - u_i)} ,
-\end{equation}
+\begin{equation*}
+L(\theta | \textbf{u}) = L(\theta | u_1, ..., u_n) = \prod_{i=1}^n P_i(\theta)^{u_i}(1 - P_i(\theta))^{(1 - u_i)} ,
+\end{equation*}
 
-where $\textbf{u}=(u_1, ..., u_n)$ is called the reponse vector for an examinee, that is $u_i=1$ if the examinee answers the i$^\text{th}$ item correctly, and $u_i=0$ if the examinee answers the i$^\text{th}$ item incorrectly. $P_i(\theta)$ corresponds to the probability of answering the i$^\text{th}$ item correctly when the ability level is $\theta$, and thus $1 - P_i(\theta)$ gives the probability of answering the i$^\text{th}$ item incorrectly when the ability level is $\theta$. \newline
+where $\textbf{u}=(u_1, ..., u_n)$ is called the response vector for an examinee, that is $u_i=1$ if the examinee answers the i$^\text{th}$ item correctly, and $u_i=0$ if the examinee answers the i$^\text{th}$ item incorrectly. $P_i(\theta)$ corresponds to the probability of answering the i$^\text{th}$ item correctly when the ability level is $\theta$, and thus $1 - P_i(\theta)$ gives the probability of answering the i$^\text{th}$ item incorrectly when the ability level is $\theta$. \newline
 
 Now that the likelihood function is defined, we can apply maximum likelihood estimation to find the ability level which is most likely given the examinee's response vector. Let us illustrate with a very simplistic example where ability levels are discrete values between $-1$ and $+1$. We would iterate through these ability levels and compute the following values, for example:
 \begin{align*}
 L(\theta=-1 | \textbf{u}) &= 0.001 \\
-L(\theta=+0 | \textbf{u}) &= 0.012 \\
-L(\theta=+1 | \textbf{u}) &= 0.054
+L(\theta=+0 | \textbf{u}) &= 0.017 \\
+L(\theta=+1 | \textbf{u}) &= 0.058
 \end{align*}
 
 The likelihood function is maximized when $\theta = +1$, and so this is the maximum likelihood estimate for $\theta$. In a CAT, and based on the examinee's response vector \textbf{u}, the system would assign $+1$ as the ability level for that examinee.\newline
 
-The \textit{Bayesian estimation} method is also somewhat based on the likelihood function and therefore very similar to \textit{maximum likelihood estimation}.........
+In the \textit{Bayesian estimation} method, the CAT maintains a \textit{knowledge distribution} $P(\theta)$, which represents the probability that the examinee's ability is $\theta$. In the absence of any additional information, the CAT considers the examinee's initial knowledge distribution to be a uniform distribution.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{uniform_distribution}
+\caption{Initial examinee knowledge distribution.}
+\label{fig:uniform_distribution}
+\end{figure}
+
+For example, figure \ref{fig:uniform_distribution} shows the initial examinee knowledge distribution in a CAT having discrete ability levels ranging from $-3$ to $3$.\newline
+
+The \textit{Bayesian estimation} method relies on Bayesian inference to derive the posterior knowledge distribution according to Bayes' rule:
+
+$$P(\theta | \textbf{u}) = \dfrac{P(\textbf{u} | \theta)P(\theta)}{P(\textbf{u})} ,$$
+
+where, again, \textbf{u} is the examinee's response vector and $\theta$ corresponds to the possible ability levels.\newline
+
+The posterior distribution is the result of updating the prior knowledge distribution, $P(\theta)$, with observed data, $P(\textbf{u} | \theta)$, i.e. the examinee's response pattern. We can express this using the likelihood function:
+
+$$P(\theta | \textbf{u}) \propto L(\theta | \textbf{u}) \cdot P(\theta)$$
+
+After computing the posterior knowledge distribution, the CAT can estimate the ability estimation for the examinee. This is equal to the mode of the knowledge distribution, i.e. the ability associated with the highest probability value.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{posterior_distribution}
+\caption{Examinee knowledge distribution after answering an item correctly.}
+\label{fig:posterior_distribution}
+\end{figure}
+
+For example, figure \ref{fig:posterior_distribution} shows the knowledge distribution of an examinee after being shown an item of medium difficulty and answering it correctly. It can be seen that lower ability levels have become less likely, whereas higher ability levels are now more probable.\newline
+
+The ability level associated with the highest probability is $\theta=1$, thus this becomes the estimated ability. Over time, after the examinee answers more items, the estimation will become associated with even higher probability values. These probabilities indicate how confident the CAT is in that particular ability estimation.
 
 
 \subsubsection{Item information}
+In section \ref{sec:CAT}, when discussing item selection algorithms, we mentioned the concept of item information as well as the maximum information method. \newline
+
+
+The item information function for 1PL is calculated as
+$$I(\theta) = p_i(\theta)q_i(\theta)$$
+
+The item information function for 2PL is calculated as
+$$I(\theta) = a_i^2 p_i(\theta)q_i(\theta)$$
+
+The item information function for 3PL is calculated as
+$$I(\theta) = a_i^2 \cdot \dfrac{(p_i(\theta)-c_i)^2}{(1-c_i)^2} \cdot \dfrac{q_i(\theta)}{p_i(\theta)}$$
+
+where $q_i(\theta) = (1-p_i(\theta))$
+
 
 \section{Summary}
+In this section, the relevant background literature and theory for this project has been discussed...\newline
+
+We have gone into quite some detail explaining the techniques behind Item Response Theory, and these will become the basis of the implementation of adaptive difficulty in jSCAPE.\newline
+
+We have seen two methods for estimating an examinee's ability level, and several models to represent probabilities of answering items correctly...\newline
+
 We have gone over types of computer based assessment and how they differ from regular assessment techniques. We have also provided an overview of the theoretical components and probability concepts which will be implemented in jSCAPE (chapter xx?).

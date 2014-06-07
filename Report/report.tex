@@ -5,12 +5,13 @@
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage{amsmath}
+\usepackage[export]{adjustbox}
 
 % Windows
-%\graphicspath{{C:/Users/achantreau/Documents/GitHub/BEng-Individual-Project/Report/images/}}
+\graphicspath{{C:/Users/achantreau/Documents/GitHub/BEng-Individual-Project/Report/images/}}
 
 % Linux
-\graphicspath{{/homes/ac6609/Documents/BEng-Individual-Project/Report/images/}}
+%\graphicspath{{/homes/ac6609/Documents/BEng-Individual-Project/Report/images/}}
 
 \usepackage{fancyhdr}
 \setlength{\headheight}{30pt}
@@ -111,48 +112,24 @@ Dr.~Tristan \textsc{Allwood}
 \include{related_work}
 
 %-----------------------------------------------------------
-% PROJECT PLAN SECTION
+% JSCAPE SYSTEM SECTION
 %-----------------------------------------------------------
+\include{jscape_system}
 
+%-----------------------------------------------------------
+% IMPLEMENTATION SECTION
+%-----------------------------------------------------------
+\include{implementation}
 
 %-----------------------------------------------------------
 % EVALUATION SECTION
 %-----------------------------------------------------------
-
-\chapter{Evaluation}
-Mention how our developed system performs against the advantages and disadvantages of CAT.
-
-The evaluation stage will address mostly these two aspects:
-\begin{itemize}
-\item The system has correctly modelled the ability of students
-\item The system is useful in helping students to learn programming and helping lecturers with getting feedback on their teaching, in the form of statistics.
-\end{itemize}
-
-\section{Qualitative}
-\begin{itemize}
-\item Surveys to get feedback from students on interface, usability, etc...
-\item 
-\end{itemize}
-
-\section{Quantitative}
-\begin{itemize}
-\item Statistical analysis to evaluate item calibration and modelling of student's abilities
-\item 
-\end{itemize}
+\include{evaluation}
 
 %-----------------------------------------------------------
 % CONCLUSION SECTION
 %-----------------------------------------------------------
-\chapter{Conclusion}
-\section{Future Work}
-\begin{itemize}
-\item Very flexible system so other programming languages could be offered, i.e. cSCAPE, for C and hSCAPE for Haskell. 
-\item Working more extensively on the adaptive component of the system, i.e. improving the algorithm which selects questions for students based on their estimated ability.
-\item Extend system to allow admins to provide their own question templates, maybe come up with a template grammar which then allows questions to be automatically generated. Or at least allow pluggable function references which will be called to generate the exercise component.
-\item Add support for more question types. JavaFX is very good in that sense since it can play audio clips, video clips, show animations, the webview component has endless possibilities thanks to the inclusion of Javascript.
-\item Future Work as a research project vs future work as a commercial product
-\item JavaFX applications are based on the model-view-controller pattern, so a nice split can be done in the code, however I only learnt about this two weeks into the project, so all the of the GUI components are created in the code as opposed to in the FXML file.
-\end{itemize}
+\include{conclusion}
 
 %-----------------------------------------------------------
 % Bibliography

@@ -1,0 +1,13 @@
+\chapter{Conclusion}
+\section{Future Work}
+We have a few ideas of where to orient the project next...
+
+\begin{itemize}
+\item Very flexible system so other programming languages could be offered, i.e. cSCAPE, for C and hSCAPE for Haskell. 
+\item Working more extensively on the adaptive component of the system, i.e. improving the algorithm which selects questions for students based on their estimated ability.
+\item Extend system to allow admins to provide their own question templates, maybe come up with a template grammar which then allows questions to be automatically generated. Or at least allow pluggable function references which will be called to generate the exercise component.
+\item Add support for more question types. JavaFX is very good in that sense since it can play audio clips, video clips, show animations, the webview component has endless possibilities thanks to the inclusion of Javascript.
+\item Future Work as a research project vs future work as a commercial product
+\item JavaFX applications are based on the model-view-controller pattern, so a nice split can be done in the code, however I only learnt about this two weeks into the project, so all the of the GUI components are created in the code as opposed to in the FXML file.
+\item add more robust security: hashing for login/password and ssl connections between the server and client, and server database, because this communication could reveal solutions to the exercises..
+\end{itemize}
