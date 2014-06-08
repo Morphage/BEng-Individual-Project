@@ -67,7 +67,7 @@ Secondly, for the CAT to be of good quality the item pool needs to be calibrated
 
 Lastly, item exposure is a possible security concern. Sometimes particular items may be presented too often and become overused. This may result in examinees becoming familiar with them and sharing them to other examinees of the same ability level, thus corrupting the results of the test. This problem can be solved to some extent by modifying the item selection algorithm to include some exposure control mechanism.\newline
 
-A brief overview of CATs was given in this section. All of these concepts will be explored in more detail in item response theory (section \ref{subsec:IRT}) and in the implementation of adaptive testing in jSCAPE (chapter XX?).
+A brief overview of CATs was given in this section. All of these concepts will be explored in more detail in item response theory (section \ref{subsec:IRT}) and in the implementation of adaptive testing in jSCAPE (section 5.??).
 
 \section{Probabilistic Test Theory}
 \label{sec:probabilistic-test-theory}
@@ -145,7 +145,24 @@ Equation \eqref{eq:2PL-IRF} shows the item response function for the two-paramet
 P(\theta) = c + \frac{1 - c}{1 + \me^{-1.7a(\theta - b)}}
 \end{equation}
 
-Equation \eqref{eq:3PL-IRF} shows the item response function for the three-parameter logistic model (3PL). 
+Equation \eqref{eq:3PL-IRF} shows the item response function for the three-parameter logistic model (3PL).
+
+\subsubsection{Item information}
+In section \ref{sec:CAT}, when discussing item selection algorithms, we mentioned the concept of item information as well as the maximum information method. \newline
+
+Item information is how reliable the measurement is \cite{Basics-IRT}. \newline
+
+
+The item information function for 1PL is calculated as
+$$I(\theta) = p_i(\theta)q_i(\theta)$$
+
+The item information function for 2PL is calculated as
+$$I(\theta) = a_i^2 p_i(\theta)q_i(\theta)$$
+
+The item information function for 3PL is calculated as
+$$I(\theta) = a_i^2 \cdot \dfrac{(p_i(\theta)-c_i)^2}{(1-c_i)^2} \cdot \dfrac{q_i(\theta)}{p_i(\theta)}$$
+
+where $q_i(\theta) = (1-p_i(\theta))$
 
 \subsubsection{Estimating the ability}
 In section \ref{sec:CAT}, when discussing scoring algorithms, we saw that the two most common methods for ability estimation were \textit{maximum likelihood estimation} and \textit{Bayesian estimation}.\newline
@@ -200,23 +217,6 @@ After computing the posterior knowledge distribution, the CAT can estimate the a
 For example, figure \ref{fig:posterior_distribution} shows the knowledge distribution of an examinee after being shown an item of medium difficulty and answering it correctly. It can be seen that lower ability levels have become less likely, whereas higher ability levels are now more probable.\newline
 
 The ability level associated with the highest probability is $\theta=1$, thus this becomes the estimated ability. Over time, after the examinee answers more items, the estimation will become associated with even higher probability values. These probabilities indicate how confident the CAT is in that particular ability estimation.
-
-
-\subsubsection{Item information}
-In section \ref{sec:CAT}, when discussing item selection algorithms, we mentioned the concept of item information as well as the maximum information method. \newline
-
-
-The item information function for 1PL is calculated as
-$$I(\theta) = p_i(\theta)q_i(\theta)$$
-
-The item information function for 2PL is calculated as
-$$I(\theta) = a_i^2 p_i(\theta)q_i(\theta)$$
-
-The item information function for 3PL is calculated as
-$$I(\theta) = a_i^2 \cdot \dfrac{(p_i(\theta)-c_i)^2}{(1-c_i)^2} \cdot \dfrac{q_i(\theta)}{p_i(\theta)}$$
-
-where $q_i(\theta) = (1-p_i(\theta))$
-
 
 \section{Summary}
 In this section, the relevant background literature and theory for this project has been discussed...\newline

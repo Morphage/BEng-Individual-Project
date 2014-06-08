@@ -35,6 +35,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import jscape.communication.Message;
 import jscape.communication.MessageCode;
@@ -77,7 +78,8 @@ public class JScape extends Application {
     @Override
     public void start(final Stage stage) {
         currentStage = stage;
-        gotoApp("ac6609");
+        //stage.initStyle(StageStyle.UNDECORATED);
+        gotoApp("demo001");
 
         /* Commented out so that I don't have to keep login in all the time */
         /*try {
@@ -103,6 +105,7 @@ public class JScape extends Application {
             }
         }
         Scene loginScene = new Scene(page, 1020, 700);
+        currentStage.initStyle(StageStyle.UNDECORATED);
         currentStage.setScene(loginScene);
         currentStage.sizeToScene();
         currentStage.show();

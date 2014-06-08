@@ -1,21 +1,98 @@
 \chapter{The jSCAPE System}
 
-The jSCAPE system is designed for two groups of intended users: students and teachers/lecturers. 
+The jSCAPE system is designed for two distinct groups of users: students and teachers/lecturers. This separation of roles lead to the development of the main application for students, and an administrator tool for teachers/lecturers.
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.60]{jscape_use_case}
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{jscape_use_case}
 \caption{Use case diagram of the jSCAPE system.}
 \label{fig:jscape_use_case}
 \end{figure}
 
+Figure \ref{fig:jscape_use_case} shows some of the main capabilities of the jSCAPE system. Students can practice their understanding of programming concepts by answering exercises provided by the lecturers, and receive feedback while doing so. In addition, students can track their progress by viewing various graphs and charts of their performance on particular exercise categories. Finally, students can access lecture notes and website links provided by the teacher. \newline
+
+Teachers can manage the exercise bank, whether it be adding exercises manually or automatically generating new ones based on templates. They can keep track of their students' progress and thereby identify any difficulties particular students are having. Finally, teachers are responsible for adding lecture material, website links and creating student profiles to store in the database.\newline
+
+In the rest of this chapter we take a closer look at the current available features of jSCAPE.\newline
+
+At the time of writing this report, we would like to note that the screen shots of the application do not represent the final version of jSCAPE, in particular, the graphics and logos haven't been finalized.
 
 \section{Student view}
-As illustrated in figure \ref{fig:jscape_use_case}, students can practice their understanding of programming concepts through answering exercises... We now show the complete features of the system.
+
+\subsection{Login Screen}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.45]{login_screen}
+\caption{The jSCAPE login screen.}
+\label{fig:login_screen}
+\end{figure}
+
+For a student to use jSCAPE, they need to be in possession of login credentials, usually acquired by asking the appropriate teacher or lecturer. A connection to the jSCAPE system will be rejected if the entered login details are incorrect. Otherwise, the student can proceed to jSCAPE and access its features.
+
+\subsection{Tracking Progress through Statistical Data}
+After a successful login the student lands on the Profile tab which presents information about the student, as well as statistical data on the student's performance and usage of the system.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{profile_screen_overview}
+\caption{An overview of the Profile tab in jSCAPE.}
+\label{fig:profile_screen_overview}
+\end{figure}
+
+Figure \ref{fig:profile_screen_overview} shows the Profile tab after the student has logged in to the system. Profile information for the student is listed on the left hand side, in the light-blue rectangle. This information includes the student's first name, last name, user name, which class the student is in, the last time the student logged in, and the last time the student answered an exercise. \newline
+
+The main part of the Profile tab is split horizontally between statistical data in the form of pie charts and tables, and graphical data in the form of bar charts.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{pie_chart_stats}
+\caption{Pie chart statistics for exercise category.}
+\label{fig:pie_chart_stats1}
+\end{figure}
+
+Figure \ref{fig:pie_chart_stats1} shows the performance of the student in a particular exercise category, in this case ``Arrays". In the example, the student has gotten 60\% of array exercises correct and thus 40\% of them wrong. The student can view the performance pie chart for other exercise categories by changing the selected category in the combo box.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{pie_chart_stats2}
+\caption{Pie chart statistics for distribution of answers.}
+\label{fig:pie_chart_stats2}
+\end{figure}
+
+Another type of pie chart available in jSCAPE can be seen in figure \ref{fig:pie_chart_stats2}. This pie chart shows the distribution of answers per exercise category. This is a useful feature when a student is trying to get a balanced amount of practice in all exercise categories. \newline
+
+Next, performance data is presented to the student in the performance summary table, shown in figure \ref{fig:performance_summary}. In this table, there is a row for every exercise category and a row for the total of each column. Each row contains the number of exercises answered, the number of correct answers and the number of wrong answers associated with a particular exercise category.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{performance_summary}
+\caption{Performance summary table.}
+\label{fig:performance_summary}
+\end{figure}
+
+In the lower half of the Profile tab there is the possibility to view performance data in the form of stacked bar charts.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{monthly_progress}
+\caption{Graph data of monthly progress.}
+\label{fig:monthly_progress}
+\end{figure}
+
+Figure \ref{fig:monthly_progress} shows the monthly progress of a student for the month of May 2014 and for the exercise category ``Binary Trees". The number of correct answers (in blue) and wrong answers (in red) are graphed for each day where the student answered exercises. The student can view his monthly progress in other exercise categories and other months by manipulating the appropriate combo boxes. This historical data goes back to the first month in which the student answered an exercise.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{yearly_progress}
+\caption{Graph data of yearly progress.}
+\label{fig:yearly_progress}
+\end{figure}
+
+Figure \ref{fig:yearly_progress} shows the yearly progress of a student in 2014 for the exercise category ``Binary Trees". For each month where the student answered exercises, a stacked bar can be found containing the total number of correct answers (in blue) and the total number of wrong answers (in red) for that particular year and exercise category. The student can view his yearly progress in other exercise categories and other years by manipulating the appropriate combo boxes. This historical data goes back to the year in which the student first started answering exercises.
 
 \subsection{Practicing programming}
+%show difficulty progression of exercises
 
-\subsection{Tracking your progress}
 
 \section{Teacher view}
 The teacher's main access to the system is through the jSCAPE admin tool. 
@@ -23,4 +100,9 @@ The teacher's main access to the system is through the jSCAPE admin tool.
 \subsection{Tracking student progress}
 
 \subsection{Managing the exercise bank}
+
+\section{Summary}
+In this section we gave an overview of the components present in the jSCAPE system. 
+
+We showed that jSCAPE performed a lot of tracking of student's performances by storing useful statistics concerning their progress. In addition
 

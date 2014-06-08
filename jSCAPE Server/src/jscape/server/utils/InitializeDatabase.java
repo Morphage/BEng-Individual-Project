@@ -108,7 +108,7 @@ public class InitializeDatabase {
     }
     
     private static void initializeDemoStudent(String loginName) {
-        StudentTable.addStudent(loginName, "Demo", "Student", "cs101", loginName);
+        StudentTable.addStudent(loginName, "Michael", "Hunt", "cs101", loginName);
         
         PerformanceTable.addPerformanceData(loginName, "Arrays", 250, 150, 100);
         PerformanceTable.addPerformanceData(loginName, "Conditionals", 285, 175, 110);
