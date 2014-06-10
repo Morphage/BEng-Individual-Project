@@ -19,7 +19,7 @@ At the time of writing this report, we would like to note that the screen shots 
 
 \section{Student view}
 
-\subsection{Login Screen}
+\subsection{Login screen}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.45]{login_screen}
@@ -29,7 +29,8 @@ At the time of writing this report, we would like to note that the screen shots 
 
 For a student to use jSCAPE, they need to be in possession of login credentials, usually acquired by asking the appropriate teacher or lecturer. A connection to the jSCAPE system will be rejected if the entered login details are incorrect. Otherwise, the student can proceed to jSCAPE and access its features.
 
-\subsection{Tracking Progress through Statistical Data}
+\subsection{Tracking progress through statistical data}
+\label{subsec:tracking-progress}
 After a successful login the student lands on the Profile tab which presents information about the student, as well as statistical data on the student's performance and usage of the system.
 
 \begin{figure}[H]
@@ -115,15 +116,17 @@ Figure \ref{fig:yearly_progress} shows the yearly progress of a student in 2014 
 
 
 \section{Teacher view}
-The teacher's main access to the system is through the jSCAPE admin tool. Essentially it provides an interface to the database, so that teachers not familiar with SQL can still retrieve useful data about students.
+The teacher's main access to the system is through the jSCAPE admin tool. Essentially it provides an interface to the database where all information about students, performance, exercise categories and exercises is stored. This tool was developed to allow teachers, not familiar with SQL, to still be able to retrieve useful data about students in a presentable way and to facilitate management of the exercise bank.
 
 \subsection{Tracking student progress}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{analyze_overview}
-\caption{An overview of the Analyze tab in the jSCAPE Admin tool.}
+\caption{An overview of the Analyze tab in the jSCAPE admin tool.}
 \label{fig:analyze_overview}
 \end{figure}
+
+The jSCAPE admin tool provides teachers with the ability to track student progress and performance over time. Figure \ref{fig:analyze_overview} gives an overview of the Analyze tab, where statistical data about selected students can be displayed. The information displayed is identical to that displayed in the jSCAPE Profile tab (section \ref{subsec:tracking-progress}). On the left hand side of the window, the light blue box contains options to filter which data is displayed in the main window. A close up of the filter options is shown in figure \ref{fig:analyze_select_student}.
 
 \begin{figure}[H]
 \centering
@@ -132,6 +135,10 @@ The teacher's main access to the system is through the jSCAPE admin tool. Essent
 \label{fig:analyze_select_student}
 \end{figure}
 
+The jSCAPE system includes support for multiple classes to allow for both the separation of students and the separation of exercises available to a class. A teacher can select a class to view statistics about those students taking the class. This will update the list of students in the combo box, allowing the teacher to focus his attention on the performance of one particular student. \newline
+
+Selecting a student will show their profile information in the light blue window, along with the date of their last login, and the date of their last exercise answered. In addition, the pie charts, performance table and progress graphs will be updated to reflect the performance of the selected student. Finally, there is an option to obtain a global view of the class' performance by selecting the ``Global view" option. 
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{global_view}
@@ -139,11 +146,25 @@ The teacher's main access to the system is through the jSCAPE admin tool. Essent
 \label{fig:global_view}
 \end{figure}
 
+Figure \ref{fig:global_view} shows the table that is displayed after selecting the global view option. This table shows all the students who have answered exercises in a particular exercise category. In the example above, the data shown is for the ``Syntax" exercise category. The student user names are listed along with the number of exercises they have answered, and a detailed breakdown of the number of correct and wrong answers in terms of raw values and percentages. \newline
+
+There is a combo box to select which exercise category to display, but this isn't shown in the picture to minimize the size of it. The global view feature is useful for teachers to identify which students may be facing difficulties. They can then select the student in the Analyze tab to get more detailed statistics and information about the student's progress.
 
 \subsection{Managing the exercise bank}
+\subsubsection{Managing exercise categories}
+add description, lecture links and helpful links
+
+\subsubsection{Adding an exercise manually}
+add exercise manually
+
+\subsubsection{Automatically generating exercises}
+runs the appropriate exercise generator and stores the exercises in the database.
+
 
 \section{Summary}
 In this section we gave an overview of the components present in the jSCAPE system. 
 
-We showed that jSCAPE performed a lot of tracking of student's performances by storing useful statistics concerning their progress. In addition
+We showed that jSCAPE performed a lot of tracking of student's performances by storing useful statistics concerning their progress. In addition\newline
+
+In the following chapter, we talk more about the design of the system and various interesting implementation details and difficulties faced during the development of this project.
 

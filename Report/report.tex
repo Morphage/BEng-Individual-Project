@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{report}
+\documentclass[12pt,a4paper]{report}
 \usepackage[utf8x]{inputenc}
 \usepackage{graphicx}
 \usepackage[labelfont=bf]{caption}
@@ -9,7 +9,7 @@
 \usepackage{color}
 
 \usepackage{listings}
-\lstset{language=Java, basicstyle=\footnotesize, numbers=left}
+\lstset{language=Java, basicstyle=\footnotesize, numbers=left, captionpos=b, frame=bt, linewidth=\textwidth}
 
 % Windows
 \graphicspath{{C:/Users/achantreau/Documents/GitHub/BEng-Individual-Project/Report/images/}}
@@ -36,6 +36,8 @@
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \newcommand{\me}{\mathrm{e}}
+
+\newcommand{\listings}{C:/Users/achantreau/Documents/GitHub/BEng-Individual-Project/Report/listings/}
 
 
 \begin{document}
@@ -108,6 +110,12 @@ Thanks to...
 \listoffigures
 
 %-----------------------------------------------------------
+% LIST OF LISTINGS SECTION
+%-----------------------------------------------------------
+\renewcommand*{\lstlistlistingname}{List of Code Listings}
+\lstlistoflistings
+
+%-----------------------------------------------------------
 % INTRODUCTION SECTION
 %-----------------------------------------------------------
 \include{introduction}
@@ -151,8 +159,5 @@ Thanks to...
 % APPENDICES
 %-----------------------------------------------------------
 \include{appendix}
-
-
-
 
 \end{document}
