@@ -3,5 +3,40 @@
 Talk about design choices such as only multiple choices, no exercises asking to write code, writing custom server, etc...
 
 Mention three tier architecture
+
 implemented as a JavaFx applet
+
 list tools+technology and evaluate advantages/disadvantages
+
+java programming exercises
+
+server implementation, message codes, objectin/out streams, serverthread
+
+
+CAT development, we refer back to the five components of a CAT...what item selection algorithm we use, what scoring procedure, no termination criterion, entry point is average knowledge distribution initially and attempts at a calibrated item pool, currently with teacher providing the parameters since obtaining a high quality calibrated item pool isn't something I can do.
+
+\begin{lstlisting}
+/**
+ * Calculates the item information for the provisional proficiency level
+ * estimated until that moment, i.e. thetaEstimate.
+ */
+ private double itemInformation(int thetaEstimate, Item item) {
+     double information;
+
+     double a = item.getA();
+     double c = item.getC();
+
+     double aSquared = Math.pow(a, 2);
+     double p = probabilityCorrectAnswer(thetaEstimate, item);
+     double q = 1 - p;
+
+     information = aSquared * (q / p);
+
+     double numerator = p - c;
+     double denominator = 1 - c;
+
+     information = information * Math.pow(numerator / denominator, 2);
+
+     return information;
+}
+\end{lstlisting}

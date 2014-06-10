@@ -122,7 +122,17 @@ The prior distribution, $P(\theta)$, is the distribution of the parameters $\the
 \label{subsec:IRT}
 We mentioned in section \ref{sec:CAT} that Item Response Theory (IRT) is usually the psychometric model of choice when developing a CAT, e.g. the Graduate Record Examination (GRE) and Graduate Management Admission Test (GMAT). CATs can still be implemented with Classical Test Theory but they offer less sophistication and less information to evaluate/improve the reliability of the test, making IRT the superior choice. \newline
 
+Item Response Theory gets its name from focusing on analyzing items themselves instead of the test as a whole, like in Classical Test Theory. Classical test theory judges an examinee's ability simply on the number of correct items he obtained, totally disregarding which items were answered correctly or incorrectly, thereby making the assumption that all items are of equal difficulty.
+
 IRT attempts to model the answer to an item as a mathematical model. \newline
+
+Examinee trait level is denoted as the Greek letter theta ($\theta$), and typically it has a mean of 0 and a standard deviation of 1. In the context of this project, theta ($\theta$) will represent an examinee's ability level in a particular programming subject (e.g. arrays, binary trees, etc...). This trait is a latent variable.
+
+%
+% Add some examples of computing probability of correct answer for certain item parameters to show the effect of each parameter
+% In IRT, an item is a question or an exercise. For instance, in a mathematics exam, "What is the square root of 81?" is a possible item. Let that item have 3PL parameters a=1.2 b=5 and c=0.25 in a multiple choice question.
+%
+
 
 Several IRT models have been developed over the years to address the different types of tests that exist, e.g. multiple choice exams, agreement questionnaires (Likert scale), etc... These models all seek to achieve the same goal, modelling the examinee's ability on some ability scale, but they differ in the number of parameters associated with each item. We now take a greater look at these different models:
 
@@ -134,11 +144,13 @@ P(\theta) = \frac{1}{1 + \me^{-(\theta - b)}}
 Equation \eqref{eq:1PL-IRF} shows the item response function for the one-parameter logistic model (1PL). 
 
 \subsubsection{The two-parameter logistic model}
+The two-parameter logistic (2PL) model adds the discrimination ($a$) as a parameter of the item.
+
 \begin{equation} \label{eq:2PL-IRF}
 P(\theta) = \frac{1}{1 + \me^{-1.7a(\theta - b)}}
 \end{equation}
 
-Equation \eqref{eq:2PL-IRF} shows the item response function for the two-parameter logistic model (2PL). 
+Equation \eqref{eq:2PL-IRF} shows the item response function for the 2PL model. 
 
 \subsubsection{The three-parameter logistic model}
 \begin{equation} \label{eq:3PL-IRF}
@@ -148,21 +160,56 @@ P(\theta) = c + \frac{1 - c}{1 + \me^{-1.7a(\theta - b)}}
 Equation \eqref{eq:3PL-IRF} shows the item response function for the three-parameter logistic model (3PL).
 
 \subsubsection{Item information}
-In section \ref{sec:CAT}, when discussing item selection algorithms, we mentioned the concept of item information as well as the maximum information method. \newline
+In section \ref{sec:CAT}, when discussing item selection algorithms, we mentioned the maximum information method as a possible implementation. This method relies on the IRT concept of item information.\newline
 
-Item information is how reliable the measurement is \cite{Basics-IRT}. \newline
+In psychometrics and statistics, the term \textit{information} is defined as the reciprocal of the precision with which a parameter can be estimated \cite{Basics-IRT}. Therefore, item information is the precision in the ability estimate that the item provides, at all ability levels. It is also an indication of the quality of the item in terms of how well that item can discriminate between several respondents. \newline
 
+The item information function for the 1PL model is calculated as
+$$I(\theta) = p_i(\theta)q_i(\theta),$$
 
-The item information function for 1PL is calculated as
-$$I(\theta) = p_i(\theta)q_i(\theta)$$
+where $q_i(\theta) = 1-p_i(\theta)$.
 
-The item information function for 2PL is calculated as
-$$I(\theta) = a_i^2 p_i(\theta)q_i(\theta)$$
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{item_information_1pl}
+\caption{Item response function and item information
+function for the 1PL model. (Source:\cite{Visual-IRT}).}
+\label{fig:item_information_1pl}
+\end{figure}
 
-The item information function for 3PL is calculated as
-$$I(\theta) = a_i^2 \cdot \dfrac{(p_i(\theta)-c_i)^2}{(1-c_i)^2} \cdot \dfrac{q_i(\theta)}{p_i(\theta)}$$
+In figure \ref{fig:item_information_1pl}, two curves are plotted. The black curve is the item response function of an item, and the blue curve is the associated information function for that item. In the 1PL model, the maximum value of item information occurs where the probability of a correct answer and the probability of an incorrect answer are both equal to $0.5$. This point is indicated by the red line. If we recall earlier, this point also represents the difficulty of the item, i.e. item parameter $b_i$. Thus, the item provides the most information for those examinees whose ability is equal to the difficulty of the item, 1 in this case. This means that administering this item will give more precise ability estimates for examinees whose true ability is at that particular level. Presenting this item to examinees not at that particular level, examinees of ability -2 for instance, will not yield very much precision to subsequent ability estimates. \newline
 
-where $q_i(\theta) = (1-p_i(\theta))$
+The item information function for the 2PL model is calculated as
+$$I(\theta) = a_i^2 p_i(\theta)q_i(\theta),$$
+
+where $q_i(\theta) = 1-p_i(\theta)$. In the 2PL and 3PL models, the discrimination parameter, $a_i$, plays a significant role in the function, as it appears squared in the function.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{item_information_2pl}
+\caption{Item response functions and item information
+functions for three items in the 2PL model. (Source:\cite{Visual-IRT}).}
+\label{fig:item_information_2pl}
+\end{figure}
+
+Figure \ref{fig:item_information_2pl} shows three 2PL item response functions, in dotted lines, matched in color with the corresponding item information functions in solid lines. Like in the 1PL model, items still reach their maximum information at the point where ability is equal to the difficulty of the item. However, the amount of information provided at that ability level can now vary depending on how large the discrimination parameter is.\newline
+
+The items represented by the black and blue curves both have the same difficulty parameter. But, the item represented by the blue curve has a higher discrimination parameter, and therefore this affects the item information function. Higher discrimination values lead to more item information, whereas lower discrimination values make the item less informative. \newline
+
+The item information function for the 3PL model is calculated as
+$$I(\theta) = a_i^2 \cdot \dfrac{(p_i(\theta)-c_i)^2}{(1-c_i)^2} \cdot \dfrac{q_i(\theta)}{p_i(\theta)},$$
+
+where $q_i(\theta) = 1-p_i(\theta)$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{item_information_3pl}
+\caption{Item response functions and item information
+functions for two items in the 3PL model. (Source:\cite{Visual-IRT}).}
+\label{fig:item_information_3pl}
+\end{figure}
+
+Figure \ref{fig:item_information_3pl} shows two 3PL item response functions, in dotted lines, matched in color with the corresponding item information functions in solid lines. In the 3PL model, the maximum of item information functions is no longer at the point where ability is equal to the difficulty of the item. Here, the guessing or pseudo-chance parameter plays a role in the shape of the item information function. Higher guessing parameters lead to less item information, whereas lower guessing parameters lead to more item information.
 
 \subsubsection{Estimating the ability}
 In section \ref{sec:CAT}, when discussing scoring algorithms, we saw that the two most common methods for ability estimation were \textit{maximum likelihood estimation} and \textit{Bayesian estimation}.\newline
@@ -193,7 +240,7 @@ In the \textit{Bayesian estimation} method, the CAT maintains a \textit{knowledg
 \label{fig:uniform_distribution}
 \end{figure}
 
-For example, figure \ref{fig:uniform_distribution} shows the initial examinee knowledge distribution in a CAT having discrete ability levels ranging from $-3$ to $3$.\newline
+For example, figure \ref{fig:uniform_distribution} shows the initial examinee knowledge distribution in a CAT having discrete ability levels ranging from $-3$ to $3$. Continuous knowledge distributions are certainly possible as they allow for, in theory, infinitely more ability levels. However, they are more complex and require the use of integration to compute probabilities, thus for the purposes of illustration, we will only consider discrete knowledge distributions. \newline
 
 The \textit{Bayesian estimation} method relies on Bayesian inference to derive the posterior knowledge distribution according to Bayes' rule:
 
