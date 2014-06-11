@@ -109,8 +109,9 @@ Figures \ref{fig:practice_binary_trees} and \ref{fig:practice_conditionals} give
 
 In the case of the binary tree exercise (figure \ref{fig:practice_binary_trees}), exercise data, in the form of a binary tree, is displayed on the left of the window. On the right side of the window is the exercise itself, in this case it asks what should be printed if the binary tree is traversed using the in-order algorithm, and gives four options to choose from. \newline
 
-In the case of the exercise on conditionals (figure \ref{fig:practice_conditionals}), exercise data, in the form of a code fragment, is displayed on the left of the window. On the right side of the window is the exercise itself, in this case it asks the student to examine the code and to determine the final values of two variables, and provides again four options to choose from.
+In the case of the exercise on conditionals (figure \ref{fig:practice_conditionals}), exercise data, in the form of a code fragment, is displayed on the left of the window. On the right side of the window is the exercise itself, in this case it asks the student to examine the code and to determine the final values of two variables, and provides again four options to choose from. \newline
 
+On the far right of every exercise, there is a dark blue sidebar which displays a description of the programming concept or construct being practised, links to university or course lecture notes and some other websites on the Internet if further help is needed. An example sidebar is shown in figure \ref{fig:practice_sidebar}, in this case the sidebar for the ``Binary Trees" exercise category.
 \newpage
 
 \subsubsection{Example exercises}
@@ -129,6 +130,8 @@ In the case of the exercise on conditionals (figure \ref{fig:practice_conditiona
 \label{fig:practice_conditionals}
 \end{figure}
 
+\newpage
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.75]{practice_sidebar}
@@ -137,6 +140,29 @@ In the case of the exercise on conditionals (figure \ref{fig:practice_conditiona
 \end{figure}
 
 % Out of all the features present in jSCAPE, the one that students will notice the most is the adaptive difficulty, thus we go through an example practising session that a student could experience, to illustrate how the system adapts itself to the student's ability.
+% for more information on the difficulty progression or the exercise generation, look at chapter 5 for implementation details.
+
+\newpage
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{binary_tree_progression}
+\caption{Progression of binary tree exercises.}
+\label{fig:binary_tree_progression}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{conditionals_progression}
+\caption{Progression of conditionals exercises.}
+\label{fig:conditionals_progression}
+\end{figure}
+
+\begin{sidewaysfigure}
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{conditionals_progression}
+\caption{Progression of conditionals exercises.}
+\label{fig:conditionals_progression}
+\end{sidewaysfigure}
 
 \section{Teacher view}
 The teacher's main access to the system is through the jSCAPE admin tool. Essentially it provides an interface to the database where all information about students, performance, exercise categories and exercises is stored. This tool was developed to allow teachers, not familiar with SQL, to still be able to retrieve useful data about students in a presentable way and to facilitate management of the exercise bank.
@@ -174,16 +200,50 @@ Figure \ref{fig:global_view} shows the table that is displayed after selecting t
 There is a combo box to select which exercise category to display, but this isn't shown in the picture to minimize the size of it. The global view feature is useful for teachers to identify which students may be facing difficulties. They can then select the student in the Analyze tab to get more detailed statistics and information about the student's progress.
 
 \subsection{Managing the exercise bank}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{exercises_admin_overview}
+\caption{An overview of the exercise bank management tab.}
+\label{fig:exercises_admin_overview}
+\end{figure}
+
 \subsubsection{Managing exercise categories}
 add description, lecture links and helpful links
 
 set exercise category to not visible, useful feature if the class isn't ready to answer exercises of this category because the relevant material hasn't been taught yet, but the teacher still wants to prepare the exercises in advance to save time.
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{add_exercise_category}
+\caption{Adding a new exercise category.}
+\label{fig:add_exercise_category}
+\end{figure}
+
+\subsubsection{Viewing existing exercises}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{existing_exercises}
+\caption{Viewing information about existing exercises.}
+\label{fig:existing_exercises}
+\end{figure}
+
 \subsubsection{Adding an exercise manually}
-add exercise manually
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{add_exercise_manually}
+\caption{Adding an exercise on binary trees manually.}
+\label{fig:add_exercise_manually}
+\end{figure}
 
 \subsubsection{Automatically generating exercises}
 runs the appropriate exercise generator and stores the exercises in the database.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.9]{automated_generation}
+\caption{Automatically generating a number of new exercises for a specific exercise category.}
+\label{fig:automated_generation}
+\end{figure}
+
 
 
 \section{Summary}

@@ -24,3 +24,40 @@ CAT development, we refer back to the five components of a CAT...what item selec
 
 \newpage
 \lstinputlisting[caption={Example exercise illustrating the XML format.}]{\listings/exercise.xml}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=3cm]
+  \node[initial,state] (A1)      {$A1$};
+  \node[state]         (A2) [right of=A1]  {$A2$};
+  \node[state]         (A3) [right of=A2] {$A3$};
+  \node[state]         (B1) [below of=A3] {$B1$};
+  \node[state]         (B2) [left of=B1] {$B2$};
+  \node[state]         (B3) [left of=B2] {$B3$};
+  \node[state]         (C1) [below of=B3] {$C1$};
+  \node[state]         (C2) [right of=C1] {$C2$};
+  \node[state]         (C3) [right of=C2] {$C3$};
+
+
+  \path[->] (A1)  edge [loop above] node {wrong} (A1)
+             edge [bend left] node {correct} (A2)
+        (A2) edge [bend left]  node {wrong} (A1)
+             edge [bend left] node {correct} (A3)
+        (A3) edge [bend left]  node {wrong} (A2)
+             edge [bend left] node {correct} (B1)
+        (B1) edge [bend left]  node {wrong} (A3)
+             edge [bend left] node {correct} (B2)
+        (B2) edge [bend left]  node {wrong} (B1)
+             edge [bend left] node {correct} (B3)
+        (B3) edge [bend left] node {wrong} (B2)
+             edge [bend left] node {correct} (C1)
+        (C1) edge [bend left] node {wrong} (B3)
+             edge [bend left] node {correct} (C2)
+        (C2) edge [bend left] node {wrong} (C1)
+             edge [bend left] node {correct} (C3)
+        (C3) edge [loop above] node {correct} (C3)
+             edge [bend left] node {wrong} (C2);             
+\end{tikzpicture}
+\caption{State machine of adaptive difficulty categories.}
+\label{state-machine}
+\end{figure}

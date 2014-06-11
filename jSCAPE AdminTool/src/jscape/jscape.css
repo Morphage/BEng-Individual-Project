@@ -253,13 +253,25 @@
     -fx-padding: -30; /* counter the 30px added by border image to give 0 overall */
 }
 #page-tree:focused {
-   /* -fx-background-color: #d1dee3; */
     -fx-background-color: -fx-focus-color;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
 }
-
-
+#page-tree .tree-cell {
+    -fx-indent: 10;
+    -fx-background-color: transparent;
+}
+#page-tree .tree-cell:odd {
+    -fx-background-color: transparent;
+}
+#page-tree .tree-cell:filled:selected:focused, #page-tree .tree-cell:filled:selected {
+    -fx-background: #666666;
+    -fx-background-color: -fx-selection-bar;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+#page-tree:focused .tree-cell:filled:selected {
+    -fx-background: -fx-accent;
+}
 /* Page Styles */
 .page-header {
     -fx-font-size: 1.3em;

@@ -18,6 +18,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import jscape.analyze.AnalyzePane;
+import jscape.exercise.ExercisePane;
 
 /**
  *
@@ -31,7 +32,8 @@ public class JSCAPEAdminTool extends Application {
 
     private TabPane tabPane;
 
-    private AnalyzePane analyzePane;
+    private AnalyzePane  analyzePane;
+    private ExercisePane exercisePane;
 
     public boolean runPerformanceStatsService = false;
 
@@ -60,6 +62,7 @@ public class JSCAPEAdminTool extends Application {
         layerPane.getChildren().add(modalDimmer);
 
         analyzePane = new AnalyzePane();
+        exercisePane = new ExercisePane();
 
         tabPane = new TabPane();
         tabPane.setId("MainTabs");
@@ -68,7 +71,7 @@ public class JSCAPEAdminTool extends Application {
         analyzeTab.setContent(analyzePane);
 
         Tab exercisesTab = new Tab("EXERCISES");
-        exercisesTab.setContent(null);
+        exercisesTab.setContent(exercisePane);
 
         tabPane.getTabs().addAll(analyzeTab, exercisesTab);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
