@@ -42,7 +42,9 @@ After a successful login the student lands on the Profile tab which presents inf
 
 Figure \ref{fig:profile_screen_overview} shows the Profile tab after the student has logged in to the system. Profile information for the student is listed on the left hand side, in the light-blue rectangle. This information includes the student's first name, last name, user name, which class the student is in, the last time the student logged in, and the last time the student answered an exercise. \newline
 
-The main part of the Profile tab is split horizontally between statistical data in the form of pie charts and tables, and graphical data in the form of bar charts.
+The main part of the Profile tab is split horizontally between statistical data in the form of pie charts and tables, and graphical data in the form of bar charts. \newline
+
+Figure \ref{fig:pie_chart_stats1} shows the performance of the student in a particular exercise category, in this case ``Arrays". In the example, the student has gotten 60\% of array exercises correct and thus 40\% of them wrong. The student can view the performance pie chart for other exercise categories by changing the selected category in the combo box.
 
 \begin{figure}[H]
 \centering
@@ -50,8 +52,6 @@ The main part of the Profile tab is split horizontally between statistical data 
 \caption{Pie chart statistics for exercise category.}
 \label{fig:pie_chart_stats1}
 \end{figure}
-
-Figure \ref{fig:pie_chart_stats1} shows the performance of the student in a particular exercise category, in this case ``Arrays". In the example, the student has gotten 60\% of array exercises correct and thus 40\% of them wrong. The student can view the performance pie chart for other exercise categories by changing the selected category in the combo box.
 
 \begin{figure}[H]
 \centering
@@ -91,14 +91,29 @@ Figure \ref{fig:monthly_progress} shows the monthly progress of a student for th
 
 Figure \ref{fig:yearly_progress} shows the yearly progress of a student in 2014 for the exercise category ``Binary Trees". For each month where the student answered exercises, a stacked bar can be found containing the total number of correct answers (in blue) and the total number of wrong answers (in red) for that particular year and exercise category. The student can view his yearly progress in other exercise categories and other years by manipulating the appropriate combo boxes. This historical data goes back to the year in which the student first started answering exercises.
 
-\subsection{Practicing programming}
 %show difficulty progression of exercises
+\subsection{Practising programming}
+Selecting the Practice tab brings the student to a window where exercise categories, defined by the teacher, are displayed. These categories exist to separate exercises so that students can focus on practising one particular concept at a time. \newline
+
+Figure \ref{fig:practice_overview} gives an overview of the Practice tab in jSCAPE. In this case, seven exercise categories have been defined by the teacher: Arrays, Loops, Syntax, Conditionals, Binary Trees, Strings and Objects. Order is irrelevant, students simply choose what type of exercise they want to practice.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{practice_overview}
 \caption{An overview of the Practice tab in jSCAPE.}
 \label{fig:practice_overview}
 \end{figure}
+
+Clicking one of the exercise categories will bring the student to a new window, with an exercise and some helpful information about the chosen exercise category.
+Figures \ref{fig:practice_binary_trees} and \ref{fig:practice_conditionals} give examples of what this exercise view can look like.\newline
+
+In the case of the binary tree exercise (figure \ref{fig:practice_binary_trees}), exercise data, in the form of a binary tree, is displayed on the left of the window. On the right side of the window is the exercise itself, in this case it asks what should be printed if the binary tree is traversed using the in-order algorithm, and gives four options to choose from. \newline
+
+In the case of the exercise on conditionals (figure \ref{fig:practice_conditionals}), exercise data, in the form of a code fragment, is displayed on the left of the window. On the right side of the window is the exercise itself, in this case it asks the student to examine the code and to determine the final values of two variables, and provides again four options to choose from.
+
+\newpage
+
+\subsubsection{Example exercises}
 
 \begin{figure}[H]
 \centering
@@ -114,6 +129,14 @@ Figure \ref{fig:yearly_progress} shows the yearly progress of a student in 2014 
 \label{fig:practice_conditionals}
 \end{figure}
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.75]{practice_sidebar}
+\caption{An example sidebar in the Practice tab.}
+\label{fig:practice_sidebar}
+\end{figure}
+
+% Out of all the features present in jSCAPE, the one that students will notice the most is the adaptive difficulty, thus we go through an example practising session that a student could experience, to illustrate how the system adapts itself to the student's ability.
 
 \section{Teacher view}
 The teacher's main access to the system is through the jSCAPE admin tool. Essentially it provides an interface to the database where all information about students, performance, exercise categories and exercises is stored. This tool was developed to allow teachers, not familiar with SQL, to still be able to retrieve useful data about students in a presentable way and to facilitate management of the exercise bank.
@@ -153,6 +176,8 @@ There is a combo box to select which exercise category to display, but this isn'
 \subsection{Managing the exercise bank}
 \subsubsection{Managing exercise categories}
 add description, lecture links and helpful links
+
+set exercise category to not visible, useful feature if the class isn't ready to answer exercises of this category because the relevant material hasn't been taught yet, but the teacher still wants to prepare the exercises in advance to save time.
 
 \subsubsection{Adding an exercise manually}
 add exercise manually

@@ -106,7 +106,7 @@ Let us consider a small example: There is a 60\% chance of it snowing on Thursda
 
 Before observing any additional data, we can say that the probability of it snowing on Thursday is 60\%. But, we are given additional information, namely that it snowed on Friday. How we can we update the probability that it snowed on Thursday to reflect this observation? \newline
 
-We can do this by using Bayes' theorem shown in equation \ref{eq:bayes-theorem}. Let $A$ be the event ``snowing on Thursday" and $B$ be the event ``snowing on Friday". Then we have:
+We can do this by using Bayes' theorem shown in equation \eqref{eq:bayes-theorem}. Let $A$ be the event ``snowing on Thursday" and $B$ be the event ``snowing on Friday". Then we have:
 
 $$P(A|B) = \dfrac{0.2 \times 0.6}{0.2 \times 0.6 + 0.7 \times 0.4} = 0.3$$
 
@@ -177,27 +177,33 @@ Table \ref{table:1PL_table} shows the probability values for two 1PL items. $P_1
 Although the 1PL model provides a good basis for IRT it is rather simplistic and fairly limited. For instance, the model assumes that at low ability levels the examinee has close to no chance to answer the item correctly. However, in multiple choice questions there is always the option of guessing randomly. These existing limitations bring us to considering the next model.
 
 \subsubsection{The two-parameter logistic model}
-The two-parameter logistic (2PL) model adds the discrimination ($a_i$) as a parameter of the item.
+The two-parameter logistic (2PL) model builds upon the 1PL model by adding a new item parameter: the discrimination ($a_i$), where the subscript $i$ identifies item $i$. Discrimination refers to an item's capacity to distinguish between examinees of different ability levels. Graphically, the discrimination parameter corresponds to the slope of the item response function, and typically it ranges from -2.8 to 2.8.
 
 \begin{equation} \label{eq:2PL-IRF}
 P_i(\theta) = \frac{1}{1 + \me^{-1.7a_i(\theta - b_i)}}
 \end{equation}
 
-Equation \eqref{eq:2PL-IRF} shows the item response function for the 2PL model.
+Equation \eqref{eq:2PL-IRF} shows the item response function for the 2PL model. It is very similar to the equation of the 1PL model (Equation \eqref{eq:1PL-IRF}), except for the inclusion of the discrimination parameter ($a_i$) and a constant of $1.7$ to control the shape of the curve.
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{item_response_2pl}
-\caption{The item response function of the 2PL model. (Source:\cite{Visual-IRT}).}
+\caption{The item response functions of three items in the 2PL model. (Source:\cite{Visual-IRT}).}
 \label{fig:item_response_2pl}
 \end{figure}
 
+Figure \ref{fig:item_response_2pl} shows the item response functions of three items in the 2PL model. As in the 1PL model, the item difficulty is still located where $P_i(\theta)=0.5$, shown in the red lines. The item represented by the black curve and the item represented by the green curve both have the same discrimination, but different difficulty. As mentioned before, all this does is shift the item response function to the right or to the left, depending on which item you take as the reference point. \newline
+
+The black and blue curves illustrate the other scenario. The item represented by the black curve and the item represented by the blue curve have different discrimination, but identical difficulty. This has the effect of making the blue curve much steeper than the black one, thus affecting the probabilities over the ability scale. Indeed, the item represented by the blue curve discriminates quite well between respondents. Examinees of low ability have a much lower probability of answering the item correctly than examinees of higher ability. Compare this to the item represented by the black curve, where examinees of low ability still have a fair chance of getting the item correct.
+
 \subsubsection{The three-parameter logistic model}
+The three-parameter logistic (3PL) model takes into account the possibility of guessing a correct response to an item. This model is especially convenient for tests where multiple choice questions are present. In IRT, this parameter is called the pseudo-guessing or chance parameter, and it is denoted as $c_i$, where the subscript $i$ identifies item $i$. Graphically, it corresponds to a lower asymptote, i.e. $P_i(-\infty)=c_i$. The guessing parameter does not vary as a function of the examinee's ability. Indeed, whether they be of low ability or high ability, examinees both have the same probability of guessing the correct answer to an item.
+
 \begin{equation} \label{eq:3PL-IRF}
-P_i(\theta) = c_i + \frac{1 - c_i}{1 + \me^{-1.7a_i(\theta - b_i)}}
+P_i(\theta) = c_i + (1-c_i) \frac{1}{1 + \me^{-1.7a_i(\theta - b_i)}}
 \end{equation}
 
-Equation \eqref{eq:3PL-IRF} shows the item response function for the three-parameter logistic model (3PL).
+Equation \eqref{eq:3PL-IRF} shows the item response function for the three-parameter logistic model (3PL). The addition of $c_i$ defines a lower asymptote at that value, whereas $1-c_i$ acts as a weighting factor towards the 2PL model equation (Equation \eqref{eq:2PL-IRF}). Typically the pseudo-chance parameter ranges from 0 to 0.35, greater values being considered unacceptable. Lastly, if $c_i=0$ then we are simply left with a normal 2PL model.
 
 \begin{figure}[H]
 \centering
@@ -205,6 +211,10 @@ Equation \eqref{eq:3PL-IRF} shows the item response function for the three-param
 \caption{The item response function of the 3PL model. (Source:\cite{Visual-IRT}).}
 \label{fig:item_response_3pl}
 \end{figure}
+
+Figure \ref{fig:item_response_3pl} shows the item response function of an item in the 3PL model. This item has parameters $a=1.4$, $b=0$ and $c=0.2$. Now it can be seen that the guessing phenomenon is taken into account by this IRT model. Indeed, at the lowest possible ability ($\theta=-4$), the probability of a correct answer is $P(-4)=0.200059$, which is very close to the guessing parameter of the item.\newline
+
+Something to note is that $P_i(b_i) \neq 0.5$, i.e. the probability of a correct response at the ability level equal to the item difficulty is no longer 0.5. Instead, we have $P_i(b_i)= c + \dfrac{1-c}{2}$, and in figure \ref{fig:item_response_3pl} we have $P(0)=0.6$. If we consider a multiple choice question, adapted to the examinee's ability level, then it makes sense that the probability of them getting it correct would be greater than 0.5, to account for the possibility of getting it right merely through guessing.
 
 \subsubsection{Item information}
 In section \ref{sec:CAT}, when discussing item selection algorithms, we mentioned the maximum information method as a possible implementation. This method relies on the IRT concept of item information.\newline
