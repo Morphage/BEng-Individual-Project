@@ -1,7 +1,3 @@
-/**
- * Calculates the item information for the provisional proficiency level
- * estimated until that moment, i.e. thetaEstimate.
- */
 private double itemInformation(int thetaEstimate, Item item) {
     double information;
 
