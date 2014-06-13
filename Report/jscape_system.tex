@@ -77,6 +77,7 @@ On the far right of every exercise, there is a dark blue sidebar which displays 
 
 % Out of all the features present in jSCAPE, the one that students will notice the most is the adaptive difficulty, thus we go through an example practising session that a student could experience, to illustrate how the system adapts itself to the student's ability.
 % for more information on the difficulty progression or the exercise generation, look at chapter 5 for implementation details.
+% some HEURISTICS used by the system to increase the difficulty are increasing the size of the binary tree, the size of the code, the number of variables to consider, the type of the exercise, etc...
 
 \newpage
 \begin{figure}[H]
@@ -258,7 +259,7 @@ Figure \ref{fig:add_exercise_manually} shows an example of a teacher adding an e
 \begin{itemize}
 \item \textbf{Left view:} The name of the ``handler" that should be used in the left side of the exercise window. At the moment, two handlers exist. One is called BinaryTree for binary tree exercises, and another is called CodeEditor for exercises wishing to display pieces of code in the left view.
 \item \textbf{Left value:} Code or text used by the handler to generate what appears in the left view. In the case of a binary tree exercise, it is the binary tree encoded in a JSON format. For code exercises, it is simply the code snippet to be displayed to the student.
-\item \textbf{Right view:} The format of the exercise. Currently the system only supports multiple choice questions, but it would be quite easy to extend the system to support other types of exercises (section 7.?? FUTURE WORK).
+\item \textbf{Right view:} The format of the exercise. Currently the system only supports multiple choice questions, but it would be quite easy to extend the system to support other types of exercises (section \ref{sec:future-work}).
 \item \textbf{Right value:} The exercise description and the four possible choices.
 \item \textbf{Solution:} The solution to the exercise.
 \item \textbf{Difficulty:} Some attributes to indicate difficulty.
