@@ -120,6 +120,7 @@ Figure \ref{fig:class_diagram_server} shows the class diagram of the jSCAPE serv
 \end{itemize}
 
 \subsection{Exercises and exercise generators}
+\label{subsec:exercises-and-exercise-generators}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{class_diagram_exercises}
@@ -150,6 +151,8 @@ Figure \ref{fig:class_diagram_exercises} shows the class diagram for exercises a
       \end{itemize}                 
 \end{itemize}
 
+The exercise and exercise generators account for approximately 2400 lines of code.
+
 \subsection{Admin tool}
 We won't go into the details of the admin tool design. Essentially it reuses classes from other components and adds a few modifications.\newline
 
@@ -175,59 +178,37 @@ In addition to communicating with the client, the server also communicates with 
 
 In listing \ref{lst:example_database_method.java} we give an example of a database retrieval method. Such methods form a large part of the database module. All methods which read from the database return a \textsf{ArrayList$<$String$>$}, so that this can be immediately put in the reply message from the server to the client. In this particular example, the method retrieves performance statistics for the student identified by \textsf{loginName}. Line 6 creates the data structure to hold the information which will be read from the database. Lines 8 to 18 create the query, and send it to the database to be executed. In lines 20 to 24, the result of the query is added to the data structure. Finally, on line 27, all this information is returned to the server, which can now encapsulate this in a reply message, and send that to the client.\newline
 
-The database module also includes methods to update the information stored in the database. These methods simply execute an SQL \textsf{UPDATE} query, and return no status. \newline
+The database module also includes methods to update the information stored in the database. These methods simply execute an SQL \textsf{UPDATE} query, and return no status value. \newline
 
 This database module is also used by the jSCAPE admin tool to analyze results and manage the exercise bank. The module comprises of 8 classes, one main database class and one for each database table, and accounts for approximately 1500 lines of code.
 
-%talk about Beanshell for ex gen
-\section{Exercises}
-The possibility to practice understanding of programming concepts through exercises can be considered jSCAPE's central feature. In this section we discuss some of the design considerations for exercises, how they are implemented in jSCAPE and how exercise generators can be written to automatically generate these exercises.
-
-\subsection{Design choices}
-The fact is that with jSCAPE's flexible exercise format, it is possible to handle multiple types of exercise. However, instead of trying to include a large number of exercises, we decide to focus on a limited amount of exercises and get things right.
-
-Java programming exercises, focus on one language, to illustrate system, system is pretty much language independent.
-
-Multiple choice questions for 3PL IRT model.
-
-no exercises asking to write code because students usually have labs to do that, and these exercises are intended to practice understanding of fundamentals and to reinforce mental models of what programming language constructs actually do.
-
-showing feedback immediately afterwards...piece of code+exercise for code semantics understanding.
-
-We decided to have at least two different types of exercises to show the capabilities of the system in handling multiple exercise types.
-
-\subsection{jSCAPE exercise format}
-To represent an exercise entity, jSCAPE uses a simple XML tagged document. This is shown in listing \ref{lst:exercise_format}.\newline
-
-\lstinputlisting[language={xml}, tabsize=4, caption={Exercise format.},label={lst:exercise_format}]{\listings/exercise_format.xml}
-
-To understand the format, recall how exercises are displayed to students in the Practice tab (section \ref{subsec:pratising-programming}). Exercise data is shown in the left window, and the exercise description and choices are shown in the right window.
-We now explain the significance of these tags:
-\begin{itemize}
-\item The first \textsf{$<$display$>$} tag encloses information about the left window. The enclosed \textsf{$<$view$>$} tag corresponds to the component required to render the exercise data in the left window. Currently, two values are possible for this tag, \textsf{BinaryTree} and \textsf{CodeEditor}. The enclosed \textsf{$<$value$>$} tag holds the data that is passed to the rendering component to be rendered accordingly.
-\item The second \textsf{$<$display$>$} tag encloses information about the right window. The enclosed \textsf{$<$view$>$} tag corresponds to the type of exercise, and currently only one value is possible, \textsf{Multiple Choice}. The enclosed \textsf{$<$value$>$} tag holds the exercise description, i.e. the question asked. The \textsf{$<$choice$>$} tags correspond to the possible choices given to the student, and finally, the \textsf{$<$solution$>$} tag contains the solution to the exercise.
-\item The last \textsf{$<$display$>$} tag encloses a \textsf{$<$difficulty$>$} tag which gives the difficulty category of the exercise. Details about the difficulty category parameter will be given in the next section, on exercise generation.
-\end{itemize}
-
-Some examples of jSCAPE exercises are shown in appendix \ref{chap:example-jscape-exercises}.
-
-\subsection{Exercise generation}
-\label{exercise-generation}
-
 \section{Implementing Computerized Adaptive Testing (CAT)}
-We refer back to the background section where we outlined the components of a CAT. We also base this section on the work of SIETTE, for the reasons outlined in the related work section. We will use, bayesian estimation with knowledge distributions. 12 discrete knowledge levels, 0 to 11, as in SIETTE, no starting point, modified termination criterion, and three different item selection algorithms.
+\label{sec:implementing-cat}
+We refer back to the background chapter, section \ref{sec:CAT}, where we outlined the components necessary to build a CAT. We also base this section on the work of SIETTE, for the reasons outlined in the related work chapter, section \ref{sec:SIETTE}.\newline
+
+We decide to follow many of the implementation details of SIETTE, that is, to use the Bayesian estimation method, with a knowledge distribution consisting of 11 discrete knowledge levels, ranging from 0 to 10. In addition, the exercise selection algorithms used by jSCAPE will be presented. We now give more details about how the different CAT components are implemented in jSCAPE.
 
 \subsection{Calibrated item pool}
+We mentioned in section \ref{sec:CAT}, that calibration was a complex process, and that to be done accurately it required a considerable amount of data. However,  to obtain this data we would need to have hundreds of students answer jSCAPE exercises and record whether they got the right or wrong answer. Even if this data could be obtained, calibrating the exercises would then require to purchase specialized software. \newline
+
+Therefore, to show what jSCAPE would be capable of, given an accurately calibrated item pool, we require teachers to input item parameters, just as in SIETTE. In the case of a multiple choice question, the pseudo-chance parameter, $c$, will be equal to $0.25$. The difficulty parameter, $b$, takes discrete values between 0 and 11, and the discrimination parameter, $a$, takes values between $0.5$ and $1.5$. \newline
+
+Evidently, this won't end up being as accurate as an item pool where the calibration process was based on thousands of responses to exercises, but it is the best we can do given the circumstances.
 
 \subsection{Starting point}
 The starting point refers to the state of the system when no exercises have been administered to a student. In jSCAPE, no prior information about students is known, so the system's initial ability estimate for the student corresponds to the mean on the ability scale, i.e. $\theta = 5$. In addition, the initial knowledge distribution will be a uniform distribution with $P(\theta)=\frac{1}{11}$, where $P(\theta)$ is the probability that the student's knowledge level is equal to $\theta$. These initial assumptions are taken for every exercise category.
 
 \subsection{Implementing exercise selection algorithms}
+\label{subsec:implementing-exercise-selection-algorithms}
+In this section we discuss the exercise selection algorithms which have been implemented in jSCAPE. We go through these in chronological order of implementation. In the final jSCAPE system, all these selection algorithms are still present, allowing the teacher to choose which procedure to use for administering exercises to students.
 
 \subsubsection{Random selection}
-Random selection
+Random selection was the first ``algorithm" implemented. It allowed us to test the system and put everything in place to then develop the more sophisticated algorithms which will follow. This algorithm is quite simple, it picks an exercise at random from the exercises that haven't been answered yet by a student.
 
 \subsubsection{Selecting based on the difficulty category}
+The idea for the next selection algorithm arose after coming across PAT (section \ref{sec:PAT}), software used for assessing Greek high school students' programming knowledge.\newline
+
+We decide to define difficulty categories for exercises. Category A is for easy exercises, category B is for intermediate exercises and category C is for difficult exercises. When an exercise is added manually to the exercise bank, the teacher can choose which difficulty category the exercise belongs to. In section \ref{subsec:exercise-generation}, we show some mechanisms which enable the exercise generators to determine an exercise's difficulty category, based on some simple metrics.
 
 \begin{figure}[H]
 \centering
@@ -266,20 +247,129 @@ Random selection
 \label{state-machine}
 \end{figure}
 
-Figure \ref{state-machine} shows the state machine implemented by this exercise selection algorithm.
+Figure \ref{state-machine} shows the state machine implemented by this exercise selection algorithm. For every exercise category, initially students will be presented with exercises from the A difficulty category. A correct answer gets the student closer to getting promoted to a harder difficulty category, for that particular exercise category only. On the other hand, a wrong answer gets the student closer to getting demoted to an easier difficulty category. When a student changes exercise category, or leaves jSCAPE, this difficulty category is saved so that exercises of the appropriate difficulty can be selected during the next session. \newline
+
+The algorithm implemented in jSCAPE waits a while to confirm that the student is in fact ready to move to the next difficulty category. Similarly, the algorithm waits a while before decreasing the difficulty, to account for careless slip ups. For these reasons, we think that the algorithm in jSCAPE is better than the one implemented in PAT. \newpage
 
 \subsubsection{Selecting using Item Response Theory}
+This algorithm is the most sophisticated exercise selection algorithm and it is based on the concepts of Item Response Theory. \newline
 
-\lstinputlisting[language=Java, caption={Item information algorithm.}]{\listings/item_information.java}
+\lstinputlisting[language=Java, caption={An item.}, label={lst:item.java}]{\listings/item.java}
 
-\lstinputlisting[language=Java, caption={Item response function algorithm.}]{\listings/item_response_function.java}
+First of all, we define an item as shown in listing \ref{lst:item.java}. The \textsf{itemID} is an identifier which points to an exercise in the exercise bank. The variables \textsf{a}, \textsf{b} and \textsf{c} refer to the item parameters $a$, $b$ and $c$. These are also columns in the exercise bank database table, null values indicate that the exercise isn't an IRT exercise. \newline
+
+For item selection, we use the maximum information method, which consists in choosing the item with the maximum amount of information for the student's current ability estimate. \newline
+
+\lstinputlisting[language=Java, caption={Item information algorithm.}, label={lst:item_information.java}]{\listings/item_information.java}
+
+In listing \ref{lst:item_information.java} we show the method which computes item information for a given item.
+
+\lstinputlisting[language=Java, label={lst:max_item_information.java}, caption={Maximum information method.}]{\listings/max_item_information.java}
+
+In listing \ref{lst:max_item_information.java} we show the maximum information method, which takes a list of items and the current ability estimate for a student. The algorithm then searches the items for the item with the maximum amount of information, and returns the index of that item in the list, so that it can be presented to the student. \newline
+
+Normally, \textsf{itemList} would be all the exercises that a student hasn't answered yet, for a particular exercise category. However, this can be optimized to include only those exercises whose difficulty parameter is of distance 1 from the current ability estimate for that student. Another possible improvement would be to implement the item information function and maximum information method directly into the database, as user defined functions.\newline
+
+A simulation of jSCAPE in IRT mode is included in appendix \ref{chap:irt-simulation}. Amongst other things, it shows how the items which are selected are those which maximize item information.
 
 \subsection{Scoring algorithm}
+The scoring algorithm refers to the steps taken to update the student's ability estimate after an exercise has been answered. We decide to use the Bayesian estimation method for this, just as in SIETTE. If an exercise with an assigned difficulty category is answered, then none of the following is done.
+\newpage
+
+\lstinputlisting[language=Java, label={lst:item_response_function.java}, caption={Item response function (3PL).}]{\listings/item_response_function.java}
+
+First, we list the Java implementation of the 3PL item response function in listing \ref{lst:item_response_function.java}. This corresponds to the probability of answering \textsf{item} correctly, given \textsf{thetaEstimate} as the current ability estimate for the student. \newline
+
+Recall, that the Bayesian estimation method computes the posterior knowledge distribution from the prior knowledge distribution and observed data in the student's answer to an exercise.
+
+\begin{equation}
+\label{eq:compute-posterior}
+P(\theta=k|u_i) = \frac{P(u_i|\theta=k)P(\theta=k)}{\sum_{j=0}^{10}P(u_i|\theta=j)P(\theta=j)}, \;\;\;\;\;\;\;\;\; \text{for each } k=0 \text{ to } k=10 
+\end{equation}
+
+Equation \eqref{eq:compute-posterior} shows how jSCAPE computes the posterior distribution, after a student has answered exercise $i$, with $u_i=1$ if he answered correctly, and $u_i=0$ otherwise. $P(u_i|\theta=k)$ is the item response function for item $i$, and $P(\theta=k)$ is the prior knowledge distribution. We apply Bayes' theorem using these two pieces of information to compute the new knowledge distribution. \newline
+
+The implementation of the scoring algorithm, that is, the item response function, the computation of the posterior distribution, etc... forms part of the Item response theory module. It contains quite a few lines of code, thus we include it in appendix \ref{chap:irt-module}.\newline
+
+A simulation of jSCAPE in IRT mode is included in appendix \ref{chap:irt-simulation}. Amongst other things, it shows how the knowledge distribution is updated after a student has answered an exercise.
 
 \subsection{Termination criterion}
-When discussing CATs, we mentioned the need for a termination criterion. However, for jSCAPE we wanted no limit to be imposed on the number of exercises a student could answer. As long as exercises are available in the exercise bank, and as long as a student wants to practice, then he will be able to do so.\newline
+When discussing CATs, we mentioned the need for a termination criterion. However, for jSCAPE we wanted no limit to be imposed on the number of exercises a student could answer. As long as exercises are available in the exercise bank, and as long as a student wants to practice, then he will be able to do so. The only termination criterion per say, is when a student exits an exercise category to practice exercises of another category. This means that when a student goes back to that previous exercise category, his knowledge distribution will continue to evolve from where it left off. A teacher could, for instance, reset the knowledge distribution every week or month to get more accurate and recent estimates of a student's knowledge.
 
-The only termination criterion per say, is when a student exits an exercise category to practice exercises of another category. This means that when a student goes back to that previous exercise category, his knowledge distribution will continue to evolve from where it left off. A teacher could, for instance, reset the knowledge distribution every week or month to get more accurate and recent estimates of a student's knowledge.
+%talk about Beanshell for ex gen
+\section{Exercises}
+\label{sec:exercises-implementation}
+The possibility to practice understanding of programming concepts through exercises can be considered jSCAPE's central feature. In this section we discuss some of the design considerations for exercises, how they are implemented in jSCAPE and how exercise generators can be written to automatically generate these exercises.
+
+\subsection{Design choices}
+With jSCAPE's flexible exercise format (section \ref{subsec:jscape-exercise-format}), it is possible to handle multiple types of exercise. However, instead of trying to include a large variety of exercise types, we decide to refine our focus. Therefore, we come up with the following exercise specification:
+\begin{itemize}
+\item To illustrate the capabilities of jSCAPE, and to introduce variety in the exercises, we decide to define exercises which use different views (e.g. \textsf{BinaryTree}, \textsf{CodeEditor}). Research\cite{Lister} has shown that a code snippet and an exercise asking for the behaviour of the code, provides effective assessment on a student's understanding of code semantics. Therefore, jSCAPE will include this type of exercise, as well as other exercises which don't display a piece of code, for variety purposes, as mentioned before.
+\item For those exercises which display code snippets, the code will be written in the Java programming language. However, we note that jSCAPE is language independent and that exercises with code snippets from other languages can easily be supported. This is in fact a possible extension to the system (section \ref{sec:future-work}).
+\item Exercises won't ask students to write any code, because students usually have other assignments which ask them to do so. jSCAPE exercises are intended to practice understanding of fundamentals and to reinforce mental models of what programming language constructs actually do. In addition, this would require jSCAPE to include a component for checking the style and correctness of code written by students. Writing this component would take time off implementing the other components and features of jSCAPE.
+\item Feedback to an exercise will only be very basic: indicating whether the student got the exercise right or wrong, and displaying the solution. Feedback will be shown immediately after the student has answered the exercise, because evidence\cite{Mitrovic} suggests that this is the most effective way for providing feedback. More advanced feedback is a possible extension to the system (section \ref{sec:future-work}).
+\item Exercises will be multiple choice only, so that the three-parameter logistic (3PL) model of Item Reponse Theory can be used to implement adaptive difficulty.
+\end{itemize}
+
+\subsection{jSCAPE exercise format}
+\label{subsec:jscape-exercise-format}
+To represent an exercise entity, jSCAPE uses a simple XML tagged document. This is shown in listing \ref{lst:exercise_format}.\newline
+
+\lstinputlisting[language={xml}, tabsize=4, caption={Exercise format.},label={lst:exercise_format}]{\listings/exercise_format.xml}
+
+To understand the format, recall how exercises are displayed to students in the Practice tab (section \ref{subsec:pratising-programming}). Exercise data is shown in the left window, and the exercise description and choices are shown in the right window.
+We now explain the significance of these tags:
+\begin{itemize}
+\item The first \textsf{$<$display$>$} tag encloses information about the left window. The enclosed \textsf{$<$view$>$} tag corresponds to the component required to render the exercise data in the left window. Currently, two values are possible for this tag, \textsf{BinaryTree} and \textsf{CodeEditor}. The enclosed \textsf{$<$value$>$} tag holds the data that is passed to the rendering component to be rendered accordingly.
+\item The second \textsf{$<$display$>$} tag encloses information about the right window. The enclosed \textsf{$<$view$>$} tag corresponds to the type of exercise, and currently only one value is possible, \textsf{Multiple Choice}. The enclosed \textsf{$<$value$>$} tag holds the exercise description, i.e. the question asked. The \textsf{$<$choice$>$} tags correspond to the possible choices given to the student, and finally, the \textsf{$<$solution$>$} tag contains the solution to the exercise.
+\item The last \textsf{$<$display$>$} tag encloses a \textsf{$<$difficulty$>$} tag which gives the difficulty category of the exercise. Details about the difficulty category parameter will be given in the next section, on exercise generation.
+\end{itemize}
+
+Some examples of jSCAPE exercises are shown in appendix \ref{chap:example-jscape-exercises}.
+
+\subsection{Exercise generation}
+\label{subsec:exercise-generation}
+Although jSCAPE allows for exercises to be added manually, this isn't a feasible way to build a large exercise bank. Therefore, we introduce the process of exercise generation, and give details as to how we implemented exercise generators for some exercises. In simple terms, exercise generation requires filling the tags of the jSCAPE exercise format. In this subsection, we will focus on the exercise generators for two exercise categories: Binary Trees and Conditionals. The other exercise generators are implemented in the same fashion.
+
+\subsubsection{Binary Tree exercise generation}
+Recall the class diagram for exercises and exercise generators (section \ref{subsec:exercises-and-exercise-generators}). The exercise generator for Binary Tree exercises is called \textsf{BSTExerciseGen}, and uses \textsf{BST}, a Java implementation of binary trees, to help in generating exercises. An example Binary Tree exercise, in the jSCAPE exercise format, is shown in appendix \ref{chap:example-jscape-exercises}.\newline
+
+The first step to generating a Binary Tree exercise is selecting the appropriate view for the left window. For this exercise category, we take as an example the creation of exercises which display binary trees as exercise data, and a question that asks what will be printed for various traversal orders. Therefore, we use the \textsf{BinaryTree} view, and this goes into the \textsf{$<$view$>$} tag of the first \textsf{$<$display$>$} tag, as shown in listing \ref{lst:binary_tree_gen1.java}.\newline
+
+\lstinputlisting[language={java}, caption={First part of exercise generation.},label={lst:binary_tree_gen1.java}]{\listings/binary_tree_gen1.java}
+
+Next, \textsf{BST} generates a binary tree in Java, from a set of random numbers. This binary tree is either balanced with probability $\frac{2}{3}$ or left unbalanced with probability $\frac{1}{3}$. Our reasoning for this is that students will probably be more familiar with balanced binary trees, therefore unbalanced binary trees can be left for exercises of greater difficulty.\newline
+
+The \textsf{BinaryTree} view is implemented using the JavaScript InfoVis Toolkit (JIT)\cite{JIT}. This library provides tools for creating interactive visualizations for the web, and requires displayable data to be in the JSON format. Therefore, \textsf{BSTExerciseGen} converts the Java binary tree into the JSON format accepted by the \textsf{BinaryTree} view, and this goes into the \textsf{$<$value$>$} tag of the first \textsf{$<$display$>$} tag. This process is illustrated below. \newline
+
+\begin{lstlisting}[language={Java}, label={lst:binary_tree_gen2.java}]
+BST<Integer> bst = createBST(randomNumbers);
+xmlExercise += bst.toJSON();
+                            
+\end{lstlisting}
+
+Figure \ref{fig:binary_tree_example} shows an example binary tree and listing \ref{lst:binary_tree_json} is the JSON representation of that binary tree. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.9]{binary_tree_example}
+\caption{A binary tree.}
+\label{fig:binary_tree_example}
+\end{figure}
+
+\lstinputlisting[language={json}, tabsize=4, caption={JSON representation of the binary tree in figure \ref{fig:binary_tree_example}.},label={lst:binary_tree_json}]{\listings/binary_tree_json.json}
+
+\newpage
+
+Next, we create a data structure with the results of all the traversal orders. This is shuffled and used to complete the \textsf{$<$choice$>$} tags. We select a traversal order, at random, from the possible traversal orders, i.e. pre, in, post and level order. This traversal order is inserted into the question, and the result of that traversal is inserted into the \textsf{$<$solution$>$} tag. This step is illustrated in listing \ref{lst:binary_tree_gen2.java}. \newline
+
+\lstinputlisting[language={java}, caption={Generating question and choices.},label={lst:binary_tree_gen2.java}]{\listings/binary_tree_gen2.java}
+
+For the \textsf{$<$difficulty$>$} tag, recall that we have three difficulty categories, A, B and C. We will assign a difficulty category based on some simple metrics. We decide not to use item response theory for automatically generated exercises because any estimation the exercise generator would make for the $a$ and $b$ parameters would be terribly inaccurate.\newline
+
+For this exercise category, we assume that the size, the height and whether the tree is balanced or not, can impact the difficulty of the exercise. For instance, when the number of nodes is less than 7, we assign the exercise to difficulty category A, between 7 and 12 nodes, to difficulty category B and more than 12 nodes to difficulty category C.
+
+\subsubsection{Conditionals exercise generation}
 
 \section{Collecting statistical data}
 One of the main features of jSCAPE is tracking student progress through statistical data. In this section we briefly look at what statistical data is collected and how it is organized in the database.
@@ -312,15 +402,12 @@ Figure \ref{fig:history_database_table} shows that the system records, for every
 Figure \ref{fig:exercisebank_database_table} shows that the system records the number of correct answers and wrong answers for each exercise. This is a useful feature for teachers to identify trends in which type of exercises students are having trouble with and which type of exercises students are having little trouble answering correctly.
 
 \section{Summary}
+In this section, we gave details of the design and implementation of jSCAPE.\newline
 
-\newpage
+We started off by justifying the different technologies we used in the project. We then showed the design of the system and its various components through class diagrams and explanations.\newline
 
-Talk about design choices such as only multiple choices, no exercises asking to write code, writing custom server, etc...\newline
+Next, we looked at how computerized adaptive testing was implemented in jSCAPE. More specifically, we mentioned that it is possible to choose between random, difficulty category based and IRT based exercise selection algorithms. \newline
 
-java programming exercises, binary trees and code exercises to show the capabilities of the system, that it can handle multiple types of exercises.\newline
+We then talked about the types of exercises available in jSCAPE, the exercise format and we showed how exercise generators could be coded to generate exercises automatically.\newline
 
-showing feedback immediately after the exercise....cite source, shown to be most effective way of learning\newline
-
-piece of code + exercise involving the behaviour of the code have been found efficient (lister 2001) as far as student's assessment on their ability to read and understand the code's semantics. (NOT MY OWN WORDS) Lister, R. (2001). Objectives and objective assessment in CS1. ACM SIGCSE Bulletin, Vol. 33, No. 1, pp. 292-296. \newline
-
-CAT development, we refer back to the five components of a CAT...what item selection algorithm we use, what scoring procedure, no termination criterion, entry point is average knowledge distribution initially and attempts at a calibrated item pool, currently with teacher providing the parameters since obtaining a high quality calibrated item pool isn't something I can do.
+Finally, we briefly discussed how jSCAPE collected statistical data by maintaining several database tables with various statistics on exercises, student performance and system usage.

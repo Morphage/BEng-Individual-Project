@@ -74,13 +74,14 @@ In the case of the exercise on conditionals (figure \ref{fig:practice_conditiona
 \label{fig:practice_sidebar}
 \end{figure}
 
-On the far right of every exercise, there is a dark blue sidebar which displays a description of the programming concept or construct being practised, links to university or course lecture notes and some other websites on the Internet if further help is needed. An example sidebar is shown in figure \ref{fig:practice_sidebar}, in this case the sidebar for the ``Binary Trees" exercise category.
+On the far right of every exercise, there is a dark blue sidebar which displays a description of the programming concept or construct being practised, links to university or course lecture notes and some other websites on the Internet if further help is needed. An example sidebar is shown in figure \ref{fig:practice_sidebar}, in this case the sidebar for the ``Binary Trees" exercise category.\newline
 
-% Out of all the features present in jSCAPE, the one that students will notice the most is the adaptive difficulty, thus we go through an example practising session that a student could experience, to illustrate how the system adapts itself to the student's ability.
-% for more information on the difficulty progression or the exercise generation, look at chapter 5 for implementation details.
-% some HEURISTICS used by the system to increase the difficulty are increasing the size of the binary tree, the size of the code, the number of variables to consider, the type of the exercise, etc...
+While answering exercises, students might notice how the difficulty of the exercises adapt to their performance. The system uses simple metrics to either increase or decrease the difficulty of exercises.\newline
 
-\newpage
+For instance, for exercises in the Binary Tree category, the binary trees will increase in the number of nodes, or become very unbalanced. An example of this progression is shown in figure \ref{fig:binary_tree_progression}. \newline
+
+For exercises in the Conditionals category, the number of \textsf{if} and \textsf{else} statements might increase or the exercise might ask for the final values of more variables.An example of this progression is shown in figure \ref{fig:conditionals_progression}.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{binary_tree_progression}
@@ -95,16 +96,13 @@ On the far right of every exercise, there is a dark blue sidebar which displays 
 \label{fig:conditionals_progression}
 \end{figure}
 
-\begin{sidewaysfigure}
-\centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{conditionals_progression}
-\caption{Progression of conditionals exercises.}
-\label{fig:conditionals_progression}
-\end{sidewaysfigure}
+More details about how jSCAPE adapts the difficulty of exercises are given in section \ref{subsec:implementing-exercise-selection-algorithms} and section \ref{subsec:exercise-generation}.
 
 \subsection{Tracking progress through statistical data}
 \label{subsec:tracking-progress}
-After a successful login the student lands on the Profile tab which presents information about the student, as well as statistical data on the student's performance and usage of the system.
+After a successful login the student lands on the Profile tab which presents information about the student, as well as statistical data on the student's performance and usage of the system.\newline
+
+Figure \ref{fig:profile_screen_overview} shows the Profile tab after the student has logged in to the system. Profile information for the student is listed on the left hand side, in the light-blue rectangle. This information includes the student's first name, last name, user name, which class the student is in, the last time the student logged in, and the last time the student answered an exercise.
 
 \begin{figure}[H]
 \centering
@@ -113,11 +111,7 @@ After a successful login the student lands on the Profile tab which presents inf
 \label{fig:profile_screen_overview}
 \end{figure}
 
-Figure \ref{fig:profile_screen_overview} shows the Profile tab after the student has logged in to the system. Profile information for the student is listed on the left hand side, in the light-blue rectangle. This information includes the student's first name, last name, user name, which class the student is in, the last time the student logged in, and the last time the student answered an exercise. \newline
-
-The main part of the Profile tab is split horizontally between statistical data in the form of pie charts and tables, and graphical data in the form of bar charts. \newline
-
-Figure \ref{fig:pie_chart_stats1} shows the performance of the student in a particular exercise category, in this case ``Arrays". In the example, the student has gotten 60\% of array exercises correct and thus 40\% of them wrong. The student can view the performance pie chart for other exercise categories by changing the selected category in the combo box.
+The main part of the Profile tab is split horizontally between statistical data in the form of pie charts and tables, and graphical data in the form of bar charts.
 
 \begin{figure}[H]
 \centering
@@ -125,6 +119,8 @@ Figure \ref{fig:pie_chart_stats1} shows the performance of the student in a part
 \caption{Pie chart statistics for exercise category.}
 \label{fig:pie_chart_stats1}
 \end{figure}
+
+Figure \ref{fig:pie_chart_stats1} shows the performance of the student in a particular exercise category, in this case ``Arrays". In the example, the student has gotten 60\% of array exercises correct and thus 40\% of them wrong. The student can view the performance pie chart for other exercise categories by changing the selected category in the combo box.
 
 \begin{figure}[H]
 \centering
@@ -175,14 +171,14 @@ The teacher's main access to the system is through the jSCAPE admin tool. Essent
 \label{fig:analyze_overview}
 \end{figure}
 
-The jSCAPE admin tool provides teachers with the ability to track student progress and performance over time. Figure \ref{fig:analyze_overview} gives an overview of the Analyze tab, where statistical data about selected students can be displayed. The information displayed is identical to that displayed in the jSCAPE Profile tab (section \ref{subsec:tracking-progress}). On the left hand side of the window, the light blue box contains options to filter which data is displayed in the main window. A close up of the filter options is shown in figure \ref{fig:analyze_select_student}.
-
 \begin{figure}[H]
 \centering
 \includegraphics[scale=1]{analyze_select_student}
 \caption{Selection possibilities in the Analyze tab.}
 \label{fig:analyze_select_student}
 \end{figure}
+
+The jSCAPE admin tool provides teachers with the ability to track student progress and performance over time. Figure \ref{fig:analyze_overview} gives an overview of the Analyze tab, where statistical data about selected students can be displayed. The information displayed is identical to that displayed in the jSCAPE Profile tab (section \ref{subsec:tracking-progress}). On the left hand side of the window, the light blue box contains options to filter which data is displayed in the main window. A close up of the filter options is shown in figure \ref{fig:analyze_select_student}.\newline
 
 The jSCAPE system includes support for multiple classes to allow for both the separation of students and the separation of exercises available to a class. A teacher can select a class to view statistics about those students taking the class. This will update the list of students in the combo box, allowing the teacher to focus his attention on the performance of one particular student. \newline
 
@@ -244,19 +240,13 @@ At the time of writing this report, the feature of double clicking a row to show
 \label{fig:automated_generation}
 \end{figure}
 
-In jSCAPE teachers can automatically generate new exercises for a selected exercise category. The teacher inputs the number of exercises he wishes to generate, clicks the Generate button which will call the appropriate exercise generator, create the exercises and add them to the exercise bank. For more details about the implementation of the automated exercise generation process, refer to section 5.??.
+In jSCAPE teachers can automatically generate new exercises for a selected exercise category. The teacher inputs the number of exercises he wishes to generate, clicks the Generate button which will call the appropriate exercise generator, create the exercises and add them to the exercise bank. For more details about the implementation of the automated exercise generation process, refer to section \ref{subsec:exercise-generation}.
 
 \subsubsection{Adding an exercise manually}
-Although automatically generating exercises is a useful feature, it lacks the control offered by adding exercises manually. Indeed, the manual addition of exercises allows teachers to define exercises to target any identified student weaknesses. It also allows for more complex exercises which the automatic exercise generator wouldn't be able to produce.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{add_exercise_manually}
-\caption{Adding an exercise on binary trees manually.}
-\label{fig:add_exercise_manually}
-\end{figure}
+Although automatically generating exercises is a useful feature, it lacks the control offered by adding exercises manually. Indeed, the manual addition of exercises allows teachers to define exercises to target any identified student weaknesses. It also allows for more complex exercises which the automatic exercise generator wouldn't be able to produce. \newline
 
 Figure \ref{fig:add_exercise_manually} shows an example of a teacher adding an exercise on binary trees to the exercise bank. Adding a new exercise manually consists in filling special tags which the jSCAPE system will recognize when trying to display the exercise to the student. These tags are:
+
 \begin{itemize}
 \item \textbf{Left view:} The name of the ``handler" that should be used in the left side of the exercise window. At the moment, two handlers exist. One is called BinaryTree for binary tree exercises, and another is called CodeEditor for exercises wishing to display pieces of code in the left view.
 \item \textbf{Left value:} Code or text used by the handler to generate what appears in the left view. In the case of a binary tree exercise, it is the binary tree encoded in a JSON format. For code exercises, it is simply the code snippet to be displayed to the student.
@@ -266,7 +256,14 @@ Figure \ref{fig:add_exercise_manually} shows an example of a teacher adding an e
 \item \textbf{Difficulty:} Some attributes to indicate difficulty.
 \end{itemize}
 
-For more details about the implementation of exercises and the various possibilities offered by the jSCAPE exercise format, refer to section 5.??\newline
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{add_exercise_manually}
+\caption{Adding an exercise on binary trees manually.}
+\label{fig:add_exercise_manually}
+\end{figure}
+
+For more details about the implementation of exercises and the various possibilities offered by the jSCAPE exercise format, refer to section \ref{sec:exercises-implementation}.\newline
 
 Once these fields have all been filled in, the teacher can click the Add button and the exercise will be stored in the exercise bank and made available to students.
 

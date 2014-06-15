@@ -23,14 +23,14 @@ public class ExerciseGenerator {
         ConditionalsExerciseGen ceg = new ConditionalsExerciseGen();
         StringExerciseGen stringEG = new StringExerciseGen();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 20; i++) {
          //System.out.println(beg.makeExercise());
             //System.out.println(seg.makeType1Exercise());
-            System.out.println(ceg.makeExercise());
+            //System.out.println(ceg.makeExercise());
             //System.out.println(stringEG.makeExercise());
             //ExerciseBankTable.addExercise("Syntax", seg.makeType2Exercise());
             //ExerciseBankTable.addExercise("Syntax", seg.makeType1Exercise());
-            //ExerciseBankTable.addExerciseWithDifficulty("Binary Trees", beg.makeExercise());
+            ExerciseBankTable.addExerciseWithDifficulty("Binary Trees", beg.makeExercise());
             //ExerciseBankTable.addExerciseWithDifficulty("Conditionals", ceg.makeExercise());
             //ExerciseBankTable.addExerciseWithDifficulty("Strings", stringEG.makeExercise());
         }
