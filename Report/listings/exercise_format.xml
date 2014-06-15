@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<exercise>
+	<display>
+		<view>........</view>
+		<value>.......</value>
+	</display>
+	<display>
+		<view>........</view>
+		<value>.......</value>
+		<choice0>.....</choice0>
+		<choice1>.....</choice1>
+		<choice2>.....</choice2>
+		<choice3>.....</choice3>
+		<solution>....</solution>
+	</display>
+	<display>
+		<difficulty>......</difficulty>
+	</display>
+</exercise>

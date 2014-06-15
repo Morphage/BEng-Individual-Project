@@ -104,7 +104,6 @@ public class InitializeDatabase {
         initializeDemoStudent("user6");
         initializeDemoStudent("user7");
         initializeDemoStudent("user8");
-        
     }
     
     private static void initializeDemoStudent(String loginName) {

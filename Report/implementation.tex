@@ -79,6 +79,8 @@ Figure \ref{fig:class_diagram_client} shows the class diagram of the jSCAPE clie
 \item \textsf{AboutPane}: The About tab of the application, displays information about what the application does.
 \end{itemize}
 
+The jSCAPE client accounts for approximately 2500 lines of code.
+
 \subsection{Server}
 \begin{figure}[H]
 \centering
@@ -148,29 +150,77 @@ Figure \ref{fig:class_diagram_exercises} shows the class diagram for exercises a
       \end{itemize}                 
 \end{itemize}
 
+\subsection{Admin tool}
+We won't go into the details of the admin tool design. Essentially it reuses classes from other components and adds a few modifications.\newline
+
+This component accounts for approximately 2000 lines of code, although most of those lines are copied from other components.
+
 \section{Server and client-server communication}
 The server is responsible for servicing all client requests, for instance, requesting performance statistics or requesting a new exercise. It is custom built, multithreaded and written in pure Java, using Sockets and Object input/output streams. The basic server class and the mechanism to communicate with clients accounts for approximately 300 lines of code. \newline
 
-\lstinputlisting[caption={Serializable message object used for client-server communication.}, label={lst:message.java}]{\listings/message.java}
+\lstinputlisting[language=Java, caption={Serializable message object used for client-server communication.}, label={lst:message.java}]{\listings/message.java}
 The code in \ref{lst:message.java} shows the basic unit that travels between the client and the server, and vice-versa. A message consists of a message code, used to determine its structure, and a payload of request parameters, in the form of an \textsf{ArrayList$<$String$>$}.\newline
 
-\lstinputlisting[caption={Message request codes.}, label={lst:message_codes.java}]{\listings/message_codes.java}
+The existing message request codes are shown in \ref{lst:message_codes.java}. The server uses these to determine what the client has requested, how the request message is formatted and which actions to perform to service the request. \newpage
 
-The existing message request codes are shown in \ref{lst:message_codes.java}. The server uses these to determine what the client has requested, how the request message is formatted and which actions to perform to service the request. \newline
-
-\lstinputlisting[caption={An example client request.}, label={lst:example_service.java}]{\listings/example_service.java}
+\lstinputlisting[language=Java, caption={Message request codes.}, label={lst:message_codes.java}]{\listings/message_codes.java}
 
 The code snippet in \ref{lst:example_service.java} gives an example of how the client can construct a request. In this particular example the client is requesting the statistical data about the student's performance. On line 1, a \textsf{Service} is created. A \textsf{Service} is a task that can be performed over and over again by calling the \textsf{restart()} method, like on line 12. Lines 2 to 10 determine what the service should do when it is started. Lines 4 and 5 add the student's login name as a request parameter. On lines 6 and 7, the message is constructed with the appropriate message code, and the request parameters. On line 9, the message is sent to the server, and the reply from the server is stored in the \textsf{Service}, for the client to use later on.\newline
 
+\lstinputlisting[language=Java, caption={An example client request.}, label={lst:example_service.java}]{\listings/example_service.java}
+
 In addition to communicating with the client, the server also communicates with the PostgreSQL database. This is to retrieve the data requested by the client, and to update the state of the system as the student answers exercises, for instance. Therefore, a database module was created with methods to perform the necessary functions. \newline
 
-In listing \ref{lst:example_database_method.java} we give an example of a database retrieval method. All methods which read from the database return a \textsf{ArrayList$<$String$>$}, so that this can be immediately put in the reply message from the server to the client. In this particular example, the method retrieves performance statistics for the student identified by \textsf{loginName}. Line 6 creates the data structure to hold the information which will be read from the database. Lines 8 to 18 create the query, and send it to the database to be executed. In lines 20 to 24, the result of the query is added to the data structure. Finally, on line 27, all this information is returned to the server, which can now encapsulate this in a reply message, and send that to the client.\newline
+\lstinputlisting[language=Java, caption={An example database retrieval method.}, label={lst:example_database_method.java}]{\listings/example_database_method.java}
 
-\lstinputlisting[caption={An example database retrieval method.}, label={lst:example_database_method.java}]{\listings/example_database_method.java}
+In listing \ref{lst:example_database_method.java} we give an example of a database retrieval method. Such methods form a large part of the database module. All methods which read from the database return a \textsf{ArrayList$<$String$>$}, so that this can be immediately put in the reply message from the server to the client. In this particular example, the method retrieves performance statistics for the student identified by \textsf{loginName}. Line 6 creates the data structure to hold the information which will be read from the database. Lines 8 to 18 create the query, and send it to the database to be executed. In lines 20 to 24, the result of the query is added to the data structure. Finally, on line 27, all this information is returned to the server, which can now encapsulate this in a reply message, and send that to the client.\newline
+
+The database module also includes methods to update the information stored in the database. These methods simply execute an SQL \textsf{UPDATE} query, and return no status. \newline
 
 This database module is also used by the jSCAPE admin tool to analyze results and manage the exercise bank. The module comprises of 8 classes, one main database class and one for each database table, and accounts for approximately 1500 lines of code.
+
+%talk about Beanshell for ex gen
 \section{Exercises}
-talk about Beanshell for ex gen
+The possibility to practice understanding of programming concepts through exercises can be considered jSCAPE's central feature. In this section we discuss some of the design considerations for exercises, how they are implemented in jSCAPE and how exercise generators can be written to automatically generate these exercises.
+
+\subsection{Design choices}
+The fact is that with jSCAPE's flexible exercise format, it is possible to handle multiple types of exercise. However, instead of trying to include a large number of exercises, we decide to focus on a limited amount of exercises and get things right.
+
+Java programming exercises, focus on one language, to illustrate system, system is pretty much language independent.
+
+Multiple choice questions for 3PL IRT model.
+
+no exercises asking to write code because students usually have labs to do that, and these exercises are intended to practice understanding of fundamentals and to reinforce mental models of what programming language constructs actually do.
+
+showing feedback immediately afterwards...piece of code+exercise for code semantics understanding.
+
+We decided to have at least two different types of exercises to show the capabilities of the system in handling multiple exercise types.
+
+\subsection{jSCAPE exercise format}
+To represent an exercise entity, jSCAPE uses a simple XML tagged document. This is shown in listing \ref{lst:exercise_format}.\newline
+
+\lstinputlisting[language={xml}, tabsize=4, caption={Exercise format.},label={lst:exercise_format}]{\listings/exercise_format.xml}
+
+To understand the format, recall how exercises are displayed to students in the Practice tab (section \ref{subsec:pratising-programming}). Exercise data is shown in the left window, and the exercise description and choices are shown in the right window.
+We now explain the significance of these tags:
+\begin{itemize}
+\item The first \textsf{$<$display$>$} tag encloses information about the left window. The enclosed \textsf{$<$view$>$} tag corresponds to the component required to render the exercise data in the left window. Currently, two values are possible for this tag, \textsf{BinaryTree} and \textsf{CodeEditor}. The enclosed \textsf{$<$value$>$} tag holds the data that is passed to the rendering component to be rendered accordingly.
+\item The second \textsf{$<$display$>$} tag encloses information about the right window. The enclosed \textsf{$<$view$>$} tag corresponds to the type of exercise, and currently only one value is possible, \textsf{Multiple Choice}. The enclosed \textsf{$<$value$>$} tag holds the exercise description, i.e. the question asked. The \textsf{$<$choice$>$} tags correspond to the possible choices given to the student, and finally, the \textsf{$<$solution$>$} tag contains the solution to the exercise.
+\item The last \textsf{$<$display$>$} tag encloses a \textsf{$<$difficulty$>$} tag which gives the difficulty category of the exercise. Details about the difficulty category parameter will be given in the next section, on exercise generation.
+\end{itemize}
+
+Some examples of jSCAPE exercises are shown in appendix \ref{chap:example-jscape-exercises}.
+
+\subsection{Exercise generation}
+\label{exercise-generation}
+
+\section{Implementing Computerized Adaptive Testing (CAT)}
+We refer back to the background section where we outlined the components of a CAT. We also base this section on the work of SIETTE, for the reasons outlined in the related work section. We will use, bayesian estimation with knowledge distributions. 12 discrete knowledge levels, 0 to 11, as in SIETTE, no starting point, modified termination criterion, and three different item selection algorithms.
+
+\subsection{Calibrated item pool}
+
+\subsection{Starting point}
+The starting point refers to the state of the system when no exercises have been administered to a student. In jSCAPE, no prior information about students is known, so the system's initial ability estimate for the student corresponds to the mean on the ability scale, i.e. $\theta = 5$. In addition, the initial knowledge distribution will be a uniform distribution with $P(\theta)=\frac{1}{11}$, where $P(\theta)$ is the probability that the student's knowledge level is equal to $\theta$. These initial assumptions are taken for every exercise category.
 
 \subsection{Implementing exercise selection algorithms}
 
@@ -220,17 +270,46 @@ Figure \ref{state-machine} shows the state machine implemented by this exercise 
 
 \subsubsection{Selecting using Item Response Theory}
 
-\lstinputlisting[caption={Item information algorithm.}]{\listings/item_information.java}
+\lstinputlisting[language=Java, caption={Item information algorithm.}]{\listings/item_information.java}
 
-\lstinputlisting[caption={Item response function algorithm.}]{\listings/item_response_function.java}
+\lstinputlisting[language=Java, caption={Item response function algorithm.}]{\listings/item_response_function.java}
+
+\subsection{Scoring algorithm}
+
+\subsection{Termination criterion}
+When discussing CATs, we mentioned the need for a termination criterion. However, for jSCAPE we wanted no limit to be imposed on the number of exercises a student could answer. As long as exercises are available in the exercise bank, and as long as a student wants to practice, then he will be able to do so.\newline
+
+The only termination criterion per say, is when a student exits an exercise category to practice exercises of another category. This means that when a student goes back to that previous exercise category, his knowledge distribution will continue to evolve from where it left off. A teacher could, for instance, reset the knowledge distribution every week or month to get more accurate and recent estimates of a student's knowledge.
 
 \section{Collecting statistical data}
+One of the main features of jSCAPE is tracking student progress through statistical data. In this section we briefly look at what statistical data is collected and how it is organized in the database.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{performance_database_table}
+\caption{Performance database table.}
+\label{fig:performance_database_table}
+\end{figure}
+
+Figure \ref{fig:performance_database_table} shows that, for every student, the system records the number of exercises answered, the number of correct answers and the number of wrong answers for each exercise category defined by the teacher. In addition, the system keeps track of what difficulty category the student has reached for every exercise category. This is the information that gets displayed in the pie charts and performance table.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{history_database_table}
 \caption{History database table.}
 \label{fig:history_database_table}
 \end{figure}
+
+Figure \ref{fig:history_database_table} shows that the system records, for every student, the days where exercises were answered, the number of exercises answered answered on that day, the number of correct answers and the number of wrong answers, for every exercise category. This data is used to plot the stacked bar charts of monthly and yearly progress.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{exercisebank_database_table}
+\caption{Exercise bank database table.}
+\label{fig:exercisebank_database_table}
+\end{figure}
+
+Figure \ref{fig:exercisebank_database_table} shows that the system records the number of correct answers and wrong answers for each exercise. This is a useful feature for teachers to identify trends in which type of exercises students are having trouble with and which type of exercises students are having little trouble answering correctly.
 
 \section{Summary}
 

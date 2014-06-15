@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<exercise>
+    <display>
+        <view>CodeEditor</view>
+        <value>public class ConditionalsExercise {
+    public static void main(String[] args) { 
+        boolean var1;
+        boolean var2;
+        int var3;
+        int var4;
+                
+        var1 = true;
+        var2 = false;
+        var3 = 150;
+        var4 = 300;
+        
+        if (var2) {
+            var2 = var1;
+            var1 = true;
+        } else {
+            var3 = var4;
+        }
+        
+    }
+}</value>
+    </display>
+    <display>
+        <view>Multiple Choice</view>
+        <value>What is the correct combination of final values?</value>
+        <choice0>var1 = true; var4 = 266</choice0>
+        <choice1>var1 = false; var4 = 348</choice1>
+        <choice2>var1 = true; var4 = 300</choice2>
+        <choice3>var1 = false; var4 = 300</choice3>
+        <solution>var1 = true; var4 = 300</solution>
+    </display>
+    <display>
+        <difficulty>A</difficulty>
+    </display>
+</exercise>

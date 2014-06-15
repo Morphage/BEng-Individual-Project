@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<exercise>
+    <display>
+        <view>BinaryTree</view>
+        <value>{
+        id: "3300",
+        name: "33",
+        data: {},
+        children: [{
+        id: "800",
+        name: "8",
+        data: {},
+        children: [{
+        id: "300",
+        name: "3",
+        data: {},
+        children: [{
+        id: "200",
+        name: "2",
+        data: {},
+        children: []
+    }, {
+        id: "400",
+        name: "4",
+        data: {},
+        children: []
+    }]}, {
+        id: "1800",
+        name: "18",
+        data: {},
+        children: [{
+        id: "1700",
+        name: "17",
+        data: {},
+        children: []
+    }, {
+        id: "3100",
+        name: "31",
+        data: {},
+        children: []
+    }]}]}, {
+        id: "3800",
+        name: "38",
+        data: {},
+        children: [{
+        id: "3500",
+        name: "35",
+        data: {},
+        children: [{
+        id: "3490",
+        name: "null",
+        data: {},
+        children: []},{
+        id: "3600",
+        name: "36",
+        data: {},
+        children: []
+    }]}, {
+        id: "5600",
+        name: "56",
+        data: {},
+        children: [{
+        id: "5500",
+        name: "55",
+        data: {},
+        children: []
+    }, {
+        id: "5800",
+        name: "58",
+        data: {},
+        children: []
+    }]}]}]};</value>
+    </display>
+    <display>
+        <view>Multiple Choice</view>
+        <value>What should be printed if the binary tree is traversed
+               using the level-order algorithm?</value>
+        <choice0>2, 3, 4, 8, 17, 18, 31, 33, 35, 36, 38, 55, 56, 58</choice0>
+        <choice1>2, 4, 3, 17, 31, 18, 8, 36, 35, 55, 58, 56, 38, 33</choice1>
+        <choice2>33, 8, 38, 3, 18, 35, 56, 2, 4, 17, 31, 36, 55, 58</choice2>
+        <choice3>33, 8, 3, 2, 4, 18, 17, 31, 38, 35, 36, 56, 55, 58</choice3>
+        <solution>33, 8, 38, 3, 18, 35, 56, 2, 4, 17, 31, 36, 55, 58</solution>
+    </display>
+    <display>
+        <difficulty>C</difficulty>
+    </display>
+</exercise>

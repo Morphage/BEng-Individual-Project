@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<exercise>
+    <display>
+        <view>CodeEditor</view>
+        <value>public class StringExercise {
+    public static void main(String[] args) {
+        String s1 = "PLASTIC";
+        String s2 = s1;
+
+        s1 = s1.substring(0, 5);
+        s2.toLowerCase();
+
+        String s3 = "TESTER";
+        s1.charAt(1);
+        String s4 = s3;
+        s3 = s1.substring(0, 2);
+        s3.replaceFirst("L", "m");
+        s4.replace("T", "f");
+    }
+}</value>
+    </display>
+    <display>
+        <view>Multiple Choice</view>
+        <value>What is the correct combination of final values
+               for each String?</value>
+        <choice0>s4 = fESfER; s2 = plastic</choice0>
+        <choice1>s4 = PL; s2 = PLAST</choice1>
+        <choice2>s4 = PL; s2 = plastic</choice2>
+        <choice3>s4 = TESTER; s2 = PLASTIC</choice3>
+        <solution>s4 = TESTER; s2 = PLASTIC</solution>
+    </display>
+    <display>
+        <difficulty>B</difficulty>
+    </display>
+</exercise>
