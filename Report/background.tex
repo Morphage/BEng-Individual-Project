@@ -1,15 +1,16 @@
 \chapter{Background}
-Add an opening comment here to talk a bit about what we will be presenting in this chapter.
+\label{chap:background}
+This section gives an overview of the theoretical basis for this project. We start off with discussing Computer Based Tests (section \ref{sec:CBT}) along with some of their advantages and disadvantages. This leads us to considering an improvement in the form of Computerized Adaptive Testing (section \ref{sec:CAT}). Finally, we present probabilistic concepts (section \ref{sec:probabilistic-test-theory}) and how they can come together to implement an effective computer based assessment framework.
 
 \section{Computer Based Tests}
-CBT abbreviation
-- offers advantages such as being able to display higher quality visuals such as pictures, videos, graphs, etc...
-- low paperwork, everything is stored on the computer
-- automatic grading, less work for teachers
-- generation of statistics is made easier by the fact that the data can be processed by the computer
-- nowadays a lot of learning is done on computer systems, and children are used to dealing with computers so assessment through this medium is advantageous. \newline
+\label{sec:CBT}
+The increase in the usage of computers in today's society has quite naturally made its way to education and assessment. As such, high schools, universities and companies now have the possibility of using computer based tests to assess students or employees in their knowledge of particular subjects.\newline
 
-CBTs are typically "fixed-item" tests where all the students answer the same set of questions,  usually provided by the person responsible for the assessment. This isn't ideal since students can be presented with questions that are too easy or too difficult for them to answer. Consequently, the results of the test won't give a very accurate representation of a student's ability, and for this reason, these types of tests aren't extremely useful. This problem lead to research and the development of computerized adaptive testing (CAT).
+Computer based tests (CBT) offer several advantages. Indeed, the test offers more possibilities in terms of question variety because a computer can display images, videos, graphs, etc... In a simple pen and paper test, videos or animations can't be displayed, and images or graphs are often of lesser quality. Students are becoming increasingly familiar with technology, especially computers and web browsers, therefore this doesn't present many issues in administering CBTs to students. \newline
+
+These types of test are advantageous for teachers because everything is stored on the computer, which means low paperwork, automatic grading and the possibility of easily generating statistics from this data.\newline
+
+CBTs are typically ``fixed-item" tests where all the students answer the same set of questions, usually provided by the person responsible for the assessment. This isn't ideal since students can be presented with questions that are too easy or too difficult for them to answer. Consequently, the results of the test won't give a very accurate representation of a student's ability, and for this reason, these types of tests aren't extremely useful. This problem lead to the research and the development of computerized adaptive testing (CAT).
 
 \section{Computerized Adaptive Testing}
 \label{sec:CAT}
@@ -157,7 +158,7 @@ Equation \eqref{eq:1PL-IRF} shows the item response function for the 1PL model. 
 
 Figure \ref{fig:item_response_1pl} shows the probability of answering an item correctly for all ability levels. In the 1PL model, the item difficulty is the point at which a correct response and an incorrect response are equally probable. In the figure this is shown in red, and in this case, the item has difficulty parameter $b_i=1$. This highlights one of IRT's attractive properties, the fact that examinee ability and item difficulty are both measured on the same scale. The ability scale is a design choice, in this case it ranges from -4 to +4.
 
-\begin{table}[ht] 
+\begin{table}[H] 
 \centering
 \begin{tabular}{c c c c c c c c c c}
 \hline
@@ -305,7 +306,9 @@ $$P(\theta | \textbf{u}) = \dfrac{P(\textbf{u} | \theta)P(\theta)}{P(\textbf{u})
 
 where, again, \textbf{u} is the examinee's response vector and $\theta$ corresponds to the possible ability levels.\newline
 
-The posterior distribution is the result of updating the prior knowledge distribution, $P(\theta)$, with observed data, $P(\textbf{u} | \theta)$, i.e. the examinee's response pattern. We can express this using the likelihood function:
+The posterior distribution is the result of updating the prior knowledge distribution, $P(\theta)$, with observed data, $P(\textbf{u} | \theta)$, i.e. the examinee's response pattern.\newpage
+
+We can express this using the likelihood function:
 
 $$P(\theta | \textbf{u}) \propto L(\theta | \textbf{u}) \cdot P(\theta)$$
 

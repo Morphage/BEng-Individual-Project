@@ -296,7 +296,6 @@ A simulation of jSCAPE in IRT mode is included in appendix \ref{chap:irt-simulat
 \subsection{Termination criterion}
 When discussing CATs, we mentioned the need for a termination criterion. However, for jSCAPE we wanted no limit to be imposed on the number of exercises a student could answer. As long as exercises are available in the exercise bank, and as long as a student wants to practice, then he will be able to do so. The only termination criterion per say, is when a student exits an exercise category to practice exercises of another category. This means that when a student goes back to that previous exercise category, his knowledge distribution will continue to evolve from where it left off. A teacher could, for instance, reset the knowledge distribution every week or month to get more accurate and recent estimates of a student's knowledge.
 
-%talk about Beanshell for ex gen
 \section{Exercises}
 \label{sec:exercises-implementation}
 The possibility to practice understanding of programming concepts through exercises can be considered jSCAPE's central feature. In this section we discuss some of the design considerations for exercises, how they are implemented in jSCAPE and how exercise generators can be written to automatically generate these exercises.
@@ -344,8 +343,7 @@ The \textsf{BinaryTree} view is implemented using the JavaScript InfoVis Toolkit
 
 \begin{lstlisting}[language={Java}, label={lst:binary_tree_gen2.java}]
 BST<Integer> bst = createBST(randomNumbers);
-xmlExercise += bst.toJSON();
-                            
+xmlExercise += bst.toJSON();               
 \end{lstlisting}
 
 Figure \ref{fig:binary_tree_example} shows an example binary tree and listing \ref{lst:binary_tree_json} is the JSON representation of that binary tree. 
@@ -370,9 +368,45 @@ For the \textsf{$<$difficulty$>$} tag, recall that we have three difficulty cate
 For this exercise category, we assume that the size, the height and whether the tree is balanced or not, can impact the difficulty of the exercise. For instance, when the number of nodes is less than 7, we assign the exercise to difficulty category A, between 7 and 12 nodes, to difficulty category B and more than 12 nodes to difficulty category C.
 
 \subsubsection{Conditionals exercise generation}
+Recall the class diagram for exercises and exercise generators (section \ref{subsec:exercises-and-exercise-generators}). The exercise generator for Conditionals exercises is called \textsf{ConditionalsExerciseGen}. An example Conditionals exercise, in the jSCAPE exercise format, is shown in appendix \ref{chap:example-jscape-exercises}.\newline
+
+The first step to generating a Conditionals exercise is selecting the appropriate view for the left window. For this exercise category, we take as an example the creation of exercises which display a code snippet, and ask for the final value of either one, two, or three variables. Therefore, we use the \textsf{CodeEditor} view, and this goes into the \textsf{$<$view$>$} tag of the first \textsf{$<$display$>$} tag, as shown in listing \ref{lst:conditionals_gen1.java}. \newline
+
+\lstinputlisting[language={java}, caption={First part of exercise generation.},label={lst:conditionals_gen1.java}]{\listings/conditionals_gen1.java}
+
+Next, the code snippet is generated. To generate Java code, a code generator was written specifically for this exercise category. A template file is used to help in the process, it is shown in listing \ref{lst:conditionals_template.java}.\newline
+
+\lstinputlisting[language={java}, caption={Code generating template},label={lst:conditionals_template.java}]{\listings/conditionals.template}
+
+Since this code generator consists of approximately 400 lines of code, we won't be able to go into extreme detail, so instead we will give the intuition behind the code generating process.\newline
+
+The code generator starts by replacing \textsf{\%VARIABLES\_DECLARATIONS\%} with a random number of variable declarations. Currently, it will declare between 3 and 5 variables, however this can be tweaked very easily. The declared variables are stored in a \textsf{HashMap} with the variable name as the key, and the type (\textsf{String, int, boolean}) of the variable as the value.\newline
+
+Next, \textsf{\%VARIABLES\_ASSIGNMENTS\%} is replaced with random assignments for each declared variable in the previous step. This is accomplished by using the \textsf{HashMap} to figure out the type of each variable.\newline
+
+Finally, the code generator replaces \textsf{\%IF\_STATEMENTS\%} with several \textsf{if} and \textsf{else} branches. It considers each declared variable in turn, and creates an \textsf{if} statement for that variable with probability $\frac{4}{10}$. Then a random number, between 1 and 5, of random assignments are made within that \textsf{if} statement. Also, for each \textsf{if} branch created in this way, the code generator will create an associated \textsf{else} branch with probability $\frac{7}{10}$. Similarly, a random number, between 1 and 5, of random assignments are made within that \textsf{else} statement. The code generation process is over after the last declared variable has been considered for \textsf{if/else} branch creation.\newline
+
+\begin{lstlisting}[language={Java}]
+String randomCode = createRandomCode();
+xmlExercise += randomCode;            
+\end{lstlisting}
+
+The listing above shows how the code snippet is created and then added to the \textsf{$<$value$>$} tag of the first \textsf{$<$display$>$} tag.\newline
+
+Depending on the type of the exercise, either one, two or three declared variables are chosen, at random, to be included in the question. The code snippet is then interpreted using BeanShell\cite{Beanshell} to determine the final value of the variables. During this code interpretation stage, the initial value of a variable and its intermediate values are recorded so that combinations of these can be used as distractors in the multiple choice question. When the exercise asks for the final value of one variable only, this usually isn't enough to create three distractors, so random values for that variable type are chosen instead.\newline
+
+Listing \ref{lst:conditionals_gen2.java} shows the final stage of exercise creation for this exercise category. The choices are gathered in an \textsf{ArrayList} and shuffled to be then added to the \textsf{$<$choice$>$} tags. The solution is also added to the \textsf{$<$solution$>$} tag, and the question is completed depending on the nature of the exercise.\newpage
+
+\lstinputlisting[language={java}, caption={Generating question and choices.},label={lst:conditionals_gen2.java}]{\listings/conditionals_gen2.java}
+
+For the \textsf{$<$difficulty$>$} tag, we will assign a difficulty category based on some simple metrics. There are several factors which we assume affect difficulty, these being the number of \textsf{if/else} branches and the number of final values to determine as part of the exercise.\newline
+
+For instance, in an exercise asking for the final value of two variables, we add the number of \textsf{if} branches and the number of \textsf{else} branches together. If this value is less than 3, then we assign difficulty category A. If it is equal to 3 or 4 then we assign difficulty category B, and finally, if it is greater than 4 then we assign difficulty category C.\newline
+
+The metrics we used for assigning difficulty categories work to some extent, but the randomness of the generated code snippet makes it difficult to get an idea of the difficulty of an exercise. The current method for assigning difficulty categories to the exercises present in jSCAPE, is evaluated in section 6.??.
 
 \section{Collecting statistical data}
-One of the main features of jSCAPE is tracking student progress through statistical data. In this section we briefly look at what statistical data is collected and how it is organized in the database.
+One of the main features of jSCAPE is tracking student progress through statistical data. In this section we briefly look at what statistical data is collected and how it is organized in the database. \newline
 
 \begin{figure}[H]
 \centering

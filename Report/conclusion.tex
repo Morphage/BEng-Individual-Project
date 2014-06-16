@@ -1,8 +1,15 @@
 \chapter{Conclusion}
+\label{chap:conclusion}
 In this chapter, we summarise the achievements of the project and discuss possible extensions that can be made to the system in the future.
 
 \section{Summary}
-Summarize stuff here.
+The main objective of the project was to produce a web-based application to allow students to practise their programming skills and to provide teachers with the possibility of monitoring student performance. We delivered a product, in the form of jSCAPE, which we feel strongly meets the main objective of the project.\newline
+
+To differentiate the system from other applications, where exercises are presented randomly to students, we introduced the concept of adaptive testing. We implemented two different algorithms to vary the difficulty of exercises according to the student's performance. The algorithms were successful in doing so, however they did have shortcomings. For instance, we learnt that adaptive testing using Item Response Theory is quite complex to implement in practice, and that large amounts of data are needed for the system to be effective. \newline
+
+We realised that developing an exercise bank by only adding exercises manually was a cumbersome and time consuming process. Therefore, we introduced automated exercise generation as a feature. We showed how the jSCAPE exercise format was defined and how exercise generators can be written to automate this process. We learnt that automated generation is quite a complex task, and as such, much improvement is still possible in this area of jSCAPE.\newline
+
+In conclusion, we believe that jSCAPE is a complete system in the sense that it implements the core features which can be useful in the setting of computer based self-assessment of programming knowledge. However, the adaptive difficulty and automated exercise generation components only give a small flavour of what is possible, and as a result, they require more work to make jSCAPE a solid implementation of these ideas.
 
 \section{Future Work}
 \label{sec:future-work}
@@ -15,6 +22,7 @@ The main features of jSCAPE are automated exercise generation, adaptive difficul
 \begin{itemize}
 \item The system we developed is language independent, thus we could add support for other programming languages. This could be done in jSCAPE itself, or by cloning it into a separate application, e.g.  cSCAPE, for C and hSCAPE for Haskell.
 \item We could add support for more exercise types, such as multiple-response questions, fill-in-the-blank, or even more interactive types of exercises thanks to the possibilities offered by \textsf{JavaFX}.
+\item Currently, feedback after a student has answered an exercise is very basic. The system displays whether the student got the exercise right or wrong, and it displays the solution. We could add more useful feedback to exercises. Examples of more advanced feedback on current exercises could include execution traces or animations of traversal algorithms on the binary tree, etc...
 \item We could work on a more general-purpose code generator for exercises which use code snippets as exercise data. Currently code generators are written specifically for exercise categories, but it would be more useful and less time consuming to have a code generator module, where certain attributes could be specified such as number of variables, number of loops, if any, etc... This seems to be quite a complex task, and a solid implementation of this could probably be a project on its own.
 \item We could approach automated generation differently, and instead develop a feature where teachers create exercise templates, perhaps by defining a template grammar and then exercises are automatically generated from these templates. This would remove the need for writing an exercise specific generator each time.
 \item We could work more extensively on the adaptive component of the system, i.e. improving the algorithm which selects exercises for students based on their estimated ability. We mentioned that obtaining a large calibrated item pool wasn't feasible in the scope of this project, so this would have to be a priority if we had more time. In addition, we could use more complex IRT models which take into account the time spent on each exercise, for instance.

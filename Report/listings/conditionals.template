@@ -1,0 +1,7 @@
+public class ConditionalsExercise {
+    public static void main(String[] args) {
+        %VARIABLES_DECLARATIONS%        
+        %VARIABLES_ASSIGNMENTS%
+        %IF_STATEMENTS%
+    }
+}

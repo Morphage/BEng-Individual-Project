@@ -1,31 +1,56 @@
 \chapter{Introduction}
 
 \section{Motivation}
+Programming is generally acknowledged to be a difficult discipline to learn, requiring problem solving skills, attention to detail and the ability to think abstractly. One could say that these skills are somewhat developed in high school during mathematics courses, but programming is still a ``beast" of its own. In addition, different programming paradigms exist, such as functional programming or imperative programming. Knowing how to program in Java can still make learning Haskell a difficult process.\newline
 
-\begin{itemize}
-\item The rise in MOOCs such as Coursera, Udacity shows that there is a real interest in learning programming.
-\item Programming is considered "difficult'' to learn and it can only be learnt effectively through lots and lots of practice.
-\item This is even more apparent when students are introduced to other programming languages with different paradigms such as Haskell and Prolog, or more low level programming languages such as C.
-\item Hence, the need to provide a platform for students to practice their programming skills and understanding of programming concepts.
-\item Having a lecturer come up with all the exercises by himself can be both time consuming and ineffective: some exercises may not be challenging enough for certain top students, or on the contrary too difficult for struggling students, which can be discouraging.
-\item Lecturers can only rely on a few homework assignments to get an idea of how students are doing. Having a way for lecturers to gather large amounts of data about students' performances would be beneficial. Allows for supplementary material, exercises, etc...
-\end{itemize}
+Yet, in this 21st century society, programming is definitely a useful skill to have, and there is an interest in the population to learn these skills. Indeed, this can be seen by the number of students enrolling in computer science courses at universities, or the increase in websites such as Codecademy\cite{Codecademy}, Coursera\cite{Coursera}, Udacity\cite{Udacity}, which provide online computer science/programming courses for free.\newline
+
+In many of these situations, it is difficult for teachers, lecturers or course leaders to provide enough support through exercises, assignments and to monitor student's progress in such a way which allows them to modify their teaching to help struggling students. Indeed, teachers and students can generally only rely on a few homework assignments to get an idea of how they are doing. Coming up with a solution to increase the amount of practise and feedback would be beneficial to both students and teachers. \newline
+
+Thus, there is a clear need to provide a platform for students to practise their programming skills and understanding of programming concepts, in a context of self-assessment only. In such a system, requiring teachers to come up with all the exercises by themselves can be both time consuming and ineffective: some exercises may not be challenging enough for certain top students, or on the contrary too difficult for struggling students, which can be discouraging for them.
 
 \section{Objectives}
-Having identified the problems associated with teaching and learning programming, we were lead to formulating objectives in order to make the project successful and useful to the parties involved. \newline
+Having identified the problems associated with teaching and learning programming, we were led to formulating objectives in order to make the project successful and useful to the parties involved. \newline
 
-The main objective of the project was to produce a web-based teaching infrastructure to complement the introductory first year programming classes. Four key features were identified:
+The main objective of the project was to produce a web-based application to be used in self-assessing one's programming knowledge, whether it be in high school, at university or as part of an online course. For this application, four key features were identified:
 
 \begin{itemize}
-\item \textbf{Programming questions/exercises -} The web platform should allow students to practice their programming skills and understanding of programming concepts. There should be no limit to the number of questions a student can answer, so that if a student desires more practice, then he should be able to do that. Additionally, it should be possible for a specific set of people, such as lecturers and tutors, to add questions/exercises to the system.
-\item \textbf{Progress tracking -} Designated people, such as lecturers and tutors, should have access to detailed statistics about the students performances. This will provide them with useful information about difficulties particular students, or the entire class, may be facing. In addition, the system should give feedback to the students, in the form of simple statistics, allowing them to identify their weak areas and thus improve on them.
+\item \textbf{Programming questions/exercises -} The web platform should allow students to practise their programming skills and understanding of programming concepts. There should be no limit to the number of questions a student can answer, so that if a student desires more practice, then he should be able to do that. Additionally, it should be possible for a specific set of people, such as teachers, lecturers or tutors, to add questions/exercises to the system.
+\item \textbf{Progress tracking -} Designated people, such as teachers, lecturers or tutors, should have access to detailed statistics about the students performances. This will provide them with useful information about difficulties particular students, or the entire class, may be facing. In addition, the system should give feedback to the students, in the form of simple statistics, allowing them to identify their weak areas and thus improve on them.
 \item \textbf{Adaptive difficulty -} The questions or exercises presented to the students should be suited to their ability. Not only will this stimulate the learning process, but it will also give a better indication of a student's understanding of the programming concepts being tested.
 \item \textbf{Automated generation -} There should be a mechanism to allow for some degree of automated or semi-automated generation of exercises. This will provide a large supply of ``fresh" questions, so that students don't end up answering the same questions and memorizing the answers to them.
 \end{itemize}
 
-While investigating existing solutions (Section 2.4 - Related Work) we found out that some of these features were less common than others. The availability of programming exercises and progress tracking are very essential in such systems, therefore many of the related software we looked at implemented these features. On the other hand, relatively few tools integrated some form of adapting the questions to the students' ability. Finally, almost none of the tools featured automated generation of questions, opting instead to allow exercises to be added manually to the system.
+While investigating existing solutions (chapter \ref{chap:related-work}) we found out that some of these features were less common than others. The availability of programming exercises and progress tracking are very essential in such systems, therefore many of the related software we looked at implemented these features. On the other hand, relatively few tools integrated some form of adaptive difficulty. Finally, almost none of the tools featured automated generation of questions, opting instead to allow exercises to be added manually to the system, or downloaded from existing exercise banks.
 
 \section{Contributions}
 Within the context given above, this project makes the following contributions:
+\begin{itemize}
+\item \textbf{jSCAPE}: a web application for students, named Java Self-assessment Center of Adaptive Programming Exercises, with the following features:
+      \begin{itemize}
+      \item[-] the ability to view programming exercises and answer them while receiving feedback, a so called form of self-assessment.
+      \item[-] graphs, tables and pie charts displaying statistical data on the student's performance.
+      \item[-] three different exercise selection algorithms, that decide which is the best exercise to present to the student.
+      \end{itemize}
+\item \textbf{Admin tool}: a tool for teachers/lecturers/tutors for:
+      \begin{itemize}
+      \item[-] displaying student performance statistics.
+      \item[-] displaying exercise statistics.
+      \item[-] defining exercise categories.
+      \item[-] adding exercises manually.
+      \item[-] generating exercises automatically.
+      \end{itemize}
+\end{itemize}
 
 \section{Report Structure}
+Chapter \ref{chap:background} will present the theoretical basis for this project and the concepts necessary to follow the implementation details of the system.\newline
+
+Chapter \ref{chap:related-work} will give an overview of related work, and will mention how these influenced the design of jSCAPE, in particular which features would be useful for such as system.\newline
+
+Chapter \ref{chap:jscape-system} will present the jSCAPE system in detail, showing all the features which are available.\newline
+
+Chapter \ref{chap:implementation} will cover the design and implementation details of the jSCAPE system, in particular how the difficulty of exercises is adapted to the student's ability and how exercises can be automatically generated.\newline
+
+Chapter \ref{chap:evaluation} will contain the results of evaluating jSCAPE as a whole, and its different components. \newline
+
+Chapter \ref{chap:conclusion} summarises the achievements of the project and discusses possible extensions that can be made to the system in the future.
