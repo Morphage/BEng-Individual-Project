@@ -14,7 +14,7 @@
 \contentsline {lstlisting}{\numberline {5.14}Code generating template}{74}{lstlisting.5.14}
 \contentsline {lstlisting}{\numberline {5.15}Generating question and choices.}{76}{lstlisting.5.15}
 \contentsline {lstlisting}{\numberline {6.1}A modified exercise format.}{81}{lstlisting.6.1}
-\contentsline {lstlisting}{\numberline {A.1}Example exercise for the Binary Tree exercise category}{88}{lstlisting.A.1}
-\contentsline {lstlisting}{\numberline {A.2}Example exercise for the Strings exercise category.}{90}{lstlisting.A.2}
-\contentsline {lstlisting}{\numberline {A.3}Example exercise for the Conditionals exercise category}{91}{lstlisting.A.3}
-\contentsline {lstlisting}{\numberline {C.1}Item Response Theory module.}{98}{lstlisting.C.1}
+\contentsline {lstlisting}{\numberline {A.1}Example exercise for the Binary Tree exercise category}{89}{lstlisting.A.1}
+\contentsline {lstlisting}{\numberline {A.2}Example exercise for the Strings exercise category.}{91}{lstlisting.A.2}
+\contentsline {lstlisting}{\numberline {A.3}Example exercise for the Conditionals exercise category}{92}{lstlisting.A.3}
+\contentsline {lstlisting}{\numberline {C.1}Item Response Theory module.}{99}{lstlisting.C.1}

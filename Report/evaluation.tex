@@ -1,6 +1,6 @@
 \chapter{Evaluation}
 \label{chap:evaluation}
-In this chapter we evaluate the strengths and weaknesses of jSCAPE and its various components and features.
+In this chapter we evaluate the strengths and weaknesses of jSCAPE and its various components and features, with respect to the objectives we set at the beginning of the project.
 
 \section{Evaluating jSCAPE}
 \subsubsection{Evaluating the graphical user interface}
@@ -11,7 +11,7 @@ A small amount of data was gathered during an undergraduate fair on 02/06/2014, 
 We didn't ask for feedback on the user interface of the admin tool as we feel this is less of a factor when it comes to whether teachers actually use the tool. Nonetheless, we think that the GUI of the admin tool is sufficiently user friendly for its purpose.
 
 \subsubsection{Evaluating current jSCAPE exercises}
-At the time of writing this report, we have implemented four exercise generators for the exercise categories of Binary Trees, Conditionals, Syntax and Strings.\newline
+At the time of writing this report, we have implemented four exercise generators for the exercise categories of Binary Trees, Conditionals, Syntax and Strings. Some example exercises are shown in appendix \ref{chap:example-jscape-exercises}. \newline
 
 For Binary Tree exercises, we supply a binary tree as exercise data, and ask the student to select what is printed after a specific traversal order. This type of exercise was intended to show that it was possible to bring variety to jSCAPE exercises. We think that this exercise is useful for learning the different traversal orders, however the exercise loses its usefulness very quickly once a student has mastered traversal orders. Perhaps this exercise would be more effective if we asked the student to type in the whole traversal instead of selecting the correct answer among the four different traversals.\newline
 
@@ -49,27 +49,23 @@ However, in general we are not that satisfied with the exercise format. It isn't
 We believe that it should be modified to allow for more exercise types to be added to jSCAPE. The listing in \ref{lst:new_exercise_format} shows a possible modification, which makes the exercise format more straightforward. Each possible \textsf{$<$view$>$} could have a component implemented in Java which takes as parameter the value of the \textsf{$<$value$>$} tag. This is how the \textsf{BinaryTree} and \textsf{CodeEditor} were implemented, but for some unknown reason, we didn't think about doing the same with other views such as \textsf{MultipleChoice}. This would offer a more general purpose exercise format than jSCAPE currently has at the moment.
 
 \subsubsection{Evaluating automated exercise generation}
+Exercises of the Binary Trees category were very suitable for automated generation. Indeed, generating random binary trees with a random number of nodes is something relatively easy to do, and the randomness of the binary tree doesn't impact the quality of the exercise.\newline
 
+For exercises which display code snippets, we mentioned before that this generated code can sometimes be too random, and that ``strange" code can sometimes be produced. This can definitely impact the quality and effectiveness of the exercise. For instance, sometimes an \textsf{if} branch would contain the statement \textsf{var6=true} followed by the exact same statement on the next line. This kind of statement would never appear in a program written by a competent programmer, thus presenting this code snippet to a student could very well be counter productive. \newline
+
+We believe that we have shown how exercise generators can be written to provide, theoretically, endless amounts of exercises. This was one of the objectives we set for the project at the beginning of development. However, it still remains that an exercise generator must be written manually for each new type of exercise. This isn't a very scalable solution, and thus we discuss some possible improvements for automated exercise generation, in the next chapter.
 
 \subsubsection{Evaluating computerized adaptive testing in jSCAPE}
+difficulty category algorithm better than the one in PAT, provides a simple algorithm for difficulty progression or regression, however a more sophisticated algorithm is possible with IRT
 
+Mention how our developed system performs against the advantages and disadvantages of CAT. Most of the complaints for CATs are for when they are used as means to assess students for a grade which counts towards their end of year total. As such jSCAPE doesn't display these weaknesses, however it does have the limitation of struggling with getting a good quality calibrated item pool. We are not concerned with item exposure either.\newline
 
+evaluate the fact that teachers have to enter the parameters of items, and no calibrated item pool.\newline
+
+show IRT run as evaluation of implementation of IRT, and that it does in fact implement the algorithm correctly, that knowledge estimation and item selection is correct.
 
 \subsubsection{Evaluating collection of statistical data}
-The system is useful for students, they can see everything they want to see.
-
-
-Asking more lecturers or teachers could help in determining more useful statistics that jSCAPE could record and display to students or teachers.
-
-
-
-Mention how our developed system performs against the advantages and disadvantages of CAT.
-
-
-evaluate the fact that teachers have to enter the parameters of items.
-
-show IRT run as evaluation of implementation of IRT
-
+To determine which statistics should be collected by jSCAPE, we inspired ourselves from other software, in particular video games, with statistics such as win/losses, history over time, etc...In addition, we regularly received feedback from our supervisor, Dr. Tristan Allwood, in terms of which statistics would be useful for a teacher or lecturer in monitoring students' progress. Asking more lecturers or teachers could help in determining more useful statistics that jSCAPE could record and display to students or teachers. It would be quite easy to add more statistics, however we believe that the core useful statistics have been implemented.
 
 \section{Summary}
 In this chapter we evaluated the different components that form the jSCAPE system. We showed that collection and display of statistical data was implemented quite solidly, and that the system was able to support provision of exercises very well.\newline
