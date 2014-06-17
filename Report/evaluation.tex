@@ -46,7 +46,9 @@ However, in general we are not that satisfied with the exercise format. It isn't
 </exercise>
 \end{lstlisting}
 
-We believe that it should be modified to allow for more exercise types to be added to jSCAPE. The listing in \ref{lst:new_exercise_format} shows a possible modification, which makes the exercise format more straightforward. Each possible \textsf{$<$view$>$} could have a component implemented in Java which takes as parameter the value of the \textsf{$<$value$>$} tag. This is how the \textsf{BinaryTree} and \textsf{CodeEditor} were implemented, but for some unknown reason, we didn't think about doing the same with other views such as \textsf{MultipleChoice}. This would offer a more general purpose exercise format than jSCAPE currently has at the moment.
+We believe that it should be modified to allow for more exercise types to be added to jSCAPE. The listing in \ref{lst:new_exercise_format} shows a possible modification, which makes the exercise format more straightforward. Each possible \textsf{$<$view$>$} could have a component implemented in Java which takes as parameter the value of the \textsf{$<$value$>$} tag. This is how the \textsf{BinaryTree} and \textsf{CodeEditor} were implemented, but for some unknown reason, we didn't think about doing the same with other views such as \textsf{MultipleChoice}. This would offer a more general purpose exercise format than jSCAPE currently has at the moment.\newline
+
+In addition, we designed exercises as consisting of exercise data in the left window, and the question and choices in the right window. This format is also a bit restrictive as it doesn't allow more interactive types of exercises which would require drag and drop functionality, for instance.
 
 \subsubsection{Evaluating automated exercise generation}
 Exercises of the Binary Trees category were very suitable for automated generation. Indeed, generating random binary trees with a random number of nodes is something relatively easy to do, and the randomness of the binary tree doesn't impact the quality of the exercise.\newline
