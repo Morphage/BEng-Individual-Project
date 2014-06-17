@@ -9,15 +9,16 @@
 
 %We select these related works because they all have at least one feature that we are interested in implementing into jSCAPE.
 
-Web-based/Computer based education and adaptive web-based assessment systems are a ``hot" research area, and as a result, numerous tools, environments and infrastructures have emerged over the years. There are common features to all, however some distinguish themselves by having not so common features.
+With the rise of computer usage in today's society, they have quite naturally made their way over to education. As such, web-based, computer-based and adaptive assessment systems have been investigated and researched quite thoroughly over the years. The result of this research is numerous tools, environments and software which provide 
+
+Web-based/Computer based education and adaptive web-based assessment systems are an interesting research area, and as a result, numerous tools, environments and infrastructures have emerged over the years. There are common features to all, however some distinguish themselves by having not so common features.
 Automated exercise generation in these tools is usually non-existent or very limited. Moreover, the tools are more focused on assessing students rather than self-assessment, i.e. students take tests which count towards their final grade on these systems.\newline
+
+We have looked at quite a few solutions such as ELP (Environment for Learning to Program), CourseMaster, which have the very basic features of providing exercises and useful statistics. We do not go into detail about how these solutions operate since the details are quite straightfowrad and not very interesting.\newline
 
 There are many components involved in this project, two of the more important ones are adaptive difficulty and automated generation of exercises, so there are many tools which exist which do one or the other, very rarely both.\newline
 
-In this section we look at related software and evaluate them with respect to the objectives listed at the beginning of the development of jSCAPE.
-
-\section{Environment for Learning to Program}
-Environment for Learning to Program (ELP) is an interactive web based environment for teaching programming to first year Information Technology students at Queensland University of Technology (QUT).
+In this section we look at the related software which has influenced the design and implementation of our proposed solution, jSCAPE.
 
 \section{Programming Adaptive Testing}
 \label{sec:PAT}
@@ -41,9 +42,6 @@ At the end of the test, the system shows the student's total number of correct a
 We feel that the adaptive algorithm increases the difficulty of questions too quickly and doesn't take into account guessing or possible slip ups from students. This limitation can be circumvented by, for instance, requiring a number of correct answers at the current difficulty level before progressing to the next one.\newline
 
 PAT only provides assessment at specific times throughout the school year and no opportunity for students to practice and self-assess in their own time. In addition, it isn't possible for teachers to upload their own questions to the system. The question bank remains static and contains 443 questions. Lastly, the authors of PAT admit that the statistical data available to students and teachers is fairly limited, and that improvements should be pursued in future work.
-
-\section{Adaptive Self-Assessment Master}
-Adaptive Self-Assessment Master (ASAM) is an extension to CourseMarker, which improves upon it by administering questions which are suited to the student's ability.
 
 \section{SIETTE}
 \label{sec:SIETTE}
@@ -76,15 +74,11 @@ Figure \ref{fig:siette-architecture} gives on overview of the SIETTE architectur
 \item The \textit{item calibration tool}: a module used to calibrate items by determining the item parameters (difficulty, discrimination and pseudo-chance).
 \end{itemize}
 
-SIETTE is a large and complex system, containing many useful features relevant to the area of web-education, and going through all of these wouldn't be possible. Since SIETTE has been used to such success in university courses we decide to inspire ourselves from this system, especially for the implementation of the adaptive difficulty component. Details about the algorithms used in SIETTE, and hence jSCAPE, can be found in section \ref{sec:implementing-cat}, with Java code to illustrate.
+SIETTE is a large and complex system, containing many useful features relevant to the area of web-education, and going through all of these wouldn't be possible. Since SIETTE has been used to such success in university courses we decide to inspire ourselves from this system, especially for the implementation of the adaptive difficulty component. Details about the algorithms used in SIETTE, and hence jSCAPE, can be found in section \ref{sec:implementing-cat}, with Java code to illustrate. However, SIETTE does not provide mechanisms to automatically generate exercises, and so we shall define our own algorithms for this.
 
 \section{Summary}
-We have looked at some of the relevant work in the field of computer based education and assessment. We saw that SIETTE provided many of the features we set out to replicate in jSCAPE, therefore particular parts of our implementation will be inspired by SIETTE.
+We have looked at some of the relevant work in the field of computer based education and assessment. We saw that PAT provided a simple algorithm for increasing or decreasing the difficulty of exercises, and so an improved version of this algorithm will feature in jSCAPE. We also saw that SIETTE provided many of the features we set out to replicate in jSCAPE, therefore particular parts of our implementation will be inspired by SIETTE.\newline
 
-SIETTE the most complete system we have come across while doing research for this project.
-
-Moreover, examining these existing solutions has given us insight into the most common features available in these types of systems.
-
-We hope to have shown in this section that developing such systems is quite difficult since the depth of some features can be pushed quite far. Instead we decide to create a system which we deem as complete, having the main features present in the system but only the very basics of the feature, e.g. feedback is simple as opposed to complex feedback which would be more useful.
+SIETTE is the most complete system we have come across while doing research for this project. Moreover, examining some existing solutions which haven't been detailed in this section, has given us insight into the most common features available in these types of systems. \newline
 
 In the next chapter we present the system developed as part of this project: jSCAPE. 
