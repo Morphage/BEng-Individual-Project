@@ -1,29 +1,79 @@
 \chapter{Evaluation}
 \label{chap:evaluation}
+In this chapter we evaluate the strengths and weaknesses of jSCAPE and its various components and features.
+
+\section{Evaluating jSCAPE}
+\subsubsection{Evaluating the graphical user interface}
+When justifying our choices for technologies, we mentioned that one of the reasons for using Java applets and JavaFX was to provide a user-friendly and visually appealing user interface. Evidence\cite{Interface-study} suggests that students will prioritise a visually appealing user interface over powerful features. Therefore, we must make sure that our interface is generally well received amongst students, for jSCAPE to be actually useful.\newline
+
+A small amount of data was gathered during an undergraduate fair on 02/06/2014, and during a meeting with student friends on 07/06/2014. In total we asked 10 students what they thought of the jSCAPE interface. The comments were mostly positive, however a few students mentioned that the interface was too large, requiring full screen at times. Two students also mentioned that we should be careful not to overload the view with information, particularly the Profile tab where all the statistics are displayed. We would need more data to identify possible improvements, if any, in the user interface. \newline
+
+We didn't ask for feedback on the user interface of the admin tool as we feel this is less of a factor when it comes to whether teachers actually use the tool. Nonetheless, we think that the GUI of the admin tool is sufficiently user friendly for its purpose.
+
+\subsubsection{Evaluating current jSCAPE exercises}
+At the time of writing this report, we have implemented four exercise generators for the exercise categories of Binary Trees, Conditionals, Syntax and Strings.\newline
+
+For Binary Tree exercises, we supply a binary tree as exercise data, and ask the student to select what is printed after a specific traversal order. This type of exercise was intended to show that it was possible to bring variety to jSCAPE exercises. We think that this exercise is useful for learning the different traversal orders, however the exercise loses its usefulness very quickly once a student has mastered traversal orders. Perhaps this exercise would be more effective if we asked the student to type in the whole traversal instead of selecting the correct answer among the four different traversals.\newline
+
+Next, for Conditionals and Strings exercises, we display a code snippet as exercise data, and ask the student to determine the final value of one or more variables. The usefulness of this type of exercise has been demonstrated in research. Indeed, \cite{Lister} has shown that this type of exercise provides effective assessment on a student's understanding of code semantics.\newline
+
+Thanks to our random code generators, jSCAPE is able to provide many of such exercises, with very different code snippets. This means that a teacher could automatically generate 1000 Conditionals exercises and all of them would include very different code snippets, thus providing students with a large supply of exercises to self-assess their understanding of control flow in Java. However, sometimes the generated code can end up being too random, and the control flow doesn't resemble anything that would appear in a ``real" program. As such, more work would be needed in the code generating component, to make the generated code more useful in the learning process. \newline
+
+Finally, Syntax exercises also present a code snippet, but this time containing syntax errors. The exercise asks the student to spot the syntax error, or to identify how many syntax errors the piece of code contains. We believe that this is a useful exercise for students to familiarise themselves with the Java language, especially in the early stages, when students are discovering programming languages for the first time. \newline
+
+We would like to point out that teachers and educators have more knowledge of what constitutes a useful exercise in assessing students knowledge of a particular concept. These exercises were only intended to show what can be achieved in the jSCAPE system.
+
+\subsubsection{Evaluating the jSCAPE exercise format}
+The jSCAPE exercise format was sufficient for us to implement four exercise generators for multiple choice type questions. The format is quite flexible to allow for different views to be used in providing exercise data to accompany the question. The format was also designed with other exercise types in mind. For instance, if the exercise displayer were to read \textsf{FillInBlank} in the \textsf{$<$view$>$} tag of the second \textsf{$<$display$>$} tag, then it would ignore all the \textsf{$<$choice$>$} tags and simply create a text field for the student to type in his answer. \newline
+
+However, in general we are not that satisfied with the exercise format. It isn't very elegant and we could see it posing some restrictions in the future. \newline
+
+\begin{lstlisting}[language=xml, caption={A modified exercise format.}, label=lst:new_exercise_format]
+<?xml version="1.0"?>
+<exercise>
+	<display>
+		<view>........</view>
+		<value>.......</value>
+	</display>
+	<display>
+		<view>........</view>
+		<value>.......</value>
+	</display>
+	<display>
+		<view>........</view>
+		<value>.......</value>
+	</display>
+</exercise>
+\end{lstlisting}
+
+We believe that it should be modified to allow for more exercise types to be added to jSCAPE. The listing in \ref{lst:new_exercise_format} shows a possible modification, which makes the exercise format more straightforward. Each possible \textsf{$<$view$>$} could have a component implemented in Java which takes as parameter the value of the \textsf{$<$value$>$} tag. This is how the \textsf{BinaryTree} and \textsf{CodeEditor} were implemented, but for some unknown reason, we didn't think about doing the same with other views such as \textsf{MultipleChoice}. This would offer a more general purpose exercise format than jSCAPE currently has at the moment.
+
+\subsubsection{Evaluating automated exercise generation}
+
+
+\subsubsection{Evaluating computerized adaptive testing in jSCAPE}
+
+
+
+\subsubsection{Evaluating collection of statistical data}
+The system is useful for students, they can see everything they want to see.
+
+
+Asking more lecturers or teachers could help in determining more useful statistics that jSCAPE could record and display to students or teachers.
+
+
+
 Mention how our developed system performs against the advantages and disadvantages of CAT.
 
-The evaluation stage will address mostly these two aspects:
-\begin{itemize}
-\item The system has correctly modelled the ability of students
-\item The system is useful in helping students to learn programming and helping lecturers with getting feedback on their teaching, in the form of statistics.
-\end{itemize}
-
-\section{Qualitative}
-\begin{itemize}
-\item Surveys to get feedback from students on interface, usability, etc...
-\item 
-\end{itemize}
-
-\section{Quantitative}
-\begin{itemize}
-\item Statistical analysis to evaluate item calibration and modelling of student's abilities
-\item 
-\end{itemize}
 
 evaluate the fact that teachers have to enter the parameters of items.
 
 show IRT run as evaluation of implementation of IRT
 
-evaluate exercises used .... Research\cite{Lister} has shown that a code snippet and an exercise asking for the behaviour of the code, provides effective assessment on a student's understanding of code semantics.
 
 \section{Summary}
+In this chapter we evaluated the different components that form the jSCAPE system. We showed that collection and display of statistical data was implemented quite solidly, and that the system was able to support provision of exercises very well.\newline
+
+However, jSCAPE did present certain limitations in its exercise format, in its exercise generators and in the adaptive difficulty component. \newline
+
+In the next chapter we conclude the project and give some possibilities of future work which could address the weaknesses of the system discussed in this section.
