@@ -198,8 +198,18 @@ public class SyntaxExerciseGen {
         for (int i = 0; i < 3; i++) {
             generateDistractions();
         }
-        
+
         Collections.shuffle(linesUsed);
+        
+        String difficulty;
+        int diff = random.nextInt(100);
+        if (diff < 33) {
+            difficulty = "A";
+        } else if (diff < 66) {
+            difficulty = "B";
+        } else {
+            difficulty = "C";
+        }
 
         String rest = "</value>\n"
                 + "    </display>\n"
@@ -211,6 +221,9 @@ public class SyntaxExerciseGen {
                 + "        <choice2>Line " + linesUsed.get(2) + "</choice2>\n"
                 + "        <choice3>Line " + linesUsed.get(3) + "</choice3>\n"
                 + "        <solution>" + solutionText + "</solution>\n"
+                + "    </display>\n"
+                + "    <display>\n"
+                + "        <difficulty>" + difficulty + "</difficulty>\n"
                 + "    </display>\n"
                 + "</exercise>";
 

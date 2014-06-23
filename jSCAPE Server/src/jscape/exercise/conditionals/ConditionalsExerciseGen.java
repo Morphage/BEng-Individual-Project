@@ -285,7 +285,7 @@ public class ConditionalsExerciseGen {
         int totalStatementsCreated = numberOfElseStatementsCreated + numberOfIfStatementsCreated;
         if (totalStatementsCreated <= 2) {
             difficulty = "A";
-        } else if (totalStatementsCreated <= 4) {
+        } else if (totalStatementsCreated <= 5) {
             difficulty = "B";
         } else {
             difficulty = "C";
@@ -370,9 +370,9 @@ public class ConditionalsExerciseGen {
         
         String difficulty;
         int totalStatementsCreated = numberOfElseStatementsCreated + numberOfIfStatementsCreated;
-        if (totalStatementsCreated <= 2) {
+        if (totalStatementsCreated <= 4) {
             difficulty = "A";
-        } else if (totalStatementsCreated <= 4) {
+        } else if (totalStatementsCreated <= 7) {
             difficulty = "B";
         } else {
             difficulty = "C";
